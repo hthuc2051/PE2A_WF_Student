@@ -1,0 +1,14 @@
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Lecturer.exe.config
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Lecturer.exe
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Lecturer.pdb
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csprojAssemblyReference.cache
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.LecturerForm.resources
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.Properties.Resources.resources
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csproj.GenerateResource.cache
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.exe
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.pdb
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.exe
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.pdb
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.exe.config
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.Form1.resources
+E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csproj.CopyComplete
