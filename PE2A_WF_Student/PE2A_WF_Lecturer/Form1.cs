@@ -21,6 +21,7 @@ namespace PE2A_WF_Lecturer
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             string studentID = txtStudentID.Text;
+            string serverIP = txtServerIP.Text;
 
             if (studentID.Equals("admin"))
             {
@@ -32,8 +33,14 @@ namespace PE2A_WF_Lecturer
             {
                 StudentForm studentSubmit = new StudentForm();
                 studentSubmit.studentID = studentID;
+                studentSubmit.serverIP = serverIP;
                 studentSubmit.Show();
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

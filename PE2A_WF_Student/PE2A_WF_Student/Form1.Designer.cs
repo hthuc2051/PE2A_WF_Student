@@ -35,10 +35,9 @@
             // 
             // btnEnroll
             // 
-            this.btnEnroll.Location = new System.Drawing.Point(353, 238);
-            this.btnEnroll.Margin = new System.Windows.Forms.Padding(2);
+            this.btnEnroll.Location = new System.Drawing.Point(523, 333);
             this.btnEnroll.Name = "btnEnroll";
-            this.btnEnroll.Size = new System.Drawing.Size(85, 27);
+            this.btnEnroll.Size = new System.Drawing.Size(128, 42);
             this.btnEnroll.TabIndex = 5;
             this.btnEnroll.Text = "Enroll";
             this.btnEnroll.UseVisualStyleBackColor = true;
@@ -47,29 +46,28 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(292, 138);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(438, 212);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(100, 20);
             this.label1.TabIndex = 4;
             this.label1.Text = "Roll Number:";
             // 
             // txtStudentID
             // 
-            this.txtStudentID.Location = new System.Drawing.Point(295, 163);
-            this.txtStudentID.Margin = new System.Windows.Forms.Padding(2);
+            this.txtStudentID.Location = new System.Drawing.Point(442, 251);
             this.txtStudentID.Name = "txtStudentID";
-            this.txtStudentID.Size = new System.Drawing.Size(214, 20);
+            this.txtStudentID.Size = new System.Drawing.Size(319, 26);
             this.txtStudentID.TabIndex = 3;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 692);
             this.Controls.Add(this.btnEnroll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtStudentID);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);

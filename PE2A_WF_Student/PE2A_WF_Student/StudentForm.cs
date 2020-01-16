@@ -18,7 +18,9 @@ namespace PE2A_WF_Student
     public partial class StudentForm : Form
     {
         private string FileName = "";
+        private string Server_Protocol = "http://";
         public string studentID { get; set; }
+        public string serverIP { get; set; }
         public StudentForm()
         {
             InitializeComponent();
@@ -27,7 +29,8 @@ namespace PE2A_WF_Student
         private async Task<String> sendFile(String fileName)
         {
             //var client = new WebClient();
-            var uri = new Uri("http://localhost:8080/api/upload");
+            string serverAPIPath = Server_Protocol + serverIP + ":8080/api/submission";
+            var uri = new Uri(serverAPIPath);
             string fileExtension = fileName.Substring(fileName.IndexOf('.'));
             try
             {
@@ -96,6 +99,11 @@ namespace PE2A_WF_Student
                 txtFileName.Text = FileName;
                 ShowSelectedFile();
             }
+        }
+
+        private void StudentForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

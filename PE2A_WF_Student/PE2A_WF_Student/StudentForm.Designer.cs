@@ -37,34 +37,31 @@
             // txtFileName
             // 
             this.txtFileName.AutoSize = true;
-            this.txtFileName.Location = new System.Drawing.Point(317, 209);
-            this.txtFileName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtFileName.Location = new System.Drawing.Point(476, 322);
             this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(38, 13);
+            this.txtFileName.Size = new System.Drawing.Size(57, 20);
             this.txtFileName.TabIndex = 6;
             this.txtFileName.Text = "File.rar";
             this.txtFileName.Visible = false;
-
             // 
             // imgSubmit
             // 
             this.imgSubmit.BackColor = System.Drawing.Color.White;
             this.imgSubmit.Image = global::PE2A_WF_Student.Properties.Resources.file_upload_img;
             this.imgSubmit.InitialImage = null;
-            this.imgSubmit.Location = new System.Drawing.Point(319, 46);
-            this.imgSubmit.Margin = new System.Windows.Forms.Padding(2);
+            this.imgSubmit.Location = new System.Drawing.Point(478, 71);
             this.imgSubmit.Name = "imgSubmit";
-            this.imgSubmit.Size = new System.Drawing.Size(144, 145);
+            this.imgSubmit.Size = new System.Drawing.Size(216, 223);
             this.imgSubmit.TabIndex = 5;
             this.imgSubmit.TabStop = false;
             this.imgSubmit.Click += new System.EventHandler(this.imgFile_Click_1);
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(319, 243);
-            this.btnSubmit.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnSubmit.Location = new System.Drawing.Point(478, 374);
+            this.btnSubmit.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(151, 35);
+            this.btnSubmit.Size = new System.Drawing.Size(226, 54);
             this.btnSubmit.TabIndex = 4;
             this.btnSubmit.Text = "Upload";
             this.btnSubmit.UseVisualStyleBackColor = true;
@@ -73,14 +70,16 @@
             // 
             // StudentForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 692);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.imgSubmit);
             this.Controls.Add(this.btnSubmit);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "StudentForm";
             this.Text = "StudentForm";
+            this.Load += new System.EventHandler(this.StudentForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imgSubmit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
