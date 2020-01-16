@@ -45,7 +45,7 @@ namespace PE2A_WF_Lecturer
             string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
             string submitPath = projectDirectory + @"\Submited Files\";
             var filename = "SE63155.zip";
-            var uri = new Uri("http://localhost:8080/api/download");
+            var uri = new Uri("http://192.168.43.51:8080/api/download");
 
             try
             {
@@ -72,6 +72,7 @@ namespace PE2A_WF_Lecturer
                                 lvSubmitedFiles.Items.Add(new ListViewItem(new string[] { "" + ++count, filename }));
                             }
                         }
+                        ZipFile.ExtractToDirectory(submitPath + filename, submitPath);
                     }
                 }
             }
