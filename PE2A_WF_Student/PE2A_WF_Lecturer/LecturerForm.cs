@@ -20,6 +20,7 @@ namespace PE2A_WF_Lecturer
     public partial class LecturerForm : Form
     {
         private int count = 0;
+
         public LecturerForm()
         {
             InitializeComponent();
@@ -43,67 +44,84 @@ namespace PE2A_WF_Lecturer
             string studentCode = "test0916";
             string startupPath = Directory.GetCurrentDirectory();
             string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
-            string submitPath = projectDirectory + @"\Submited Files\";
-            var filename = "SE63155.zip";
+            string submitPath = projectDirectory;
+            var filename = @"\Submited Files.zip";
             var uri = new Uri("http://localhost:8080/api/download");
 
-            try
+            //try
+            //{
+            //    using (HttpResponseMessage response = await client.GetAsync(uri))
+            //    {
+            //        using (HttpContent content = response.Content)
+            //        {
+            //            var result = await content.ReadAsStreamAsync();
+
+            //            // Get list of headers from content of response
+            //            HttpContentHeaders headers = content.Headers;
+
+            //            // Get content disposition
+            //            ContentDispositionHeaderValue dispositionHeaderValue = headers.ContentDisposition;
+
+            //            // Extract file name from content disposition
+            //            filename = dispositionHeaderValue.FileName;
+
+            //            if (filename != null)
+            //            {
+            //                using (var file = File.Create(submitPath + filename))
+            //                {
+            //                    await result.CopyToAsync(file);
+            //                    lvSubmitedFiles.Items.Add(new ListViewItem(new string[] { "" + ++count, filename }));
+            //                }
+            //            }
+
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
+
+            //ZipFile.ExtractToDirectory(submitPath + filename, submitPath);
+
+
+            if (Directory.Exists(submitPath + @"\Submited Files"))
             {
-                using (HttpResponseMessage response = await client.GetAsync(uri))
+                string[] getAllFilePath = Directory.GetFiles(submitPath + @"\Submited Files");
+                foreach (var item in getAllFilePath)
                 {
-                    using (HttpContent content = response.Content)
+                    try
                     {
-                        var result = await content.ReadAsStreamAsync();
+                        string gitCMD = "git branch submit/" + studentCode + "&" +
+                            "git add .&" +
+                            "git commit -m \"" + studentCode + "\"&" +
+                            "git push --set-upstream origin submit/" + studentCode;
 
-                        // Get list of headers from content of response
-                        HttpContentHeaders headers = content.Headers;
-
-                        // Get content disposition
-                        ContentDispositionHeaderValue dispositionHeaderValue = headers.ContentDisposition;
-
-                        // Extract file name from content disposition
-                        filename = dispositionHeaderValue.FileName;
-
-                        if (filename != null)
-                        {
-                            using (var file = File.Create(submitPath + filename))
-                            {
-                                await result.CopyToAsync(file);
-                                lvSubmitedFiles.Items.Add(new ListViewItem(new string[] { "" + ++count, filename }));
-                            }
-                        }
+                        string zipPath = submitPath + filename;
+                        string javaServerPath = projectDirectory + @"\ServerJavaWeb";
+                        string extractJavaPath = projectDirectory + @"\ServerJavaWeb\src\main\java";
+                        string strCmdText = "/C cd " + projectDirectory + "&cd ServerJavaWeb&mvn clean package&cmd /k";
+                        ZipFile.ExtractToDirectory(item, extractJavaPath);
+                        Thread.Sleep(5000);
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = "CMD.exe";
+                        startInfo.Arguments = strCmdText;
+                        Process process = new Process();
+                        process.StartInfo = startInfo;
+                        process.Start();
+                        process.WaitForExit();
+                        Console.WriteLine(count++);
+                        Directory.Delete(extractJavaPath + @"\com", true);
+                        // Process.Start("CMD.exe", "/C cd " + javaServerPath + gitCMD + "&cmd /k");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
 
-            if (!filename.Equals(""))
-            {
-                try
-                {
-                    string gitCMD = "git branch submit/" + studentCode + "&" +
-                        "git add .&" +
-                        "git commit -m \"" + studentCode + "\"&" +
-                        "git push --set-upstream origin submit/" + studentCode;
 
-                    string zipPath = submitPath + filename;
-                    string javaServerPath = projectDirectory + @"\ServerJavaWeb";
-                    string extractJavaPath = projectDirectory + @"\ServerJavaWeb\src\main\java";
-                    string strCmdText = "/C cd " + projectDirectory + "&cd ServerJavaWeb&mvn clean package&cmd /k";
-                    ZipFile.ExtractToDirectory(zipPath, extractJavaPath);
-                    Thread.Sleep(5000);
-                    Process.Start("CMD.exe", strCmdText);
-                  //  Process.Start("CMD.exe", "/C cd " + javaServerPath + gitCMD + "&cmd /k");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-
-            }
 
             return null;
         }
