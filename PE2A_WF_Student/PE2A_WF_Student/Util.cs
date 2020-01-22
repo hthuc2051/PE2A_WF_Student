@@ -76,6 +76,7 @@ namespace PE2A_WF_Student
         private static void returnWebserviceURL(string ipAddess, int port)
         {
             bool isSent = false;
+            string submissionURL = "http://" + GetLocalIPAddress() + ":8080/api/submission";
             do
             {
                 try
@@ -83,7 +84,7 @@ namespace PE2A_WF_Student
                     IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(ipAddess), port);
                     Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Connect(iPEnd);
-                    socket.Send(Encoding.UTF8.GetBytes("hello" + ipAddess));
+                    socket.Send(Encoding.UTF8.GetBytes("here is your submission url =" + submissionURL));
                     socket.Close();
                     isSent = true;
                 }
