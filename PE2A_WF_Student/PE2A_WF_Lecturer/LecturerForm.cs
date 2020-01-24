@@ -30,6 +30,8 @@ namespace PE2A_WF_Lecturer
             lvSubmitedFiles.Columns[0].Width = -2;
             lvSubmitedFiles.Columns[1].Width = -2;
             lvSubmitedFiles.GridLines = true;
+            //listen to Broadcast connection
+            PE2A_WF_Student.Util.ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
         }
 
         private void btnEstimate_Click(object sender, EventArgs e)

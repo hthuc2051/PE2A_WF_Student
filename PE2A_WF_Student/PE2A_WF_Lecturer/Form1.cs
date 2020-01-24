@@ -33,7 +33,16 @@ namespace PE2A_WF_Lecturer
             {
                 StudentForm studentSubmit = new StudentForm();
                 studentSubmit.studentID = studentID;
-                studentSubmit.serverIP = serverIP;
+           
+                // send broadcast to router
+                string message = Util.GetLocalIPAddress() + "-" + Constain.STUDENT_LISTENING_PORT;
+                Util.SendBroadCast(message, Constain.LECTURER_LISTENING_PORT);
+                Console.WriteLine("====SENT====");
+                // get message return from lecturer
+                string returnMessage = Util.GetMessageFromTCPConnection(Constain.STUDENT_LISTENING_PORT, Constain.MAXIMUM_REQUEST);
+                Console.WriteLine("Lecturer: " + returnMessage);
+                string[] msgArr = returnMessage.Split('=');
+                studentSubmit.submitAPIUrl = msgArr[1];
                 studentSubmit.Show();
             }
         }
