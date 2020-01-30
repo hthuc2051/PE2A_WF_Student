@@ -31,7 +31,7 @@ namespace PE2A_WF_Lecturer
             lvSubmitedFiles.Columns[1].Width = -2;
             lvSubmitedFiles.GridLines = true;
             //listen to Broadcast connection
-            PE2A_WF_Student.Util.ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
+            //PE2A_WF_Student.Util.ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
         }
 
         private void btnEstimate_Click(object sender, EventArgs e)
@@ -136,6 +136,14 @@ namespace PE2A_WF_Lecturer
 
 
             return null;
+        }
+
+        private void btnResult_Click(object sender, EventArgs e)
+        {
+            // pass socket or list socket to constructor (later)
+            ShowResult showResult = new ShowResult(); 
+            showResult.Show();
+            this.Dispose(true);
         }
     }
 }
