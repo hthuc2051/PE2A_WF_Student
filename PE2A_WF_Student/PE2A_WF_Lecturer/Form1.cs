@@ -21,7 +21,6 @@ namespace PE2A_WF_Lecturer
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             string studentID = txtStudentID.Text;
-            string serverIP = txtServerIP.Text;
 
             if (studentID.Equals("admin"))
             {
@@ -35,7 +34,7 @@ namespace PE2A_WF_Lecturer
                 studentSubmit.studentID = studentID;
            
                 // send broadcast to router
-                string message = Util.GetLocalIPAddress() + "-" + Constain.STUDENT_LISTENING_PORT;
+                string message = Util.GetLocalIPAddress() + "-" + Constain.STUDENT_LISTENING_PORT+ "-" + studentID;
                 Util.SendBroadCast(message, Constain.LECTURER_LISTENING_PORT);
                 Console.WriteLine("====SENT====");
                 // get message return from lecturer
@@ -44,7 +43,9 @@ namespace PE2A_WF_Lecturer
                 string[] msgArr = returnMessage.Split('=');
                 studentSubmit.submitAPIUrl = msgArr[1];
                 studentSubmit.Show();
+              
             }
+        
         }
 
         private void Form1_Load(object sender, EventArgs e)

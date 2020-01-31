@@ -37,64 +37,7 @@ namespace PE2A_WF_Student
             return receivedMessage.Substring(0, size);
         }
 
-        static Socket s;
-        static Byte[] buffer;
-        public static void ListeningToBroadcastUDPConnection(int listeningPort)
-        {
-            s = new Socket(AddressFamily.InterNetwork,
-                          SocketType.Dgram,
-                                ProtocolType.Udp);
-
-            IPEndPoint senders = new IPEndPoint(IPAddress.Any, listeningPort);
-            EndPoint tempRemoteEP = (EndPoint)senders;
-            s.Bind(senders);
-            buffer = new byte[1024];
-            s.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref tempRemoteEP,
-                                            new AsyncCallback(DoReceiveFrom), buffer);
-        }
-
-        private static void DoReceiveFrom(IAsyncResult iar)
-        {
-            EndPoint clientEP = new IPEndPoint(IPAddress.Any, 5656);
-            int size = s.EndReceiveFrom(iar, ref clientEP);
-            if (size > 0)
-            {
-                byte[] receivedData = new Byte[size];
-                receivedData = (byte[])iar.AsyncState;
-
-                ASCIIEncoding eEncpding = new ASCIIEncoding();
-                string receivedMessage = eEncpding.GetString(receivedData);
-                receivedMessage = receivedMessage.Substring(0, size);
-                Console.WriteLine("received message:" + receivedMessage);
-                string[] data = receivedMessage.Split('-');
-                Thread t = new Thread(() => returnWebserviceURL(data[0], int.Parse(data[1])));
-                t.Start();
-            }
-            s.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None,
-                ref clientEP, new AsyncCallback(DoReceiveFrom), buffer);
-        }
-        private static void returnWebserviceURL(string ipAddess, int port)
-        {
-            bool isSent = false;
-            string submissionURL = "http://" + GetLocalIPAddress() + ":8080/api/submission";
-            do
-            {
-                try
-                {
-                    IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(ipAddess), port);
-                    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    socket.Connect(iPEnd);
-                    socket.Send(Encoding.UTF8.GetBytes("here is your submission url =" + submissionURL));
-                    socket.Close();
-                    isSent = true;
-                }
-                catch (Exception e)
-                {
-
-                }
-            } while (!isSent);
-           
-        }
+       
 
         public static IPAddress GetLocalIPAddress()
         {

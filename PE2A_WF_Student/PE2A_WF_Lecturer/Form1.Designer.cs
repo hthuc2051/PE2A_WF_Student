@@ -31,13 +31,11 @@
             this.btnEnroll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtStudentID = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtServerIP = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnEnroll
             // 
-            this.btnEnroll.Location = new System.Drawing.Point(530, 403);
+            this.btnEnroll.Location = new System.Drawing.Point(228, 210);
             this.btnEnroll.Name = "btnEnroll";
             this.btnEnroll.Size = new System.Drawing.Size(128, 42);
             this.btnEnroll.TabIndex = 8;
@@ -48,7 +46,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(439, 216);
+            this.label1.Location = new System.Drawing.Point(155, 104);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 20);
             this.label1.TabIndex = 7;
@@ -56,34 +54,16 @@
             // 
             // txtStudentID
             // 
-            this.txtStudentID.Location = new System.Drawing.Point(443, 256);
+            this.txtStudentID.Location = new System.Drawing.Point(159, 144);
             this.txtStudentID.Name = "txtStudentID";
             this.txtStudentID.Size = new System.Drawing.Size(319, 26);
             this.txtStudentID.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(439, 314);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 20);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Server IP:";
-            // 
-            // txtServerIP
-            // 
-            this.txtServerIP.Location = new System.Drawing.Point(443, 353);
-            this.txtServerIP.Name = "txtServerIP";
-            this.txtServerIP.Size = new System.Drawing.Size(319, 26);
-            this.txtServerIP.TabIndex = 9;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 692);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtServerIP);
+            this.ClientSize = new System.Drawing.Size(544, 298);
             this.Controls.Add(this.btnEnroll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtStudentID);
@@ -101,8 +81,6 @@
         private System.Windows.Forms.Button btnEnroll;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtStudentID;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtServerIP;
     }
 }
 

@@ -11,5 +11,6 @@ namespace PE2A_WF_Lecturer
         public static int LECTURER_LISTENING_PORT = 5656;
         public static int STUDENT_LISTENING_PORT = 4000;
         public static int MAXIMUM_REQUEST = 100;
+        public static String[] STATUSLIST = new string[] { "connected","submitted","testing","done","saved" };
     }
 }
