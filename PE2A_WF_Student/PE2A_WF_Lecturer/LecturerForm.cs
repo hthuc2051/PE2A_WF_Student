@@ -22,7 +22,6 @@ namespace PE2A_WF_Lecturer
     public partial class LecturerForm : Form
     {
         private int count = 0;
-        Image img = new Bitmap(PE2A_WF_Lecturer.Properties.Resources.done);
         DataTable dataTable = new DataTable();
         public LecturerForm()
         {
