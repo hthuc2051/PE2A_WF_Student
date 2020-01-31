@@ -27,6 +27,7 @@ namespace PE2A_WF_Lecturer
         public LecturerForm()
         {
             InitializeComponent();
+
             //lvSubmitedFiles.View = View.Details;
             //lvSubmitedFiles.Columns.Add("No.");
             //lvSubmitedFiles.Columns.Add("Student ID");
@@ -42,6 +43,15 @@ namespace PE2A_WF_Lecturer
 
             //listen to student
             ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
+
+            //lvSubmitedFiles.View = View.Details;
+            //lvSubmitedFiles.Columns.Add("No.");
+            //lvSubmitedFiles.Columns.Add("File name");
+            //lvSubmitedFiles.Columns[0].Width = -2;
+            //lvSubmitedFiles.Columns[1].Width = -2;
+            //lvSubmitedFiles.GridLines = true;
+            //listen to Broadcast connection
+            //PE2A_WF_Student.Util.ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
         }
 
 
@@ -209,6 +219,14 @@ namespace PE2A_WF_Lecturer
                 }
             } while (!isSent);
 
+        }
+
+        private void btnResult_Click(object sender, EventArgs e)
+        {
+            // pass socket or list socket to constructor (later)
+            ShowResult showResult = new ShowResult(); 
+            showResult.Show();
+            this.Dispose(true);
         }
     }
 }

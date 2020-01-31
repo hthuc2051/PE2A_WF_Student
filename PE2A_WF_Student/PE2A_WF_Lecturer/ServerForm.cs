@@ -20,26 +20,50 @@ namespace PE2A_WF_Lecturer
         public ServerForm()
         {
             InitializeComponent();
+            startServer();
         }
 
         private void ServerForm_Load(object sender, EventArgs e)
         {
-            IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, 5656); // open the endport with pre defined ip
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP); // create socket for IP
-            sock.Bind(ipEnd); // hear endport ip.
-            sock.Listen(100);
+           
+        }
+        private void startServer()
+        {
+            Task.Run(() =>
+            {
+                IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, 5656); // open the endport with pre defined ip
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP); // create socket for IP
+                sock.Bind(ipEnd); // hear endport ip.
+                sock.Listen(100);
+                while (true)
+                {
+                    Console.WriteLine("Server starting...");
+                    Socket client = sock.Accept();
+                    IPEndPoint remoteIpEndPoint = client.RemoteEndPoint as IPEndPoint;
+                    IPEndPoint localIpEndPoint = client.LocalEndPoint as IPEndPoint;
+                    Console.WriteLine(remoteIpEndPoint.Address);
+                    Console.WriteLine(localIpEndPoint.Address);
+                    Console.WriteLine(remoteIpEndPoint.Port);
+                    Console.WriteLine(localIpEndPoint.Port);
+                    // return to client api upload
+
+
+                }
+            });
+       
         }
 
         private void btnClient_Click(object sender, EventArgs e)
         {
-       
+
             //run client form
+            String ip = "192.168.1.15";
             ClientForm clientForm = new ClientForm();
             clientForm.Show();
             //wait for connecting
             Socket clientSocket = sock.Accept();
  
-            // load file
+            // load file    
             string fileName = "Cloud.txt";// "Your File Name"; 
             string filePath = @"G:\JavaWeb\";//Your File Path;
             byte[] fileNameByte = Encoding.ASCII.GetBytes(fileName);
