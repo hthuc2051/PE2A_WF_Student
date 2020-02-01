@@ -18,18 +18,26 @@ namespace PE2A_WF_Lecturer
     {
         private List<UserResult> userResults;
         private Socket sock;
-        private Socket clientSock;
+        private List<Socket> clientSocks;
+        private Form preForm;
         public ShowResult()
         {
             InitializeComponent();
+        }
+        // thêm cái này thôi =>
+        public ShowResult(List<Socket> clientSockets,  Socket serverSocket,Form prevForm)
+        {
+            InitializeComponent();
+            this.sock = serverSocket;
+            this.clientSocks = clientSockets;
+            this.preForm = prevForm;
         }
 
         private void ShowResult_Load(object sender, EventArgs e)
         {
             Reload();
-            StartServer();
-
-        }
+           // StartServer();
+        }   
         private void Reload()
         {
             userResults = new List<UserResult>();
@@ -64,44 +72,43 @@ namespace PE2A_WF_Lecturer
             };
             tbData.DataSource = userResults;
         }
-        private void StartServer()
-        {
-            Task.Run(() =>
-            {
-                IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, 5656);
-                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-                sock.Bind(ipEnd);
-                sock.Listen(100);
-                Console.WriteLine("Server starting...");
-                while(true)
-                {
-                    clientSock = sock.Accept();
-                    if(clientSock != null)
-                    {
-                        Console.WriteLine("Client connecting...");
+        //private void StartServer()
+        //{
+        //    Task.Run(() =>
+        //    {
+        //        IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, 5656);
+        //        sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+        //        sock.Bind(ipEnd);
+        //        sock.Listen(100);
+        //        Console.WriteLine("Server starting...");
+        //        while(true)
+        //        {
+        //            clientSock = sock.Accept();
+        //            if(clientSock != null)
+        //            {
+        //                Console.WriteLine("Client connecting...");
 
-                    }
-                }
-            });
-        }
+        //            }
+        //        }
+        //    });
+        //}
 
         private void btnPublish_Click(object sender, EventArgs e)
         {
             //test with one ip
             //Thien must store a list Socket when student connect to server.
-            if(clientSock != null)
-            {
-                string studentCode = "Student_Code : SE62882 Student_Point : 10";// "Your student code"; 
-                //string studentPoint = "10";
-                byte[] clientStudentCodeByte = Encoding.ASCII.GetBytes(studentCode);
-                byte[] clientStudentCodeLen = BitConverter.GetBytes(clientStudentCodeByte.Length);
-                //byte[] clientStudentPointByte = Encoding.ASCII.GetBytes(studentPoint);
-                //byte[] clientStudentPointLen = BitConverter.GetBytes(clientStudentPointByte.Length);
-                byte[] clientData = new byte[4+ clientStudentCodeByte.Length];
-                clientStudentCodeLen.CopyTo(clientData, 0);
-                clientStudentCodeByte.CopyTo(clientData, 4);
-                clientSock.Send(clientData);
-            }                      
+            foreach (var item in clientSocks)
+            {               
+                    string studentCode = "Student_Code : SE62882 Student_Point : 10";// "Your student code";                                                                                    //string studentPoint = "10";
+                    byte[] clientStudentCodeByte = Encoding.ASCII.GetBytes(studentCode);
+                    byte[] clientStudentCodeLen = BitConverter.GetBytes(clientStudentCodeByte.Length);
+                    //byte[] clientStudentPointByte = Encoding.ASCII.GetBytes(studentPoint);
+                    //byte[] clientStudentPointLen = BitConverter.GetBytes(clientStudentPointByte.Length);
+                    byte[] clientData = new byte[4 + clientStudentCodeByte.Length];
+                    clientStudentCodeLen.CopyTo(clientData, 0);
+                    clientStudentCodeByte.CopyTo(clientData, 4);
+                    item.Send(clientData);                
+            }            
         }
 
         private void btnReload_Click(object sender, EventArgs e)

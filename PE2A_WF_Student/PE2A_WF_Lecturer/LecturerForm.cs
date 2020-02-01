@@ -224,10 +224,11 @@ namespace PE2A_WF_Lecturer
 
         private void btnResult_Click(object sender, EventArgs e)
         {
-            // pass socket or list socket to constructor (later)
-            ShowResult showResult = new ShowResult(); 
+            // pass 3 param :  serversocket and listsocket and this form to constructor (later)
+            ShowResult showResult = new ShowResult();
+            //ShowResult showResult = new ShowResult(listSocket,serverSocket,this);// => example
             showResult.Show();
-            this.Dispose(true);
+            this.Hide();
         }
     }
 }
