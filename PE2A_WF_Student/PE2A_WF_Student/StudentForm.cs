@@ -47,6 +47,7 @@ namespace PE2A_WF_Student
                     };
                     form.Add(content, "file");
                     form.Add(new StringContent(studentID), "studentCode");
+                    form.Add(new StringContent("DE2"), "examCode");
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();

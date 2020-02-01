@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PE2A_WF_Lecturer
 {
-    public class Constain
+    public class Constant
     {
         public static int LECTURER_LISTENING_PORT = 5656;
         public static int STUDENT_LISTENING_PORT = 4000;

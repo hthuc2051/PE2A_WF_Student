@@ -35,11 +35,11 @@ namespace PE2A_WF_Lecturer
                 studentSubmit.studentID = studentID;
            
                 // send broadcast to router
-                string message = Util.GetLocalIPAddress() + "-" + Constain.STUDENT_LISTENING_PORT+ "-" + studentID;
+                string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;
                 Thread t = new Thread(() => SendBroadCastToRouter(message));
                 t.Start();
                 // get message return from lecturer
-                string returnMessage = Util.GetMessageFromTCPConnection(Constain.STUDENT_LISTENING_PORT, Constain.MAXIMUM_REQUEST);
+                string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
                 t.Abort();
                 Console.WriteLine("Lecturer: " + returnMessage);
                 string[] msgArr = returnMessage.Split('=');
@@ -52,7 +52,7 @@ namespace PE2A_WF_Lecturer
 
         private void SendBroadCastToRouter(string message)
         {
-            Util.SendBroadCast(message, Constain.LECTURER_LISTENING_PORT);
+            Util.SendBroadCast(message, Constant.LECTURER_LISTENING_PORT);
             Console.WriteLine("====SENT====");
         }
 

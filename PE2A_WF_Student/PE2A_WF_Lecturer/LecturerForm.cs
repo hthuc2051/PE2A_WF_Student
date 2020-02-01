@@ -23,6 +23,7 @@ namespace PE2A_WF_Lecturer
     {
         private int count = 0;
         DataTable dataTable = new DataTable();
+        List<StudentDTO> listStudent = new List<StudentDTO>();
         public LecturerForm()
         {
             InitializeComponent();
@@ -41,7 +42,7 @@ namespace PE2A_WF_Lecturer
             dgvStudent.DataSource = dataTable;
 
             //listen to student
-            ListeningToBroadcastUDPConnection(Constain.LECTURER_LISTENING_PORT);
+            ListeningToBroadcastUDPConnection(Constant.LECTURER_LISTENING_PORT);
 
             //lvSubmitedFiles.View = View.Details;
             //lvSubmitedFiles.Columns.Add("No.");
@@ -195,7 +196,7 @@ namespace PE2A_WF_Lecturer
         {
             bool isSent = false;
             string submissionURL = "http://" + PE2A_WF_Student.Util.GetLocalIPAddress() + ":8080/api/submission";
-            string[] row = new string[] { ++count + "", studentID,"",Constain.STATUSLIST[0]};
+            string[] row = new string[] { ++count + "", studentID,"",Constant.STATUSLIST[0]};
             dataTable.Rows.Add(row);
             dataTable.Rows[count - 1][4] = PE2A_WF_Lecturer.Properties.Resources.close;
             do
@@ -217,7 +218,8 @@ namespace PE2A_WF_Lecturer
 
                 }
             } while (!isSent);
-
+            StudentDTO newStudent = new StudentDTO(studentID, IPAddress.Parse(ipAddess), port);
+            listStudent.Add(newStudent);
         }
 
         private void btnResult_Click(object sender, EventArgs e)
