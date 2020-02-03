@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +22,7 @@ namespace PE2A_WF_Student
         private string FileName = "";
         public string studentID { get; set; }
         public string submitAPIUrl { get; set; }
+        Thread listeningThread;
         public StudentForm()
         {
             InitializeComponent();
@@ -68,6 +70,13 @@ namespace PE2A_WF_Student
         {
             String result = await sendFile(FileName);
             MessageBox.Show(result);
+            listeningThread = new Thread(ListenToLecturer);
+            listeningThread.Start();
+       
+        }
+
+        private void ListenToLecturer()
+        {
             string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
             Console.WriteLine(returnMessage);
         }

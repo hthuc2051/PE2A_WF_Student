@@ -18,10 +18,13 @@ namespace PE2A_WF_Lecturer
         {
             InitializeComponent();
         }
-
+        string studentID;
+        Thread sendingThread;
+        Thread listeningThread;
+        StudentForm studentSubmit = new StudentForm();
         private void btnEnroll_Click(object sender, EventArgs e)
         {
-            string studentID = txtStudentID.Text;
+            studentID = txtStudentID.Text.ToUpper().Trim();
 
             if (studentID.Trim().ToLower().Equals("admin"))
             {
@@ -31,27 +34,14 @@ namespace PE2A_WF_Lecturer
 
             else
             {
-                StudentForm studentSubmit = new StudentForm();
+               
                 studentSubmit.studentID = studentID;
-           
                 // send broadcast to router
                 string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;
-                Thread t = new Thread(() => SendBroadCastToRouter(message));
-                t.Start();
-                // get message return from lecturer
-                string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
-                t.Abort();
-                if (returnMessage.Equals(Constant.EXISTED_IP_MESSAGE))
-                {
-                    MessageBox.Show(returnMessage);
-                }
-                else
-                {
-                    string[] msgArr = returnMessage.Split('=');
-                    studentSubmit.submitAPIUrl = msgArr[1];
-                    studentSubmit.Show();
-                }
-                Console.WriteLine("Lecturer: " + returnMessage);
+                sendingThread = new Thread(() => SendBroadCastToRouter(message));
+                sendingThread.Start();
+                listeningThread = new Thread(ListenToLecturer);
+                listeningThread.Start();
             }
         
         }
@@ -65,6 +55,26 @@ namespace PE2A_WF_Lecturer
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void ListenToLecturer()
+        {
+            StudentForm studentSubmit = new StudentForm();
+            studentSubmit.studentID = studentID;
+            // get message return from lecturer
+            string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
+            sendingThread.Abort();
+            if (returnMessage.Equals(Constant.EXISTED_IP_MESSAGE))
+            {
+                MessageBox.Show(returnMessage);
+            }
+            else
+            {
+                string[] msgArr = returnMessage.Split('=');
+                studentSubmit.submitAPIUrl = msgArr[1];
+                this.InvokeEx(f => studentSubmit.Show());
+            }
+            Console.WriteLine("Lecturer: " + returnMessage);
         }
     }
 }

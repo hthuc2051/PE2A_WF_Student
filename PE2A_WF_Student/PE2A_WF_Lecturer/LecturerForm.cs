@@ -142,10 +142,14 @@ namespace PE2A_WF_Lecturer
             try
             {
                 IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket.Connect(iPEnd);
-                socket.Send(Encoding.UTF8.GetBytes(message));
-                socket.Dispose();
+            
+                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    socket.Connect(iPEnd);
+                    socket.Send(Encoding.UTF8.GetBytes(message));
+                    socket.Dispose();
+                }
+              
             }
             catch(Exception e)
             {
@@ -173,10 +177,10 @@ namespace PE2A_WF_Lecturer
                     String studentPoint = startString.Substring(startIndexResult, endIndexResult);
                     String splitPassed = studentPoint.Split('/')[0];
                     String splitTotal = studentPoint.Split('/')[1];
-                    Double point = (Double.Parse(splitPassed) / Double.Parse(splitTotal)) * 100;
+                    Double point = (Double.Parse(splitPassed) / Double.Parse(splitTotal)) * 10;
                     foreach(var item in listStudent)
                     {
-                        if (studentCode.Equals(item.StudentID))
+                        if (studentCode.ToUpper().Trim().Equals(item.StudentID.ToUpper()))
                         {
                             item.Point = point;
                         }
