@@ -13,7 +13,6 @@ E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Studen
 E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.Form1.resources
 E:\CN9\PE2A_WF_Student\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csproj.CopyComplete
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csprojAssemblyReference.cache
-D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.Form1.resources
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.LecturerForm.resources
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.Properties.Resources.resources
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csproj.GenerateResource.cache
@@ -27,3 +26,4 @@ D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.exe
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.pdb
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\bin\Debug\PE2A_WF_Student.exe.config
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.csproj.CopyComplete
+D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Lecturer\obj\Debug\PE2A_WF_Lecturer.EnrollForm.resources

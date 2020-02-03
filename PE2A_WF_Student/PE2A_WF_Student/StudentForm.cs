@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PE2A_WF_Lecturer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -67,6 +68,8 @@ namespace PE2A_WF_Student
         {
             String result = await sendFile(FileName);
             MessageBox.Show(result);
+            string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
+            Console.WriteLine(returnMessage);
         }
 
         private void ShowSelectedFile()

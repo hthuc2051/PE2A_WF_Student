@@ -78,7 +78,7 @@
             this.Controls.Add(this.btnSubmit);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "StudentForm";
-            this.Text = "StudentForm";
+            this.Text = "STUDENT FORM";
             this.Load += new System.EventHandler(this.StudentForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imgSubmit)).EndInit();
             this.ResumeLayout(false);

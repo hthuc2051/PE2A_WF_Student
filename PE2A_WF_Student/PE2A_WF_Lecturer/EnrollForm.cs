@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace PE2A_WF_Lecturer
 {
-    public partial class Form1 : Form
+    public partial class EnrollForm : Form
     {
-        public Form1()
+        public EnrollForm()
         {
             InitializeComponent();
         }
@@ -23,7 +23,7 @@ namespace PE2A_WF_Lecturer
         {
             string studentID = txtStudentID.Text;
 
-            if (studentID.Equals("admin"))
+            if (studentID.Trim().ToLower().Equals("admin"))
             {
                 LecturerForm lecturerForm = new LecturerForm();
                 lecturerForm.Show();
@@ -41,11 +41,17 @@ namespace PE2A_WF_Lecturer
                 // get message return from lecturer
                 string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
                 t.Abort();
+                if (returnMessage.Equals(Constant.EXISTED_IP_MESSAGE))
+                {
+                    MessageBox.Show(returnMessage);
+                }
+                else
+                {
+                    string[] msgArr = returnMessage.Split('=');
+                    studentSubmit.submitAPIUrl = msgArr[1];
+                    studentSubmit.Show();
+                }
                 Console.WriteLine("Lecturer: " + returnMessage);
-                string[] msgArr = returnMessage.Split('=');
-                studentSubmit.submitAPIUrl = msgArr[1];
-                studentSubmit.Show();
-              
             }
         
         }

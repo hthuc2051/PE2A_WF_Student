@@ -21,10 +21,10 @@ namespace PE2A_WF_Student
             clientSock.SendTo(bytes, ipEnd);
             clientSock.Close();
         }
-
+         private static Socket listeningSocket;
         public static string GetMessageFromTCPConnection(int listeningPort, int maximumRequest)
         {
-            Socket listeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Byte[] buffer = new byte[1024];
             IPEndPoint senders = new IPEndPoint(IPAddress.Any, listeningPort);
             listeningSocket.Bind(senders);

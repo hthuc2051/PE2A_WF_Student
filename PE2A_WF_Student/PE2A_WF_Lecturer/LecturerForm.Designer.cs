@@ -31,7 +31,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.gbSubmitedFiles = new System.Windows.Forms.GroupBox();
             this.dgvStudent = new System.Windows.Forms.DataGridView();
-            this.btnEstimate = new System.Windows.Forms.Button();
+            this.btnPublishMark = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -55,7 +55,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnEstimate);
+            this.splitContainer1.Panel2.Controls.Add(this.btnPublishMark);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(150, 308, 150, 462);
             this.splitContainer1.Size = new System.Drawing.Size(1200, 900);
             this.splitContainer1.SplitterDistance = 600;
@@ -87,18 +87,18 @@
             this.dgvStudent.Size = new System.Drawing.Size(526, 588);
             this.dgvStudent.TabIndex = 0;
             // 
-            // btnEstimate
+            // btnPublishMark
             // 
-            this.btnEstimate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEstimate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEstimate.Location = new System.Drawing.Point(150, 308);
-            this.btnEstimate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnEstimate.Name = "btnEstimate";
-            this.btnEstimate.Size = new System.Drawing.Size(294, 130);
-            this.btnEstimate.TabIndex = 0;
-            this.btnEstimate.Text = "Estimate";
-            this.btnEstimate.UseVisualStyleBackColor = true;
-            this.btnEstimate.Click += new System.EventHandler(this.btnEstimate_Click);
+            this.btnPublishMark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPublishMark.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPublishMark.Location = new System.Drawing.Point(150, 308);
+            this.btnPublishMark.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnPublishMark.Name = "btnPublishMark";
+            this.btnPublishMark.Size = new System.Drawing.Size(294, 130);
+            this.btnPublishMark.TabIndex = 0;
+            this.btnPublishMark.Text = "Publish Mark";
+            this.btnPublishMark.UseVisualStyleBackColor = true;
+            this.btnPublishMark.Click += new System.EventHandler(this.btnEstimate_Click);
             // 
             // LecturerForm
             // 
@@ -111,7 +111,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LecturerForm";
-            this.Text = "Lecturer File Getter";
+            this.Text = "LECTURER FORM";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -126,7 +126,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox gbSubmitedFiles;
-        private System.Windows.Forms.Button btnEstimate;
+        private System.Windows.Forms.Button btnPublishMark;
         private System.Windows.Forms.DataGridView dgvStudent;
     }
 }

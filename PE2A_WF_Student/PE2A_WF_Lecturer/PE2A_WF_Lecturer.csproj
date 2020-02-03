@@ -47,11 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constant.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="EnrollForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="EnrollForm.Designer.cs">
+      <DependentUpon>EnrollForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ISynchronizeInvokeExtensions.cs" />
     <Compile Include="LecturerForm.cs">
@@ -70,8 +70,8 @@
     </Compile>
     <Compile Include="StudentDTO.cs" />
     <Compile Include="UserResult.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="EnrollForm.resx">
+      <DependentUpon>EnrollForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LecturerForm.resx">
       <DependentUpon>LecturerForm.cs</DependentUpon>
