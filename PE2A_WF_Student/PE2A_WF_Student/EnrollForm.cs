@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PE2A_WF_Lecturer
+namespace PE2A_WF_Student
 {
     public partial class EnrollForm : Form
     {
@@ -28,8 +28,7 @@ namespace PE2A_WF_Lecturer
 
             if (studentID.Trim().ToLower().Equals("admin"))
             {
-                LecturerForm lecturerForm = new LecturerForm();
-                lecturerForm.Show();
+                MessageBox.Show(Constant.CANNOT_LOGIN_ADMIN_MESSAGE);
             }
 
             else

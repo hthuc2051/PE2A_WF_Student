@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PE2A_WF_Lecturer
+namespace PE2A_WF_Student
 {
     public static class ISynchronizeInvokeExtensions
     {

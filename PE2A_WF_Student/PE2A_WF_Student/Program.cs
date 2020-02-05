@@ -16,7 +16,7 @@ namespace PE2A_WF_Student
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new StudentForm());
+            Application.Run(new EnrollForm());
         }
     }
 }

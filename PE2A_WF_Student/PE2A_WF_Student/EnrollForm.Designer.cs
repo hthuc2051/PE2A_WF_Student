@@ -1,4 +1,4 @@
-﻿namespace PE2A_WF_Lecturer
+﻿namespace PE2A_WF_Student
 {
     partial class EnrollForm
     {
