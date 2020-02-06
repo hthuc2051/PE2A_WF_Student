@@ -79,6 +79,7 @@ namespace PE2A_WF_Student
         {
             string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
             Console.WriteLine(returnMessage);
+            MessageBox.Show("Your point: " + returnMessage);
         }
 
         private void ShowSelectedFile()
