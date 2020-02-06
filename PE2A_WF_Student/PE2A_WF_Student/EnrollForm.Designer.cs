@@ -70,6 +70,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "EnrollForm";
             this.Text = "ENROLL FORM";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EnrollForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

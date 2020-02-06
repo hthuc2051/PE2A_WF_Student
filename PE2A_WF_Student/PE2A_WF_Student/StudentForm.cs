@@ -116,5 +116,10 @@ namespace PE2A_WF_Student
         {
 
         }
+
+        private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
     }
 }

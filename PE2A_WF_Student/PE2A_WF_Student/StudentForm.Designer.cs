@@ -79,6 +79,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "StudentForm";
             this.Text = "STUDENT FORM";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StudentForm_FormClosing);
             this.Load += new System.EventHandler(this.StudentForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imgSubmit)).EndInit();
             this.ResumeLayout(false);
