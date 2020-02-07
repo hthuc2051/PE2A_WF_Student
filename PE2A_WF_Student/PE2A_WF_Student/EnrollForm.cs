@@ -75,5 +75,10 @@ namespace PE2A_WF_Student
             }
             Console.WriteLine("Lecturer: " + returnMessage);
         }
+
+        private void EnrollForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
     }
 }
