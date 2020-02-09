@@ -50,11 +50,11 @@ namespace PE2A_WF_Student
                     };
                     form.Add(content, "file");
                     form.Add(new StringContent(studentID), "studentCode");
-                    form.Add(new StringContent("DE2"), "examCode");
+                    form.Add(new StringContent("Java_SE1269_05_02_2020_De1"), "examCode");
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();
-                        return "Sent !";
+                        return "Submit Successfully!";
                     }
                 }
             }
@@ -68,18 +68,27 @@ namespace PE2A_WF_Student
 
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
+            btnSubmit.Visible = false;
             String result = await sendFile(FileName);
+            ShowWaittingMessage();
             MessageBox.Show(result);
             listeningThread = new Thread(ListenToLecturer);
             listeningThread.Start();
-       
+        }
+
+        private void ShowWaittingMessage()
+        {
+            imgSubmit.Visible = false;
+            txtFileName.Visible = false;
+            lbPoint.Visible = true;
         }
 
         private void ListenToLecturer()
         {
             string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
             Console.WriteLine(returnMessage);
-            MessageBox.Show("Your point: " + returnMessage);
+            this.InvokeEx(f => lbPoint.Text = "Your point: " + returnMessage);
+            
         }
 
         private void ShowSelectedFile()
