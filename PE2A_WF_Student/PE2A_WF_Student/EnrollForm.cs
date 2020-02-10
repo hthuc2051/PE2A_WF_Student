@@ -34,7 +34,7 @@ namespace PE2A_WF_Student
             else
             {
                
-                studentSubmit.studentID = studentID;
+                studentSubmit.StudentID = studentID;
                 // send broadcast to router
                 string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;
                 sendingThread = new Thread(() => SendBroadCastToRouter(message));
@@ -59,7 +59,7 @@ namespace PE2A_WF_Student
         private void ListenToLecturer()
         {
             StudentForm studentSubmit = new StudentForm();
-            studentSubmit.studentID = studentID;
+            studentSubmit.StudentID = studentID;
             // get message return from lecturer
             string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
             sendingThread.Abort();
@@ -70,7 +70,8 @@ namespace PE2A_WF_Student
             else
             {
                 string[] msgArr = returnMessage.Split('=');
-                studentSubmit.submitAPIUrl = msgArr[1];
+                studentSubmit.SubmitAPIUrl = msgArr[1];
+                studentSubmit.ScriptCode = msgArr[2];
                 this.InvokeEx(f => studentSubmit.Show());
             }
             Console.WriteLine("Lecturer: " + returnMessage);

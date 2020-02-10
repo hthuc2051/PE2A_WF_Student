@@ -20,8 +20,9 @@ namespace PE2A_WF_Student
     public partial class StudentForm : Form
     {
         private string FileName = "";
-        public string studentID { get; set; }
-        public string submitAPIUrl { get; set; }
+        public string StudentID { get; set; }
+        public string SubmitAPIUrl { get; set; }
+        public string ScriptCode { get; set; }
         Thread listeningThread;
         public StudentForm()
         {
@@ -31,7 +32,7 @@ namespace PE2A_WF_Student
         private async Task<String> sendFile(String fileName)
         {
             //var client = new WebClient();
-            var uri = new Uri(submitAPIUrl);
+            var uri = new Uri(SubmitAPIUrl);
             string fileExtension = fileName.Substring(fileName.IndexOf('.'));
             try
             {
@@ -46,11 +47,11 @@ namespace PE2A_WF_Student
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                     {
                         Name = "file",
-                        FileName = studentID + fileExtension
+                        FileName = StudentID + fileExtension
                     };
                     form.Add(content, "file");
-                    form.Add(new StringContent(studentID), "studentCode");
-                    form.Add(new StringContent("Java_SE1269_05_02_2020_De1"), "examCode");
+                    form.Add(new StringContent(StudentID), "studentCode");
+                    form.Add(new StringContent(ScriptCode), "examCode");
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();
