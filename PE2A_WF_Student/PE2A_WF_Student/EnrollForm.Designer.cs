@@ -63,13 +63,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(544, 298);
             this.Controls.Add(this.btnEnroll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtStudentID);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MaximizeBox = false;
             this.Name = "EnrollForm";
-            this.Text = "ENROLL FORM";
+            this.Text = "STUDENT ENROLL FORM";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EnrollForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
