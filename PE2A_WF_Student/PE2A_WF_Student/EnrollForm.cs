@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,10 +39,8 @@ namespace PE2A_WF_Student
                 studentSubmit.StudentID = studentID;
                 // send broadcast to router
                 string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;
-                sendingThread = new Thread(() => SendBroadCastToRouter(message));
-                sendingThread.Start();
-                listeningThread = new Thread(ListenToLecturer);
-                listeningThread.Start();
+                SendBroadCastToRouter(message);
+                studentSubmit.Show();
             }
         
         }
@@ -76,6 +76,8 @@ namespace PE2A_WF_Student
             }
             Console.WriteLine("Lecturer: " + returnMessage);
         }
+
+      
 
         private void EnrollForm_FormClosing(object sender, FormClosingEventArgs e)
         {

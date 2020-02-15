@@ -23,11 +23,13 @@ namespace PE2A_WF_Student
         public string StudentID { get; set; }
         public string SubmitAPIUrl { get; set; }
         public string ScriptCode { get; set; }
-        public TcpClient client;
         Thread listeningThread;
+        public TcpListener listener;
         public StudentForm()
         {
             InitializeComponent();
+            StartServerTCP();
+         
         }
 
         private async Task<String> sendFile(String fileName)
@@ -67,41 +69,15 @@ namespace PE2A_WF_Student
             return "Error !";
 
         }
-        private void StartTCPClient(object sender, EventArgs e)
-        {
-            Task.Run(() =>
-            {
-                client = new System.Net.Sockets.TcpClient("127.0.0.1", 9997);
-                while (true)
-                {
-                    WaitForServerRequest(client);
-                }
-            });
-        }
-        private void WaitForServerRequest(TcpClient client)
-        {
-            if (client != null)
-            {
-                var getMsg = client.GetStream();
-                if (getMsg != null)
-                {
-                    byte[] data = new byte[1024 * 1024];
-                    getMsg.Read(data, 0, data.Length);
-                    Console.WriteLine("You got a package ..." + Util.receiveMessage(data));
-                    Console.WriteLine("Client send a message to server");
-                    String msg = "Hello I am Client";
-                    Util.sendMessage(System.Text.Encoding.Unicode.GetBytes(msg), client);
-                }
-            }
-        }
+        
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
             btnSubmit.Visible = false;
             String result = await sendFile(FileName);
             ShowWaittingMessage();
             MessageBox.Show(result);
-            listeningThread = new Thread(ListenToLecturer);
-            listeningThread.Start();
+            //listeningThread = new Thread(ListenToLecturer);
+            //listeningThread.Start();
         }
 
         private void ShowWaittingMessage()
@@ -117,6 +93,61 @@ namespace PE2A_WF_Student
             Console.WriteLine(returnMessage);
             this.InvokeEx(f => lbPoint.Text = "Your point: " + returnMessage);
             
+        }
+
+        // TCP LISTENER
+        private void StartServerTCP()
+        {
+            Task.Run(() =>
+            {
+                IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, Constant.STUDENT_LISTENING_PORT);
+                listener = new TcpListener(ipEnd);
+                listener.Start();
+                Console.WriteLine("Server starting ...");
+                TcpClient tcpClient= listener.AcceptTcpClient();
+                while (true)
+                {
+                    try
+                    {
+                        //if (tcpClient.Connected == true)
+                        //{
+                        //    Console.WriteLine("Client connecting ...");
+                        //    String msg = "Hello I am server";
+                        //    byte[] data = System.Text.Encoding.Unicode.GetBytes(msg);
+                        //    Util.sendMessage(data, tcpClient);
+                        //}
+                        byte[] clientData = new byte[1024];
+                        var getStream = tcpClient.GetStream();
+                        if (getStream != null)
+                        {
+                            getStream.Read(clientData, 0, clientData.Length);
+                            string msg = Util.receiveMessage(clientData);
+
+                            if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
+                            {
+                                MessageBox.Show(msg);
+                            }
+                            else if(msg.Contains("="))
+                            {
+                                string[] msgArr = msg.Split('=');
+                                SubmitAPIUrl = msgArr[1];
+                                ScriptCode = msgArr[2];
+                                this.InvokeEx(f => this.Visible = true);
+
+                            }
+                            else
+                            {
+                                this.InvokeEx(f => lbPoint.Text = msg);
+                            }
+                            Console.WriteLine("Lecturer: " + msg);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw;
+                    }
+                }
+            });
         }
 
         private void ShowSelectedFile()
@@ -152,7 +183,7 @@ namespace PE2A_WF_Student
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
-
+            this.Visible = false;
         }
 
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
