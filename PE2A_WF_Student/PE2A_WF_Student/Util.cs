@@ -46,5 +46,27 @@ namespace PE2A_WF_Student
             return IPAddress.Parse(ip);
         }
 
+        public static void sendMessage(byte[] bytes, TcpClient client)
+        {
+            // Client must be connected to   
+            client.GetStream() // Get the stream and write the bytes to it  
+                  .Write(bytes, 0,
+                  bytes.Length); // Send the stream  
+        }
+        public static string receiveMessage(byte[] bytes)
+        {
+            string message = System.Text.Encoding.Unicode.GetString(bytes);
+
+            string messageToPrint = null;
+            foreach (var nullChar in message)
+            {
+                if (nullChar != '\0')
+                {
+                    messageToPrint += nullChar;
+                }
+            }
+            return messageToPrint;
+        }
+
     }
 }

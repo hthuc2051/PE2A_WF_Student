@@ -23,6 +23,7 @@ namespace PE2A_WF_Student
         public string StudentID { get; set; }
         public string SubmitAPIUrl { get; set; }
         public string ScriptCode { get; set; }
+        public TcpClient client;
         Thread listeningThread;
         public StudentForm()
         {
@@ -66,7 +67,33 @@ namespace PE2A_WF_Student
             return "Error !";
 
         }
-
+        private void StartTCPClient(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                client = new System.Net.Sockets.TcpClient("127.0.0.1", 9997);
+                while (true)
+                {
+                    WaitForServerRequest(client);
+                }
+            });
+        }
+        private void WaitForServerRequest(TcpClient client)
+        {
+            if (client != null)
+            {
+                var getMsg = client.GetStream();
+                if (getMsg != null)
+                {
+                    byte[] data = new byte[1024 * 1024];
+                    getMsg.Read(data, 0, data.Length);
+                    Console.WriteLine("You got a package ..." + Util.receiveMessage(data));
+                    Console.WriteLine("Client send a message to server");
+                    String msg = "Hello I am Client";
+                    Util.sendMessage(System.Text.Encoding.Unicode.GetBytes(msg), client);
+                }
+            }
+        }
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
             btnSubmit.Visible = false;
