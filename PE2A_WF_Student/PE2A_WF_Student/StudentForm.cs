@@ -25,6 +25,7 @@ namespace PE2A_WF_Student
         public string ScriptCode { get; set; }
         Thread listeningThread;
         public TcpListener listener;
+        TcpClient tcpClient;
         public StudentForm()
         {
             InitializeComponent();
@@ -76,10 +77,16 @@ namespace PE2A_WF_Student
             String result = await sendFile(FileName);
             ShowWaittingMessage();
             MessageBox.Show(result);
+            TimeSubmission(StudentID);
             //listeningThread = new Thread(ListenToLecturer);
             //listeningThread.Start();
         }
-
+        private void TimeSubmission(string studentCode)
+        {
+            String msg = "StudentCode:" + studentCode + "-" + "TimeSubmission:" + DateTime.Now.ToString();
+            byte[] dataMsg = Encoding.Unicode.GetBytes(msg);
+            Util.sendMessage(dataMsg, tcpClient);
+        }
         private void ShowWaittingMessage()
         {
             imgSubmit.Visible = false;
@@ -104,7 +111,7 @@ namespace PE2A_WF_Student
                 listener = new TcpListener(ipEnd);
                 listener.Start();
                 Console.WriteLine("Server starting ...");
-                TcpClient tcpClient= listener.AcceptTcpClient();
+                tcpClient = listener.AcceptTcpClient();
                 while (true)
                 {
                     try
@@ -149,6 +156,7 @@ namespace PE2A_WF_Student
                 }
             });
         }
+
 
         private void ShowSelectedFile()
         {
