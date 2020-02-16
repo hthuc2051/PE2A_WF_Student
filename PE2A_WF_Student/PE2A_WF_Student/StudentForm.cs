@@ -132,7 +132,7 @@ namespace PE2A_WF_Student
                                 string[] msgArr = msg.Split('=');
                                 SubmitAPIUrl = msgArr[1];
                                 ScriptCode = msgArr[2];
-                                this.InvokeEx(f => this.Visible = true);
+                                this.InvokeEx(f => loadingBox.Visible = false);
 
                             }
                             else
@@ -183,7 +183,15 @@ namespace PE2A_WF_Student
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
-            this.Visible = false;
+            loadingBox.Visible = true;
+            Task.Run(async delegate
+            {
+                await Task.Delay(5000);
+                if(loadingBox.Visible == true)
+                {
+                    this.InvokeEx(f => MessageBox.Show("Remind your lecturer to start server and try to Enroll again"));
+                }
+            });
         }
 
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -29,9 +29,11 @@
         private void InitializeComponent()
         {
             this.txtFileName = new System.Windows.Forms.Label();
-            this.imgSubmit = new System.Windows.Forms.PictureBox();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.lbPoint = new System.Windows.Forms.Label();
+            this.loadingBox = new System.Windows.Forms.PictureBox();
+            this.imgSubmit = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSubmit)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,18 +46,6 @@
             this.txtFileName.TabIndex = 6;
             this.txtFileName.Text = "File.rar";
             this.txtFileName.Visible = false;
-            // 
-            // imgSubmit
-            // 
-            this.imgSubmit.BackColor = System.Drawing.Color.White;
-            this.imgSubmit.Image = global::PE2A_WF_Student.Properties.Resources.file_upload_img;
-            this.imgSubmit.InitialImage = null;
-            this.imgSubmit.Location = new System.Drawing.Point(478, 71);
-            this.imgSubmit.Name = "imgSubmit";
-            this.imgSubmit.Size = new System.Drawing.Size(216, 223);
-            this.imgSubmit.TabIndex = 5;
-            this.imgSubmit.TabStop = false;
-            this.imgSubmit.Click += new System.EventHandler(this.imgFile_Click_1);
             // 
             // btnSubmit
             // 
@@ -71,7 +61,6 @@
             // 
             // lbPoint
             // 
-            this.lbPoint.AutoSize = true;
             this.lbPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbPoint.ForeColor = System.Drawing.Color.OliveDrab;
             this.lbPoint.Location = new System.Drawing.Point(39, 208);
@@ -82,12 +71,36 @@
             this.lbPoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbPoint.Visible = false;
             // 
+            // loadingBox
+            // 
+            this.loadingBox.Image = global::PE2A_WF_Student.Properties.Resources.loading;
+            this.loadingBox.ImageLocation = "";
+            this.loadingBox.Location = new System.Drawing.Point(434, 71);
+            this.loadingBox.Name = "loadingBox";
+            this.loadingBox.Size = new System.Drawing.Size(326, 358);
+            this.loadingBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.loadingBox.TabIndex = 8;
+            this.loadingBox.TabStop = false;
+            // 
+            // imgSubmit
+            // 
+            this.imgSubmit.BackColor = System.Drawing.Color.White;
+            this.imgSubmit.Image = global::PE2A_WF_Student.Properties.Resources.file_upload_img;
+            this.imgSubmit.InitialImage = null;
+            this.imgSubmit.Location = new System.Drawing.Point(478, 71);
+            this.imgSubmit.Name = "imgSubmit";
+            this.imgSubmit.Size = new System.Drawing.Size(216, 223);
+            this.imgSubmit.TabIndex = 5;
+            this.imgSubmit.TabStop = false;
+            this.imgSubmit.Click += new System.EventHandler(this.imgFile_Click_1);
+            // 
             // StudentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1200, 692);
+            this.Controls.Add(this.loadingBox);
             this.Controls.Add(this.lbPoint);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.imgSubmit);
@@ -98,6 +111,7 @@
             this.Text = "STUDENT FORM";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StudentForm_FormClosing);
             this.Load += new System.EventHandler(this.StudentForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.loadingBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSubmit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -110,5 +124,6 @@
         private System.Windows.Forms.PictureBox imgSubmit;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Label lbPoint;
+        private System.Windows.Forms.PictureBox loadingBox;
     }
 }

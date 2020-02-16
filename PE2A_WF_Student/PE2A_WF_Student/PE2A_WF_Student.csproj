@@ -97,5 +97,8 @@
   <ItemGroup>
     <None Include="Resources\files-and-folders.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading %282%29.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
