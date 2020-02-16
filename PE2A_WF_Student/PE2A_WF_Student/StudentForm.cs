@@ -77,11 +77,11 @@ namespace PE2A_WF_Student
             String result = await sendFile(FileName);
             ShowWaittingMessage();
             MessageBox.Show(result);
-            TimeSubmission(StudentID);
+            SendTimeSubmission(StudentID);
             //listeningThread = new Thread(ListenToLecturer);
             //listeningThread.Start();
         }
-        private void TimeSubmission(string studentCode)
+        private void SendTimeSubmission(string studentCode)
         {
             String msg = "StudentCode:" + studentCode + "-" + "TimeSubmission:" + DateTime.Now.ToString();
             byte[] dataMsg = Encoding.Unicode.GetBytes(msg);
