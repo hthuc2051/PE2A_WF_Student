@@ -13,6 +13,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace PE2A_WF_Student
@@ -26,11 +27,75 @@ namespace PE2A_WF_Student
         Thread listeningThread;
         public TcpListener listener;
         TcpClient tcpClient;
+        System.Timers.Timer time;
+        int practicalTimeMinute = 60;
+        int practicalTimeSecond = 60;
+        DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
             InitializeComponent();
             StartServerTCP();
-         
+            TimeRemaining();
+
+        }
+        private void TimeRemaining()
+        {
+            var endTime = DateTime.Now;
+            Console.WriteLine(endTime);
+            practicalTimeMinute = 60 - (endTime.Minute - startTime.Minute);
+            practicalTimeSecond = 60 - (endTime.Second - startTime.Second);
+            var date = DateTime.Now.Minute;
+            Console.WriteLine(date);
+            time = new System.Timers.Timer();
+            time.Interval = 1000;
+            time.Elapsed += OnTimeEvent;
+            time.Start();
+        }
+
+        private void OnTimeEvent(object sender, ElapsedEventArgs e)
+        {
+            this.InvokeEx(f =>
+            {
+                lbTime.Text = practicalTimeMinute.ToString() + ":" + practicalTimeSecond.ToString();
+                if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
+                {
+                    practicalTimeMinute = 0;
+                    practicalTimeSecond = 0;
+                }
+                else
+                {
+                    if (practicalTimeSecond == 0)
+                    {
+                        practicalTimeMinute -= 1;
+                        practicalTimeSecond = 59;
+                    }
+                    else
+                    {
+                        practicalTimeSecond -= 1;
+                    }
+                }
+            });         
+        }
+
+        private void loadPracticalDoc()
+        {
+            rtbDocument.Visible = true;
+            object readOnly = true;
+            object visible = true;
+            object save = false;
+            object fileName = @"C:\Users\ADMIN\Desktop\Review Assignment 3.docx";
+            object newTemplate = false;
+            object docType = 0;
+            object missing = Type.Missing;
+            Microsoft.Office.Interop.Word.Document document;
+            Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+            document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
+                ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
+            document.ActiveWindow.Selection.WholeStory();
+            document.ActiveWindow.Selection.Copy();
+            IDataObject dataObject = Clipboard.GetDataObject();
+            rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
+            application.Quit(ref missing, ref missing, ref missing);
         }
 
         private async Task<String> sendFile(String fileName)
@@ -70,7 +135,7 @@ namespace PE2A_WF_Student
             return "Error !";
 
         }
-        
+
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
             btnSubmit.Visible = false;
@@ -99,7 +164,7 @@ namespace PE2A_WF_Student
             string returnMessage = Util.GetMessageFromTCPConnection(Constant.STUDENT_LISTENING_PORT, Constant.MAXIMUM_REQUEST);
             Console.WriteLine(returnMessage);
             this.InvokeEx(f => lbPoint.Text = "Your point: " + returnMessage);
-            
+
         }
 
         // TCP LISTENER
@@ -134,13 +199,14 @@ namespace PE2A_WF_Student
                             {
                                 MessageBox.Show(msg);
                             }
-                            else if(msg.Contains("="))
+                            else if (msg.Contains("="))
                             {
                                 string[] msgArr = msg.Split('=');
                                 SubmitAPIUrl = msgArr[1];
                                 ScriptCode = msgArr[2];
                                 this.InvokeEx(f => loadingBox.Visible = false);
-
+                                this.InvokeEx(f => loadPracticalDoc());
+                                this.lbTime.Visible = true;
                             }
                             else
                             {
@@ -195,7 +261,7 @@ namespace PE2A_WF_Student
             Task.Run(async delegate
             {
                 await Task.Delay(5000);
-                if(loadingBox.Visible == true)
+                if (loadingBox.Visible == true)
                 {
                     this.InvokeEx(f => MessageBox.Show("Remind your lecturer to start server and try to Enroll again"));
                 }
