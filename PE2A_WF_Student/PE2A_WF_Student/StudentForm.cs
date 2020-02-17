@@ -185,6 +185,7 @@ namespace PE2A_WF_Student
                 {
                     try
                     {
+                        Console.WriteLine("StartServerTCP");
                         //if (tcpClient.Connected == true)
                         //{
                         //    Console.WriteLine("Client connecting ...");
@@ -215,13 +216,14 @@ namespace PE2A_WF_Student
                             else
                             {
                                 this.InvokeEx(f => lbPoint.Text = msg);
+                                break;
                             }
                             Console.WriteLine("Lecturer: " + msg);
                         }
                     }
                     catch (Exception e)
                     {
-                        throw;
+                       
                     }
                 }
             });
