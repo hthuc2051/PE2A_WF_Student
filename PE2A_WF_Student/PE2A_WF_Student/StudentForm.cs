@@ -59,7 +59,7 @@ namespace PE2A_WF_Student
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();
-                        return "Submit Successfully!";
+                        return result;
                     }
                 }
             }
@@ -77,13 +77,17 @@ namespace PE2A_WF_Student
             String result = await sendFile(FileName);
             ShowWaittingMessage();
             MessageBox.Show(result);
-            SendTimeSubmission(StudentID);
+            if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
+            {
+                SendTimeSubmission(StudentID);
+            }
+           
             //listeningThread = new Thread(ListenToLecturer);
             //listeningThread.Start();
         }
         private void SendTimeSubmission(string studentCode)
         {
-            String msg = "StudentCode:" + studentCode + "-" + "TimeSubmission:" + DateTime.Now.ToString();
+            String msg = studentCode + "-" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             byte[] dataMsg = Encoding.Unicode.GetBytes(msg);
             Util.sendMessage(dataMsg, tcpClient);
         }
