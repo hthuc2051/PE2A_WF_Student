@@ -83,7 +83,7 @@ namespace PE2A_WF_Student
             object readOnly = true;
             object visible = true;
             object save = false;
-            object fileName = @"C:\Users\ADMIN\Desktop\Review Assignment 3.docx";
+            object fileName = @"E:\2.doc";
             object newTemplate = false;
             object docType = 0;
             object missing = Type.Missing;
@@ -206,7 +206,7 @@ namespace PE2A_WF_Student
                                 ScriptCode = msgArr[2];
                                 this.InvokeEx(f => loadingBox.Visible = false);
                                 this.InvokeEx(f => loadPracticalDoc());
-                                this.lbTime.Visible = true;
+                                this.InvokeEx(f => this.lbTime.Visible = true);
                             }
                             else
                             {
