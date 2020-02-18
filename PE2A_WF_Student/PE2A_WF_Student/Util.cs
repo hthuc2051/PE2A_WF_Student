@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace PE2A_WF_Student
             clientSock.SendTo(bytes, ipEnd);
             clientSock.Close();
         }
-         private static Socket listeningSocket;
+        private static Socket listeningSocket;
         public static string GetMessageFromTCPConnection(int listeningPort, int maximumRequest)
         {
             listeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -37,7 +39,7 @@ namespace PE2A_WF_Student
             return receivedMessage.Substring(0, size);
         }
 
-       
+
 
         public static IPAddress GetLocalIPAddress()
         {
@@ -66,6 +68,62 @@ namespace PE2A_WF_Student
                 }
             }
             return messageToPrint;
+        }
+
+
+        private static byte[] Decrypt(byte[] bytesToBeDecrypted, byte[] keyBytes)
+        {
+            byte[] decryptedBytes = null;
+
+            // Set your salt here, change it to meet your flavor:
+            // The salt bytes must be at least 8 bytes.
+            var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (RijndaelManaged AES = new RijndaelManaged())
+                {
+                    var key = new Rfc2898DeriveBytes(keyBytes, saltBytes, 1000);
+                    AES.KeySize = 256;
+                    AES.BlockSize = 128;
+                    AES.Key = key.GetBytes(AES.KeySize / 8);
+                    AES.IV = key.GetBytes(AES.BlockSize / 8);
+                    AES.Mode = CipherMode.CBC;
+
+                    using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
+                        cs.Close();
+                    }
+
+                    decryptedBytes = ms.ToArray();
+                }
+            }
+
+            return decryptedBytes;
+        }
+
+        public static string Decode(string encryptedText, string key)
+        {
+            if (encryptedText == null)
+            {
+                return null;
+            }
+
+            if (key == null)
+            {
+                key = String.Empty;
+            }
+
+            // Get the bytes of the string
+            var bytesToBeDecrypted = Convert.FromBase64String(encryptedText);
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+
+            keyBytes = SHA256.Create().ComputeHash(keyBytes);
+
+            var bytesDecrypted = Decrypt(bytesToBeDecrypted, keyBytes);
+
+            return Encoding.UTF8.GetString(bytesDecrypted);
         }
 
     }
