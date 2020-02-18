@@ -97,7 +97,6 @@ namespace PE2A_WF_Student
             rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
             application.Quit(ref missing, ref missing, ref missing);
         }
-
         private async Task<String> sendFile(String fileName)
         {
             //var client = new WebClient();
@@ -198,8 +197,8 @@ namespace PE2A_WF_Student
                         if (getStream != null)
                         {
                             getStream.Read(clientData, 0, clientData.Length);
-                            string msg = Util.receiveMessage(clientData);
-
+                            String decode = Util.receiveMessage(clientData);
+                            string msg = Util.Decode(decode, "SE1267");
                             if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                             {
                                 MessageBox.Show(msg);
