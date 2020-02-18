@@ -24,9 +24,9 @@ namespace PE2A_WF_Student
         public string StudentID { get; set; }
         public string SubmitAPIUrl { get; set; }
         public string ScriptCode { get; set; }
-        Thread listeningThread;
         public TcpListener listener;
         TcpClient tcpClient;
+        bool isLoading = true;
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 60;
@@ -56,7 +56,7 @@ namespace PE2A_WF_Student
         {
             this.InvokeEx(f =>
             {
-                lbTime.Text = practicalTimeMinute.ToString() + ":" + practicalTimeSecond.ToString();
+                lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
                 if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
                 {
                     practicalTimeMinute = 0;
@@ -83,13 +83,13 @@ namespace PE2A_WF_Student
             object readOnly = true;
             object visible = true;
             object save = false;
-            object fileName = @"E:\2.doc";
+            object fileName = @"D:testDoc.docx";
             object newTemplate = false;
             object docType = 0;
             object missing = Type.Missing;
             Microsoft.Office.Interop.Word.Document document;
             Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
-            document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
+            document =  application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
                 ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
             document.ActiveWindow.Selection.WholeStory();
             document.ActiveWindow.Selection.Copy();
@@ -209,8 +209,10 @@ namespace PE2A_WF_Student
                                 string[] msgArr = msg.Split('=');
                                 SubmitAPIUrl = msgArr[1];
                                 ScriptCode = msgArr[2];
+                                isLoading = false;
+                                this.InvokeEx(f => imgSubmit.Visible = true);
+                                this.InvokeEx(f =>loadPracticalDoc());
                                 this.InvokeEx(f => loadingBox.Visible = false);
-                                this.InvokeEx(f => loadPracticalDoc());
                                 this.InvokeEx(f => this.lbTime.Visible = true);
                             }
                             else
@@ -263,11 +265,11 @@ namespace PE2A_WF_Student
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
-            loadingBox.Visible = true;
+         
             Task.Run(async delegate
             {
-                await Task.Delay(5000);
-                if (loadingBox.Visible == true)
+                await Task.Delay(10000);
+                if (isLoading)
                 {
                     this.InvokeEx(f => MessageBox.Show("Remind your lecturer to start server and try to Enroll again"));
                 }

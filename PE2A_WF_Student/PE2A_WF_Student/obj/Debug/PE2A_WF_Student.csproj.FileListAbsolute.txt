@@ -27,3 +27,4 @@ D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.Student
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csproj.GenerateResource.cache
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.exe
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.pdb
+D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csprojAssemblyReference.cache
