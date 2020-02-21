@@ -65,6 +65,8 @@
             this.rtbDocument.Size = new System.Drawing.Size(1393, 606);
             this.rtbDocument.TabIndex = 9;
             this.rtbDocument.Text = "";
+            this.rtbDocument.ShortcutsEnabled = false;
+            this.rtbDocument.ReadOnly = true;
             // 
             // lbTime
             // 
