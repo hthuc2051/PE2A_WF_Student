@@ -1,8 +1,10 @@
 ﻿
+using PE2A_WF_Student.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,8 +20,12 @@ using System.Windows.Forms;
 
 namespace PE2A_WF_Student
 {
+    // Folder TemplateProject là project mà mình dựng sẵn cho học sinh để 
+    // Bấm 1 nút nó sẽ clone ra folder Student để học sinh làm
     public partial class StudentForm : Form
     {
+        private int numberOfVersion = 1;
+        private List<BranchModel> ListBranches = new List<BranchModel>();
         private string FileName = "";
         public string StudentID { get; set; }
         public string SubmitAPIUrl { get; set; }
@@ -278,6 +284,56 @@ namespace PE2A_WF_Student
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Environment.Exit(Environment.ExitCode);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student";
+            SaveYourWork(projectDirectory);
+        }
+        private void SaveYourWork(String workingDirectory)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    RedirectStandardInput = true,
+                    UseShellExecute = false,
+                    WorkingDirectory = workingDirectory
+                },
+            };
+
+            process.Start();
+            var branchName = StudentID + "-version" + this.numberOfVersion;
+            using (var writer = process.StandardInput)
+            {
+                if (this.ListBranches.Count == 0)
+                {
+                    writer.WriteLine("git checkout master");
+                    writer.WriteLine("git branch | grep -v " + "master" + " | xargs git branch -D");
+
+                }
+                writer.WriteLine("git branch " + branchName);
+                writer.WriteLine("git checkout " + branchName);
+                writer.WriteLine("git add .");
+                writer.WriteLine("git commit -m 'second' ");
+            }
+            this.ListBranches.Add(new BranchModel
+            {
+                BranchName = branchName,
+                CommitTime = DateTime.Now.ToString()
+            });
+            this.numberOfVersion++;
+        }
+
+        // Mở form để chọn branch để nộp 
+        private void btnChoose_Click(object sender, EventArgs e)
+        {
+            BranchWorking branch = new BranchWorking(this.ListBranches,this);
+            branch.Show();
+            this.Hide();
         }
     }
 }
