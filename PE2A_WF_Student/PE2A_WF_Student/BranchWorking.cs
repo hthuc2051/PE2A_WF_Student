@@ -37,23 +37,12 @@ namespace PE2A_WF_Student
         // Xuất ra file Zip ngoại trừ file git
         private void ListAllFiles(String folder)
         {
-            DirectoryInfo d = new DirectoryInfo(folder);//Assuming Test is your Folder
-            FileInfo[] Files = d.GetFiles("*.cs"); //Getting Text files
-            var destinationOutPath = @"G:\localgit\gitcheck.zip"; // sửa lại đường dẫn folder mà ông muốn xuất file zip
-            if (File.Exists(destinationOutPath))
+            if (File.Exists(Util.DestinationOutputPath()))
             {
-                File.Delete(destinationOutPath);
+                File.Delete(Util.DestinationOutputPath());
             }
-            foreach (FileInfo file in Files)
-            {
-
-                using (ZipArchive zip = ZipFile.Open(destinationOutPath, ZipArchiveMode.Update))
-                {
-                    zip.CreateEntryFromFile(file.FullName, file.Name);
-                }
-            }
+            ZipFile.CreateFromDirectory(folder, Util.DestinationOutputPath());
         }
-        
         private void ZipYourChosenBranch(String workingDirectory, String branchName)
         {
             var process = new Process
@@ -73,13 +62,14 @@ namespace PE2A_WF_Student
                 writer.WriteLine("git checkout " + branchName);
             }
             Thread.Sleep(1500);
-            ListAllFiles(workingDirectory);
+            var zipPath = workingDirectory + @"\student"; // zip all file and folder in here
+            ListAllFiles(zipPath);
         }
 
         private void dgView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student"; //folder mà Student sẽ làm
+            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam"; //folder mà Student sẽ làm
             var branchName = dgView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
             ZipYourChosenBranch(projectDirectory, branchName);
         }
