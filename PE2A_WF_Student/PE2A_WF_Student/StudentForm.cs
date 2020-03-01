@@ -289,7 +289,7 @@ namespace PE2A_WF_Student
         private void btnSave_Click(object sender, EventArgs e)
         {
             string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student";
+            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam";
             SaveYourWork(projectDirectory);
         }
         private void SaveYourWork(String workingDirectory)

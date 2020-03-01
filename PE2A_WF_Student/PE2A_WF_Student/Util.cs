@@ -125,6 +125,12 @@ namespace PE2A_WF_Student
 
             return Encoding.UTF8.GetString(bytesDecrypted);
         }
+        public static String DestinationOutputPath()
+        {
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string destination = Directory.GetParent(startupPath).Parent.FullName + @"\Submission";
+            return destination;
+        }
 
     }
 }
