@@ -128,7 +128,7 @@ namespace PE2A_WF_Student
         public static String DestinationOutputPath()
         {
             string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string destination = Directory.GetParent(startupPath).Parent.FullName + @"\Submission";
+            string destination = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\SE63146.zip";
             return destination;
         }
 

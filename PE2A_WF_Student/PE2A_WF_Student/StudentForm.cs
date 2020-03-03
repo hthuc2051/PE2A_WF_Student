@@ -42,6 +42,9 @@ namespace PE2A_WF_Student
             InitializeComponent();
             StartServerTCP();
             TimeRemaining();
+            //string startupPath = System.IO.Directory.GetCurrentDirectory();
+            //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\Java_439576447_DE01.docx";
+            //this.InvokeEx(f => loadPracticalDoc(projectDirectory));
 
         }
         private void TimeRemaining()
@@ -83,25 +86,31 @@ namespace PE2A_WF_Student
             });         
         }
 
-        private void loadPracticalDoc()
+        private void loadPracticalDoc(string filePath)
         {
-            rtbDocument.Visible = true;
-            object readOnly = true;
-            object visible = true;
-            object save = false;
-            object fileName = @"D:testDoc.docx";
-            object newTemplate = false;
-            object docType = 0;
-            object missing = Type.Missing;
-            Microsoft.Office.Interop.Word.Document document;
-            Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
-            document =  application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
-                ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
-            document.ActiveWindow.Selection.WholeStory();
-            document.ActiveWindow.Selection.Copy();
-            IDataObject dataObject = Clipboard.GetDataObject();
-            rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
-            application.Quit(ref missing, ref missing, ref missing);
+            var fileInfo = new FileInfo(filePath);
+
+            if (!fileInfo.Name.StartsWith("~$"))
+            {
+                rtbDocument.Visible = true;
+                object readOnly = true;
+                object visible = true;
+                object save = false;
+                object fileName = filePath;
+                object newTemplate = false;
+                object docType = 0;
+                object missing = Type.Missing;
+                Microsoft.Office.Interop.Word.Document document;
+                Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+                document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
+                document.ActiveWindow.Selection.WholeStory();
+                document.ActiveWindow.Selection.Copy();
+                IDataObject dataObject = Clipboard.GetDataObject();
+                rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
+                application.Quit(ref missing, ref missing, ref missing);
+            }
+          
         }
         private async Task<String> sendFile(String fileName)
         {
@@ -198,39 +207,81 @@ namespace PE2A_WF_Student
                         //    byte[] data = System.Text.Encoding.Unicode.GetBytes(msg);
                         //    Util.sendMessage(data, tcpClient);
                         //}
-                        byte[] clientData = new byte[1024];
+                        byte[] clientData = new byte[1024 * 5];
                         var getStream = tcpClient.GetStream();
+                        var getStreamForFile = tcpClient.GetStream();
                         if (getStream != null)
                         {
-                            getStream.Read(clientData, 0, clientData.Length);
-                            String decode = Util.receiveMessage(clientData);
-                            string msg = Util.Decode(decode, "SE1267");
+                            getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
+                            string msg = Util.receiveMessage(clientData);
+                          
                             if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                             {
                                 MessageBox.Show(msg);
                             }
-                            else if (msg.Contains("="))
+                            else if (msg.Contains(Constant.RETURN_URL_CODE))
                             {
-                                string[] msgArr = msg.Split('=');
+                                msg = msg.Replace(Constant.RETURN_URL_CODE, "");
+                                string decode = Util.Decode(msg, "SE1267");
+                                string[] msgArr = decode.Split('=');
                                 SubmitAPIUrl = msgArr[1];
                                 ScriptCode = msgArr[2];
                                 isLoading = false;
                                 this.InvokeEx(f => imgSubmit.Visible = true);
-                                this.InvokeEx(f =>loadPracticalDoc());
+                             //   this.InvokeEx(f =>loadPracticalDoc());
                                 this.InvokeEx(f => loadingBox.Visible = false);
                                 this.InvokeEx(f => this.lbTime.Visible = true);
                             }
-                            else
+                            else if(msg.Contains(Constant.RETURN_POINT))
                             {
                                 this.InvokeEx(f => lbPoint.Text = msg);
                                 break;
+                            }
+                            else
+                            {
+
+
+                                //using (var fs = new FileStream(@"D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\TemplateProject\testDoc.docx", FileMode.OpenOrCreate, FileAccess.Write))
+                                //{
+                                //    fs.Write(clientData, 0, clientData.Length);
+
+                                //}
+                                string startupPath = System.IO.Directory.GetCurrentDirectory();
+                                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\testDoc.docx";     
+                                if(getStreamForFile.DataAvailable)
+                                {
+                                    byte[] getByte = null;
+                                    using (MemoryStream ms = new MemoryStream())
+                                    {
+                                        int count = 0;
+                                        do
+                                        {
+                                            byte[] buf = new byte[1024 * 5];
+                                            count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                                            ms.Write(buf, 0, count);
+                                        } while (count > 0 && tcpClient.Available != 0);
+
+                                        getByte = ms.ToArray();
+                                        
+                                    }
+                                    // clientData = getByte.ToArray();                      
+                                    // getByte.CopyTo(clientData, 0);
+                                    //byte[] byteToUse = getByte;
+                                    var finalByte = new byte[getByte.Length + clientData.Length];
+                                    Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
+                                    Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
+
+                                    File.WriteAllBytes(projectDirectory, finalByte);
+                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+                                }
+                               
                             }
                             Console.WriteLine("Lecturer: " + msg);
                         }
                     }
                     catch (Exception e)
                     {
-                       
+                        Console.WriteLine(e.StackTrace);
                     }
                 }
             });

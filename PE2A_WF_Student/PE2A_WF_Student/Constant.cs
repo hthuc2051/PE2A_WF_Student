@@ -15,5 +15,13 @@ namespace PE2A_WF_Student
         public static string[] STATUSLIST = { "connected","submitted","checked","returned"};
         public static string CANNOT_LOGIN_ADMIN_MESSAGE = "You are not permitted to log in with this role";
         public static string SUBMMIT_SUCCESS_MESSAGE = "Submit successfully";
+
+        // TCP code
+        public static string RETURN_URL_CODE = "[RETURN_URL]";
+        public static string RETURN_EXAM_SCIPT = "[RETURN_EXAM_SCRIPT]";
+        public static string RETURN_POINT = "[RETURN_POINT]";
+
+        // File Size
+        public static int FILE_SIZE = 1024 * 11;
     }
 }
