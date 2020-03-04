@@ -166,7 +166,7 @@ namespace PE2A_WF_Student
         }
         private void SendTimeSubmission(string studentCode)
         {
-            String msg = studentCode + "-" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            String msg = studentCode + "=" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             byte[] dataMsg = Encoding.Unicode.GetBytes(msg);
             Util.sendMessage(dataMsg, tcpClient);
         }
@@ -214,7 +214,6 @@ namespace PE2A_WF_Student
                         {
                             getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
                             string msg = Util.receiveMessage(clientData);
-                          
                             if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                             {
                                 MessageBox.Show(msg);
@@ -236,6 +235,12 @@ namespace PE2A_WF_Student
                             {
                                 this.InvokeEx(f => lbPoint.Text = msg);
                                 break;
+                            }
+                            else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
+                            {
+                                msg = msg.Replace(Constant.RETURN_URL_CODE, "");
+                                string time = msg;
+                                
                             }
                             else
                             {
