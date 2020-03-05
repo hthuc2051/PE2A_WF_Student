@@ -132,5 +132,21 @@ namespace PE2A_WF_Student
             return destination;
         }
 
+        public static byte[] ConvertStreamToByte(NetworkStream networkStream)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                try
+                {
+                    networkStream.CopyToAsync(memoryStream);
+                    Thread.Sleep(2000);
+                }catch(Exception e)
+                {
+                    throw;
+                }
+                return memoryStream.ToArray();
+            }
+        }
+
     }
 }

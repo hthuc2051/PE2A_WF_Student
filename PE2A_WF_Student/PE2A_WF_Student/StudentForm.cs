@@ -35,13 +35,12 @@ namespace PE2A_WF_Student
         bool isLoading = true;
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
-        int practicalTimeSecond = 60;
-        DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
+        int practicalTimeSecond = 00;
+       // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
             InitializeComponent();
             StartServerTCP();
-            TimeRemaining();
             //string startupPath = System.IO.Directory.GetCurrentDirectory();
             //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\Java_439576447_DE01.docx";
             //this.InvokeEx(f => loadPracticalDoc(projectDirectory));
@@ -49,12 +48,12 @@ namespace PE2A_WF_Student
         }
         private void TimeRemaining()
         {
-            var endTime = DateTime.Now;
-            Console.WriteLine(endTime);
-            practicalTimeMinute = 60 - (endTime.Minute - startTime.Minute);
-            practicalTimeSecond = 60 - (endTime.Second - startTime.Second);
-            var date = DateTime.Now.Minute;
-            Console.WriteLine(date);
+            //var endTime = DateTime.Now;
+            //Console.WriteLine(endTime);
+            //practicalTimeMinute = 60 - (endTime.Minute - startTime.Minute);
+            //practicalTimeSecond = 60 - (endTime.Second - startTime.Second);
+            //var date = DateTime.Now.Minute;
+            //Console.WriteLine(date);
             time = new System.Timers.Timer();
             time.Interval = 1000;
             time.Elapsed += OnTimeEvent;
@@ -83,7 +82,7 @@ namespace PE2A_WF_Student
                         practicalTimeSecond -= 1;
                     }
                 }
-            });         
+            });
         }
 
         private void loadPracticalDoc(string filePath)
@@ -110,7 +109,7 @@ namespace PE2A_WF_Student
                 rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
                 application.Quit(ref missing, ref missing, ref missing);
             }
-          
+
         }
         private async Task<String> sendFile(String fileName)
         {
@@ -160,7 +159,7 @@ namespace PE2A_WF_Student
             {
                 SendTimeSubmission(StudentID);
             }
-           
+
             //listeningThread = new Thread(ListenToLecturer);
             //listeningThread.Start();
         }
@@ -197,91 +196,89 @@ namespace PE2A_WF_Student
                 tcpClient = listener.AcceptTcpClient();
                 while (true)
                 {
+
                     try
                     {
-                        Console.WriteLine("StartServerTCP");
-                        //if (tcpClient.Connected == true)
-                        //{
-                        //    Console.WriteLine("Client connecting ...");
-                        //    String msg = "Hello I am server";
-                        //    byte[] data = System.Text.Encoding.Unicode.GetBytes(msg);
-                        //    Util.sendMessage(data, tcpClient);
-                        //}
-                        byte[] clientData = new byte[1024 * 5];
-                        var getStream = tcpClient.GetStream();
-                        var getStreamForFile = tcpClient.GetStream();
-                        if (getStream != null)
+                   
+                        if (tcpClient != null)
                         {
-                            getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
-                            string msg = Util.receiveMessage(clientData);
-                            if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
-                            {
-                                MessageBox.Show(msg);
-                            }
-                            else if (msg.Contains(Constant.RETURN_URL_CODE))
-                            {
-                                msg = msg.Replace(Constant.RETURN_URL_CODE, "");
-                                string decode = Util.Decode(msg, "SE1267");
-                                string[] msgArr = decode.Split('=');
-                                SubmitAPIUrl = msgArr[1];
-                                ScriptCode = msgArr[2];
-                                isLoading = false;
-                                this.InvokeEx(f => imgSubmit.Visible = true);
-                             //   this.InvokeEx(f =>loadPracticalDoc());
-                                this.InvokeEx(f => loadingBox.Visible = false);
-                                this.InvokeEx(f => this.lbTime.Visible = true);
-                            }
-                            else if(msg.Contains(Constant.RETURN_POINT))
-                            {
-                                this.InvokeEx(f => lbPoint.Text = msg);
-                                break;
-                            }
-                            else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
-                            {
-                                msg = msg.Replace(Constant.RETURN_URL_CODE, "");
-                                string time = msg;
-                                
-                            }
-                            else
-                            {
 
-
-                                //using (var fs = new FileStream(@"D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\TemplateProject\testDoc.docx", FileMode.OpenOrCreate, FileAccess.Write))
-                                //{
-                                //    fs.Write(clientData, 0, clientData.Length);
-
-                                //}
-                                string startupPath = System.IO.Directory.GetCurrentDirectory();
-                                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\testDoc.docx";     
-                                if(getStreamForFile.DataAvailable)
+                            var getStream = tcpClient.GetStream();
+                            Thread.Sleep(1000);
+                            var getStreamForFile = getStream;
+                            byte[] clientData = GetAllByte(getStreamForFile);
+                  //          byte[] clientData = new byte[1024 * 5];
+                            if (getStream != null)
+                            {
+                                //   byte[] byteToUse = Util.ConvertStreamToByte(getStreamForFile);
+                                //  getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
+                                string msg = Util.receiveMessage(clientData);
+                                if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                                 {
-                                    byte[] getByte = null;
-                                    using (MemoryStream ms = new MemoryStream())
-                                    {
-                                        int count = 0;
-                                        do
-                                        {
-                                            byte[] buf = new byte[1024 * 5];
-                                            count = getStreamForFile.Read(buf, 0, 1024 * 5);
-                                            ms.Write(buf, 0, count);
-                                        } while (count > 0 && tcpClient.Available != 0);
-
-                                        getByte = ms.ToArray();
-                                        
-                                    }
-                                    // clientData = getByte.ToArray();                      
-                                    // getByte.CopyTo(clientData, 0);
-                                    //byte[] byteToUse = getByte;
-                                    var finalByte = new byte[getByte.Length + clientData.Length];
-                                    Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
-                                    Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
-
-                                    File.WriteAllBytes(projectDirectory, finalByte);
-                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+                                    MessageBox.Show(msg);
                                 }
-                               
+                                else if (msg.Contains(Constant.RETURN_URL_CODE))
+                                {
+                                    msg = msg.Replace(Constant.RETURN_URL_CODE, "");
+                                    string decode = Util.Decode(msg, "SE1267");
+                                    string[] msgArr = decode.Split('=');
+                                    SubmitAPIUrl = msgArr[1];
+                                    ScriptCode = msgArr[2];
+                                    isLoading = false;
+                                    this.InvokeEx(f => imgSubmit.Visible = true);
+                                    this.InvokeEx(f => loadingBox.Visible = false);  
+                                }
+                                else if (msg.Contains(Constant.RETURN_POINT))
+                                {
+                                    this.InvokeEx(f => lbPoint.Text = msg);
+                                    break;
+                                }
+                                else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
+                                {
+                                    msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
+                                    string time = msg;
+                                    practicalTimeMinute = int.Parse(time);
+                                    this.InvokeEx(f => this.lbTime.Visible = true);
+                                    TimeRemaining();
+                                }
+                                else
+                                {
+
+
+                                    //using (var fs = new FileStream(@"D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\TemplateProject\testDoc.docx", FileMode.OpenOrCreate, FileAccess.Write))
+                                    //{
+                                    //    fs.Write(clientData, 0, clientData.Length);
+
+                                    //}
+                                    string startupPath = System.IO.Directory.GetCurrentDirectory();
+                                    string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\testDoc.docx";
+                                    //if (getStream.DataAvailable)
+                                    //{
+                                        //byte[] getByte = null;
+                                        //using (MemoryStream ms = new MemoryStream())
+                                        //{
+                                        //    int count = 0;
+                                        //    do
+                                        //    {
+                                        //        byte[] buf = new byte[1024 * 5];
+                                        //        count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                                        //        ms.Write(buf, 0, count);
+                                        //    } while (count > 0 && tcpClient.Available != 0);
+
+                                        //    getByte = ms.ToArray();
+
+                                        //}
+                                        //var finalByte = new byte[getByte.Length + clientData.Length];
+                                        //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
+                                        //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
+                                     
+                                        File.WriteAllBytes(projectDirectory, clientData);
+                                        this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+                                  //  }
+
+                                }
+                                Console.WriteLine("Lecturer: " + msg);
                             }
-                            Console.WriteLine("Lecturer: " + msg);
                         }
                     }
                     catch (Exception e)
@@ -290,6 +287,27 @@ namespace PE2A_WF_Student
                     }
                 }
             });
+        }
+        private byte[] GetAllByte(NetworkStream getStreamForFile)
+        {
+            byte[] getByte = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int count = 0;
+                do
+                {
+                    byte[] buf = new byte[1024 * 5];
+                    count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                    ms.Write(buf, 0, count);
+                } while (getStreamForFile.DataAvailable);
+
+                getByte = ms.ToArray();
+
+            }
+            //var finalByte = new byte[getByte.Length + clientData.Length];
+            //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
+            //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
+            return getByte;
         }
 
 
@@ -326,7 +344,7 @@ namespace PE2A_WF_Student
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
-         
+
             Task.Run(async delegate
             {
                 await Task.Delay(10000);
@@ -387,7 +405,7 @@ namespace PE2A_WF_Student
         // Mở form để chọn branch để nộp 
         private void btnChoose_Click(object sender, EventArgs e)
         {
-            BranchWorking branch = new BranchWorking(this.ListBranches,this);
+            BranchWorking branch = new BranchWorking(this.ListBranches, this);
             branch.Show();
             this.Hide();
         }
