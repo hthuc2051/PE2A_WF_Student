@@ -155,10 +155,10 @@ namespace PE2A_WF_Student
             String result = await sendFile(FileName);
             ShowWaittingMessage();
             MessageBox.Show(result);
-            if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
-            {
-                SendTimeSubmission(StudentID);
-            }
+            //if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
+            //{
+            //    SendTimeSubmission(StudentID);
+            //}
 
             //listeningThread = new Thread(ListenToLecturer);
             //listeningThread.Start();
