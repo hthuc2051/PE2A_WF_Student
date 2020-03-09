@@ -1,13 +1,13 @@
 ﻿
 using PE2A_WF_Student.Models;
+using SharpCompress.Archives;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
+//using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -36,7 +36,7 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
-       // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
+        // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
             InitializeComponent();
@@ -149,20 +149,6 @@ namespace PE2A_WF_Student
 
         }
 
-        private async void btnSubmit_Click(object sender, EventArgs e)
-        {
-            btnSubmit.Visible = false;
-            String result = await sendFile(FileName);
-            ShowWaittingMessage();
-            MessageBox.Show(result);
-            //if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
-            //{
-            //    SendTimeSubmission(StudentID);
-            //}
-
-            //listeningThread = new Thread(ListenToLecturer);
-            //listeningThread.Start();
-        }
         private void SendTimeSubmission(string studentCode)
         {
             String msg = studentCode + "=" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -171,8 +157,8 @@ namespace PE2A_WF_Student
         }
         private void ShowWaittingMessage()
         {
-            imgSubmit.Visible = false;
-            txtFileName.Visible = false;
+            //imgSubmit.Visible = false;
+            //txtFileName.Visible = false;
             lbPoint.Visible = true;
         }
 
@@ -199,7 +185,7 @@ namespace PE2A_WF_Student
 
                     try
                     {
-                   
+
                         if (tcpClient != null)
                         {
 
@@ -207,7 +193,7 @@ namespace PE2A_WF_Student
                             Thread.Sleep(1000);
                             var getStreamForFile = getStream;
                             byte[] clientData = GetAllByte(getStreamForFile);
-                  //          byte[] clientData = new byte[1024 * 5];
+                            //          byte[] clientData = new byte[1024 * 5];
                             if (getStream != null)
                             {
                                 //   byte[] byteToUse = Util.ConvertStreamToByte(getStreamForFile);
@@ -225,8 +211,8 @@ namespace PE2A_WF_Student
                                     SubmitAPIUrl = msgArr[1];
                                     ScriptCode = msgArr[2];
                                     isLoading = false;
-                                    this.InvokeEx(f => imgSubmit.Visible = true);
-                                    this.InvokeEx(f => loadingBox.Visible = false);  
+                                    //this.InvokeEx(f => imgSubmit.Visible = true);
+                                    this.InvokeEx(f => loadingBox.Visible = false);
                                 }
                                 else if (msg.Contains(Constant.RETURN_POINT))
                                 {
@@ -254,27 +240,27 @@ namespace PE2A_WF_Student
                                     string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\testDoc.docx";
                                     //if (getStream.DataAvailable)
                                     //{
-                                        //byte[] getByte = null;
-                                        //using (MemoryStream ms = new MemoryStream())
-                                        //{
-                                        //    int count = 0;
-                                        //    do
-                                        //    {
-                                        //        byte[] buf = new byte[1024 * 5];
-                                        //        count = getStreamForFile.Read(buf, 0, 1024 * 5);
-                                        //        ms.Write(buf, 0, count);
-                                        //    } while (count > 0 && tcpClient.Available != 0);
+                                    //byte[] getByte = null;
+                                    //using (MemoryStream ms = new MemoryStream())
+                                    //{
+                                    //    int count = 0;
+                                    //    do
+                                    //    {
+                                    //        byte[] buf = new byte[1024 * 5];
+                                    //        count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                                    //        ms.Write(buf, 0, count);
+                                    //    } while (count > 0 && tcpClient.Available != 0);
 
-                                        //    getByte = ms.ToArray();
+                                    //    getByte = ms.ToArray();
 
-                                        //}
-                                        //var finalByte = new byte[getByte.Length + clientData.Length];
-                                        //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
-                                        //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
-                                     
-                                        File.WriteAllBytes(projectDirectory, clientData);
-                                        this.InvokeEx(f => loadPracticalDoc(projectDirectory));
-                                  //  }
+                                    //}
+                                    //var finalByte = new byte[getByte.Length + clientData.Length];
+                                    //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
+                                    //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
+
+                                    File.WriteAllBytes(projectDirectory, clientData);
+                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+                                    //  }
 
                                 }
                                 Console.WriteLine("Lecturer: " + msg);
@@ -314,33 +300,22 @@ namespace PE2A_WF_Student
         private void ShowSelectedFile()
         {
             btnSubmit.Visible = true;
-            imgSubmit.Image = PE2A_WF_Student.Properties.Resources.files_and_folders;
-            txtFileName.Visible = true;
+            //imgSubmit.Image = PE2A_WF_Student.Properties.Resources.files_and_folders;
+            //txtFileName.Visible = true;
         }
 
 
-
-        private void StudentSubmit_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtFileName_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void imgFile_Click_1(object sender, EventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            var dialogResult = openFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                FileName = openFileDialog.FileName;
-                txtFileName.Text = FileName;
-                ShowSelectedFile();
-            }
-        }
+        //private void imgFile_Click_1(object sender, EventArgs e)
+        //{
+        //    var openFileDialog = new OpenFileDialog();
+        //    var dialogResult = openFileDialog.ShowDialog();
+        //    if (dialogResult == DialogResult.OK)
+        //    {
+        //        FileName = openFileDialog.FileName;
+        //        txtFileName.Text = FileName;
+        //        ShowSelectedFile();
+        //    }
+        //}
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
@@ -365,15 +340,22 @@ namespace PE2A_WF_Student
             string startupPath = System.IO.Directory.GetCurrentDirectory();
             string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam";
             SaveYourWork(projectDirectory);
+            UpdateGridViewBranch();
         }
+
         private void SaveYourWork(String workingDirectory)
         {
+            if (!btnSubmit.Enabled)
+            {
+                btnSubmit.Enabled = true;
+            }
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
                     RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
                     UseShellExecute = false,
                     WorkingDirectory = workingDirectory
                 },
@@ -400,14 +382,108 @@ namespace PE2A_WF_Student
                 CommitTime = DateTime.Now.ToString()
             });
             this.numberOfVersion++;
+
+            // Checkout branch
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam";
+            ZipYourChosenBranch(projectDirectory, branchName);
+            lbCurrentBranch.Text = branchName;
         }
 
-        // Mở form để chọn branch để nộp 
-        private void btnChoose_Click(object sender, EventArgs e)
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BranchWorking branch = new BranchWorking(this.ListBranches, this);
-            branch.Show();
-            this.Hide();
+            if (tabControl.SelectedTab.Equals(tabControl.TabPages[1]))
+            {
+                UpdateGridViewBranch();
+            }
+        }
+
+        private void UpdateGridViewBranch()
+        {
+            dgvStudentBranch.Rows.Clear();
+            foreach (var item in ListBranches)
+            {
+                dgvStudentBranch.Rows.Add(new string[] { item.BranchName, item.CommitTime });
+            }
+        }
+
+        private void dgvStudentBranch_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                string startupPath = System.IO.Directory.GetCurrentDirectory();
+                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam"; //folder mà Student sẽ làm
+                var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                ZipYourChosenBranch(projectDirectory, branchName);
+                lbCurrentBranch.Text = branchName;
+            }
+        }
+
+        private void ZipYourChosenBranch(String workingDirectory, String branchName)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    RedirectStandardInput = true,
+                    UseShellExecute = false,
+                    WorkingDirectory = workingDirectory
+                },
+            };
+
+            process.Start();
+            using (var writer = process.StandardInput)
+            {
+                writer.WriteLine("git checkout " + branchName);
+            }
+            Thread.Sleep(1500);
+            var zipPath = workingDirectory; // zip all file and folder in here
+            ListAllFiles(zipPath);
+        }
+
+        private void ListAllFiles(String folder)
+        {
+            try
+            {
+                if (File.Exists(Util.DestinationOutputPath(StudentID)))
+                {
+                    File.Delete(Util.DestinationOutputPath(StudentID));
+                }
+                //ZipFile.CreateFromDirectory(folder, Util.DestinationOutputPath(StudentID));
+                using (var archive = ZipArchive.Create())
+                {
+                    archive.AddAllFromDirectory(folder, ".", SearchOption.AllDirectories);
+                    archive.SaveTo(Util.DestinationOutputPath(StudentID), CompressionType.Deflate);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private async void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to submit your work?", "Submission", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                btnSubmit.Enabled = false;
+                btnSave.Enabled = false;
+                dgvStudentBranch.Enabled = false;
+                string startupPath = System.IO.Directory.GetCurrentDirectory();
+                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\" + StudentID + ".zip";
+                FileName = projectDirectory;
+                String result = await sendFile(FileName);
+                ShowWaittingMessage();
+                MessageBox.Show(result);
+                //if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
+                //{
+                //    SendTimeSubmission(StudentID);
+                //}
+
+                //listeningThread = new Thread(ListenToLecturer);
+                //listeningThread.Start();
+            }
         }
     }
 }
