@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.practicalExam.student.controller;
+package com.practicalexam.student.controller;
 
+import com.practicalexam.student.daos.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -14,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.practicalExam.student.daos.UserDAO;
 
 /**
  *
@@ -54,7 +54,6 @@ final String SUCCESS_PAGE = "successPage.jsp";
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

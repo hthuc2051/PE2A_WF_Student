@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.practicalExam.student.daos;
+package com.practicalexam.student.daos;
 
+/**
+ *
+ * @author ASUS
+ */
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import com.practicalExam.util.MyConnection;
+import com.practicalexam.util.MyConnection;
 
 /**
  *
