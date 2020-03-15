@@ -23,5 +23,14 @@ namespace PE2A_WF_Student
 
         // File Size
         public static int FILE_SIZE = 1024 * 11;
+
+        // Practical Exam type 
+        public static string PRACTICAL_EXAM_JAVA = "JAVA";
+        public static string PRACTICAL_EXAM_JAVA_WEB = "JAVAWEB";
+        public static string PRACTICAL_EXAM_C_SHARP = "CSHARP";
+        public static string PRACTICAL_EXAM_C = "C";
+
+        public static string ZIP_EXTENSION = ".zip";
+        public static string RAR_EXTENSION = ".rar";
     }
 }

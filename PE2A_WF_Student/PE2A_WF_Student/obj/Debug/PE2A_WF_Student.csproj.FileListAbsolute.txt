@@ -28,4 +28,5 @@ D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csproj.
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.exe
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.pdb
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csprojAssemblyReference.cache
-D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.BranchWorking.resources
+D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\SharpCompress.dll
+D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csproj.CopyComplete
