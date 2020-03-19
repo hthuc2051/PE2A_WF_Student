@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PE2A_WF_Student
 {
@@ -135,6 +136,17 @@ namespace PE2A_WF_Student
             string startupPath = System.IO.Directory.GetCurrentDirectory();
             string destination = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\" + studentFile;
             return destination;
+        }
+        public static String DebugPath()
+        {
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string destination = Directory.GetParent(startupPath).Parent.FullName;
+            return destination;
+        }
+        public static String ReleasePath()
+        {
+            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+            return appPath;
         }
 
         public static byte[] ConvertStreamToByte(NetworkStream networkStream)
