@@ -35,7 +35,9 @@ namespace PE2A_WF_Student
 
             else
             {
-               
+                Random rd = new Random();
+                int randomSleep = rd.Next(500, 5000);
+                Thread.Sleep(randomSleep);
                 studentSubmit.StudentID = studentID;
                 // send broadcast to router
                 string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;

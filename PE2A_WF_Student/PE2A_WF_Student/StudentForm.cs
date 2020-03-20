@@ -50,12 +50,6 @@ namespace PE2A_WF_Student
         }
         private void TimeRemaining()
         {
-            //var endTime = DateTime.Now;
-            //Console.WriteLine(endTime);
-            //practicalTimeMinute = 60 - (endTime.Minute - startTime.Minute);
-            //practicalTimeSecond = 60 - (endTime.Second - startTime.Second);
-            //var date = DateTime.Now.Minute;
-            //Console.WriteLine(date);
             time = new System.Timers.Timer();
             time.Interval = 1000;
             time.Elapsed += OnTimeEvent;
@@ -170,12 +164,12 @@ namespace PE2A_WF_Student
 
         private async Task<String> sendFileJavaWeb(String fileName)
         {
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string destinationPath = Directory.GetParent(startupPath).Parent.FullName + @"\Submission";
-            string webappPath = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\webapp";
-            string workPath = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\work";
-            string workWebPagePath = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\work\web";
-            string webPageZip = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\"+StudentID+"_WEB.zip";
+            string startupPath = Util.ExecutablePath();     
+            string destinationPath = startupPath + @"\Submission";
+            string webappPath = startupPath + @"\Submission\webapp";
+            string workPath = startupPath + @"\Submission\work";
+            string workWebPagePath = startupPath + @"\Submission\work\web";
+            string webPageZip = startupPath + @"\Submission\"+StudentID+"_WEB.zip";
             //extract
             Util.UnarchiveFile(fileName, workPath);
             //copy
@@ -184,6 +178,7 @@ namespace PE2A_WF_Student
             Util.Copy(workWebPagePath, webappPath);
             // Directory.Move(destinationPath, webappPath);
             // File.Copy()
+
             string srcCodePath = Path.Combine(destinationPath, @"work\src\java\com\practicalexam\student");
 
             if (File.Exists(webPageZip))
@@ -317,39 +312,10 @@ namespace PE2A_WF_Student
                                 }
                                 else
                                 {
-
-
-                                    //using (var fs = new FileStream(@"D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\TemplateProject\testDoc.docx", FileMode.OpenOrCreate, FileAccess.Write))
-                                    //{
-                                    //    fs.Write(clientData, 0, clientData.Length);
-
-                                    //}
-                                    string startupPath = System.IO.Directory.GetCurrentDirectory();
-                                    string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\testDoc.docx";
-                                    //if (getStream.DataAvailable)
-                                    //{
-                                    //byte[] getByte = null;
-                                    //using (MemoryStream ms = new MemoryStream())
-                                    //{
-                                    //    int count = 0;
-                                    //    do
-                                    //    {
-                                    //        byte[] buf = new byte[1024 * 5];
-                                    //        count = getStreamForFile.Read(buf, 0, 1024 * 5);
-                                    //        ms.Write(buf, 0, count);
-                                    //    } while (count > 0 && tcpClient.Available != 0);
-
-                                    //    getByte = ms.ToArray();
-
-                                    //}
-                                    //var finalByte = new byte[getByte.Length + clientData.Length];
-                                    //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
-                                    //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
-
+                                    string startupPath = Util.ExecutablePath();
+                                    string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";                            
                                     File.WriteAllBytes(projectDirectory, clientData);
-                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
-                                    //  }
-
+                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));                              
                                 }
                                 Console.WriteLine("Lecturer: " + msg);
                             }
@@ -446,16 +412,16 @@ namespace PE2A_WF_Student
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam";
+            string startupPath = Util.ExecutablePath();
 
             if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
             {
-                string webPageDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent";
+                string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
                 SaveYourWork(webPageDirectory);
             }
             else
             {
+                string projectDirectory = startupPath + @"\Student\PracticalExamStudent\src\com\practicalexam"; //java
                 SaveYourWork(projectDirectory);
             }
             UpdateGridViewBranch();
@@ -485,9 +451,9 @@ namespace PE2A_WF_Student
             {
                 if (this.ListBranches.Count == 0)
                 {
+                    writer.WriteLine("git init");
                     writer.WriteLine("git checkout master");
                     writer.WriteLine("git branch | grep -v " + "master" + " | xargs git branch -D");
-
                 }
                 writer.WriteLine("git branch " + branchName);
                 writer.WriteLine("git checkout " + branchName);
@@ -502,10 +468,10 @@ namespace PE2A_WF_Student
             this.numberOfVersion++;
 
             // Checkout branch
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
             string projectDirectory = workingDirectory;
             ZipYourChosenBranch(projectDirectory, branchName);
             lbCurrentBranch.Text = branchName;
+
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -530,7 +496,7 @@ namespace PE2A_WF_Student
             if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 string startupPath = System.IO.Directory.GetCurrentDirectory();
-                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\com\practicalexam"; //folder mà Student sẽ làm
+                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
                 var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 ZipYourChosenBranch(projectDirectory, branchName);
                 lbCurrentBranch.Text = branchName;
@@ -589,8 +555,8 @@ namespace PE2A_WF_Student
                 btnSubmit.Enabled = false;
                 btnSave.Enabled = false;
                 dgvStudentBranch.Enabled = false;
-                string startupPath = System.IO.Directory.GetCurrentDirectory();
-                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\" + StudentID + ".zip";
+                string startupPath = Util.ExecutablePath();
+                string projectDirectory = startupPath + @"\Submission\" + StudentID + ".zip";
                 FileName = projectDirectory;
                 String result = "";
                 if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
@@ -603,14 +569,7 @@ namespace PE2A_WF_Student
                 }
 
                 ShowWaittingMessage();
-                MessageBox.Show(result);
-                //if (result.Trim().Equals(Constant.SUBMMIT_SUCCESS_MESSAGE))
-                //{
-                //    SendTimeSubmission(StudentID);
-                //}
-
-                //listeningThread = new Thread(ListenToLecturer);
-                //listeningThread.Start();
+                MessageBox.Show(result);    
             }
         }
     }

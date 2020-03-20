@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PE2A_WF_Student
 {
@@ -132,8 +133,8 @@ namespace PE2A_WF_Student
         public static String DestinationOutputPath(string studentCode)
         {
             string studentFile = studentCode + ".zip";
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string destination = Directory.GetParent(startupPath).Parent.FullName + @"\Submission\" + studentFile;
+            string startupPath = ExecutablePath();
+            string destination = Path.Combine(startupPath + @"\Submission\" + studentFile);
             return destination;
         }
 
@@ -216,6 +217,21 @@ namespace PE2A_WF_Student
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+        //release path
+        public static String ExecutablePath()
+        {
+            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+            return appPath;
+        }
+
+        ////debug path
+        //public static String ExecutablePath()
+        //{
+        //    string startupPath = System.IO.Directory.GetCurrentDirectory();
+        //    string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
+        //    return projectDirectory;
+        //}
 
     }
 }
