@@ -1,4 +1,5 @@
 ﻿
+using LibGit2Sharp;
 using PE2A_WF_Student.Models;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 //using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
@@ -433,44 +435,55 @@ namespace PE2A_WF_Student
             {
                 btnSubmit.Enabled = true;
             }
-            var process = new Process
+            if (this.ListBranches.Count == 0)
             {
-                StartInfo = new ProcessStartInfo
+                var repoPath = Repository.Init(workingDirectory);
+                using (var repo = new Repository(workingDirectory))
                 {
-                    FileName = "cmd.exe",
-                    RedirectStandardInput = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WorkingDirectory = workingDirectory
-                },
-            };
+                    Commands.Checkout(repo, repo.Branches["master"]);
+                    if (repo.Branches.Count() > 0)
+                    {
+                        foreach (var item in repo.Branches)
+                        {
+                            if (!item.FriendlyName.Contains("master"))
+                            {
+                                repo.Branches.Remove(item);
+                            }
+                        }
+                    }
 
-            process.Start();
-            var branchName = StudentID + "-version" + this.numberOfVersion;
-            using (var writer = process.StandardInput)
-            {
-                if (this.ListBranches.Count == 0)
-                {
-                    writer.WriteLine("git init");
-                    writer.WriteLine("git checkout master");
-                    writer.WriteLine("git branch | grep -v " + "master" + " | xargs git branch -D");
                 }
-                writer.WriteLine("git branch " + branchName);
-                writer.WriteLine("git checkout " + branchName);
-                writer.WriteLine("git add .");
-                writer.WriteLine("git commit -m 'second' ");
             }
-            this.ListBranches.Add(new BranchModel
+
+            using (var repo = new Repository(workingDirectory))
             {
-                BranchName = branchName,
-                CommitTime = DateTime.Now.ToString()
-            });
-            this.numberOfVersion++;
+                RepositoryStatus status = repo.RetrieveStatus();
+                if (status.IsDirty)
+                {
+                    var branchName = StudentID + "-version" + this.numberOfVersion;
+                    Commands.Stage(repo, "*");
+                    Commit commit = repo.Commit(branchName + " updating files..", new Signature(StudentID, StudentID +"@fpt.edu.vn", DateTimeOffset.Now),
+                    new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now));
+                    repo.Branches.Add(branchName, commit);
+                    Console.WriteLine("Commited");
+                    this.ListBranches.Add(new BranchModel
+                    {
+                        BranchName = branchName,
+                        CommitTime = DateTime.Now.ToString()
+                    });
+                    this.numberOfVersion++;
+
+                    string projectDirectory = workingDirectory;
+                    ZipYourChosenBranch(projectDirectory, branchName);
+                    lbCurrentBranch.Text = branchName;
+
+                }
+                Console.WriteLine("Nothing changes");
+            }
+
 
             // Checkout branch
-            string projectDirectory = workingDirectory;
-            ZipYourChosenBranch(projectDirectory, branchName);
-            lbCurrentBranch.Text = branchName;
+        
 
         }
 
@@ -496,33 +509,27 @@ namespace PE2A_WF_Student
             if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 string startupPath = System.IO.Directory.GetCurrentDirectory();
-                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
+                string repoDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent";
+                //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
                 var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                ZipYourChosenBranch(projectDirectory, branchName);
+                ZipYourChosenBranch(repoDirectory, branchName);
                 lbCurrentBranch.Text = branchName;
             }
         }
 
-        private void ZipYourChosenBranch(String workingDirectory, String branchName)
+        private void ZipYourChosenBranch(String repoDirectory, String branchName)
         {
-            var process = new Process
+            using (var repo = new Repository(repoDirectory))
             {
-                StartInfo = new ProcessStartInfo
+                var branch = repo.Branches[branchName];
+                if (branch != null)
                 {
-                    FileName = "cmd.exe",
-                    RedirectStandardInput = true,
-                    UseShellExecute = false,
-                    WorkingDirectory = workingDirectory
-                },
-            };
-
-            process.Start();
-            using (var writer = process.StandardInput)
-            {
-                writer.WriteLine("git checkout " + branchName);
+                    Commands.Checkout(repo, branch);
+                    Console.WriteLine("Checkout");
+                }
             }
             Thread.Sleep(1500);
-            var zipPath = workingDirectory; // zip all file and folder in here
+            var zipPath = repoDirectory; // zip all file and folder in here
             ListAllFiles(zipPath);
         }
 
