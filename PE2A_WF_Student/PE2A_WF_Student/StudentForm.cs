@@ -595,5 +595,14 @@ namespace PE2A_WF_Student
                 MessageBox.Show(result);
             }
         }
+
+
+        private void rtbDocument_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control == true)
+            {
+                MessageBox.Show("Cut/Copy and Paste Options are disabled");
+            }
+        }
     }
 }

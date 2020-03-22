@@ -154,6 +154,7 @@
             this.rtbDocument.Size = new System.Drawing.Size(1304, 653);
             this.rtbDocument.TabIndex = 9;
             this.rtbDocument.Text = "";
+            this.rtbDocument.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbDocument_KeyDown);
             // 
             // tabPageSubmit
             // 
