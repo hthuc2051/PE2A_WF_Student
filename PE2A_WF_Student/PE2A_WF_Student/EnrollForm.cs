@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -24,6 +25,7 @@ namespace PE2A_WF_Student
         Thread sendingThread;
         Thread listeningThread;
         StudentForm studentSubmit = new StudentForm();
+
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             studentID = txtStudentID.Text.ToUpper().Trim();
@@ -32,19 +34,24 @@ namespace PE2A_WF_Student
             {
                 MessageBox.Show(Constant.CANNOT_LOGIN_ADMIN_MESSAGE);
             }
-
             else
             {
+                if (Directory.Exists(Util.ExecutablePath() + @"\Submission\work") || Directory.Exists(Util.ExecutablePath() + @"\Submission\webapp"))
+                {
+                    Directory.Delete(Util.ExecutablePath() + @"\Submission\work", true);
+                    Directory.Delete(Util.ExecutablePath() + @"\Submission\webapp", true);
+                }
+                Directory.CreateDirectory(Util.ExecutablePath() + @"\Submission\work");
+                Directory.CreateDirectory(Util.ExecutablePath() + @"\Submission\webapp");
                 Random rd = new Random();
                 int randomSleep = rd.Next(500, 5000);
                 Thread.Sleep(randomSleep);
                 studentSubmit.StudentID = studentID;
                 // send broadcast to router
-                string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT+ "-" + studentID;
+                string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT + "-" + studentID;
                 SendBroadCastToRouter(message);
                 studentSubmit.Show();
             }
-        
         }
 
         private void SendBroadCastToRouter(string message)
@@ -79,7 +86,7 @@ namespace PE2A_WF_Student
             Console.WriteLine("Lecturer: " + returnMessage);
         }
 
-      
+
 
         private void EnrollForm_FormClosing(object sender, FormClosingEventArgs e)
         {

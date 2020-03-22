@@ -145,6 +145,7 @@
             // 
             // rtbDocument
             // 
+            this.rtbDocument.BackColor = System.Drawing.Color.White;
             this.rtbDocument.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDocument.Location = new System.Drawing.Point(2, 2);
             this.rtbDocument.Margin = new System.Windows.Forms.Padding(2);

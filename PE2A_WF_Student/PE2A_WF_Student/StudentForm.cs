@@ -100,7 +100,7 @@ namespace PE2A_WF_Student
                 Microsoft.Office.Interop.Word.Document document;
                 Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
                 document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
-                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
+                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
                 document.ActiveWindow.Selection.WholeStory();
                 document.ActiveWindow.Selection.Copy();
                 IDataObject dataObject = Clipboard.GetDataObject();
@@ -262,13 +262,11 @@ namespace PE2A_WF_Student
                 listener = new TcpListener(ipEnd);
                 listener.Start();
                 Console.WriteLine("Server starting ...");
+                tcpClient = listener.AcceptTcpClient();
                 while (true)
                 {
-
                     try
-                    {
-                        tcpClient = listener.AcceptTcpClient();
-                        Console.WriteLine("Em đang debug nha mọi người!");
+                    {                        
                         if (tcpClient != null)
                         {
                             var getStream = tcpClient.GetStream();
@@ -315,7 +313,7 @@ namespace PE2A_WF_Student
                                 }
                                 else
                                 {
-                                    this.btnSave.Enabled = true;
+                                    this.InvokeEx(func => btnSave.Enabled = true);
                                     string startupPath = Util.ExecutablePath();
                                     string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";
                                     File.WriteAllBytes(projectDirectory, clientData);
