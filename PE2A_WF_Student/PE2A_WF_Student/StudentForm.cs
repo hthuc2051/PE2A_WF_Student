@@ -67,6 +67,7 @@ namespace PE2A_WF_Student
                 {
                     practicalTimeMinute = 0;
                     practicalTimeSecond = 0;
+                    
                 }
                 else
                 {
@@ -107,7 +108,6 @@ namespace PE2A_WF_Student
                 rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
                 application.Quit(ref missing, ref missing, ref missing);
             }
-
         }
         private async Task<String> sendFile(String fileName)
         {
@@ -360,8 +360,8 @@ namespace PE2A_WF_Student
                 int count = 0;
                 do
                 {
-                    byte[] buf = new byte[1024 * 50];
-                    count = getStreamForFile.Read(buf, 0, 1024 * 50); //read 50kb and store it to buf
+                    byte[] buf = new byte[1024 * 100];
+                    count = getStreamForFile.Read(buf, 0, 1024 * 100); //read 50kb and store it to buf
                     ms.Write(buf, 0, count);
                 } while (getStreamForFile.DataAvailable);
 
@@ -521,8 +521,8 @@ namespace PE2A_WF_Student
             {
                 if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    string startupPath = System.IO.Directory.GetCurrentDirectory();
-                    string repoDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent";
+                    string startupPath = Util.ExecutablePath();
+                    string repoDirectory = startupPath + @"\Student\PracticalExamStudent";
                     //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
                     var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                     ZipYourChosenBranch(repoDirectory, branchName);
