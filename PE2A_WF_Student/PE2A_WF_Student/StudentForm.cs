@@ -440,9 +440,10 @@ namespace PE2A_WF_Student
                 var repoPath = Repository.Init(workingDirectory);
                 using (var repo = new Repository(workingDirectory))
                 {
-                    Commands.Checkout(repo, repo.Branches["master"]);
+                  
                     if (repo.Branches.Count() > 0)
                     {
+                        Commands.Checkout(repo, repo.Branches["master"]);
                         foreach (var item in repo.Branches)
                         {
                             if (!item.FriendlyName.Contains("master"))

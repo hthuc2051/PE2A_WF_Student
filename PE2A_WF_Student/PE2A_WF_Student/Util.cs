@@ -218,20 +218,20 @@ namespace PE2A_WF_Student
             }
         }
 
-        //release path
-        public static String ExecutablePath()
-        {
-            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-            return appPath;
-        }
-
-        ////debug path
+        ////release path
         //public static String ExecutablePath()
         //{
-        //    string startupPath = System.IO.Directory.GetCurrentDirectory();
-        //    string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
-        //    return projectDirectory;
+        //    string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+        //    return appPath;
         //}
+
+        //debug path
+        public static String ExecutablePath()
+        {
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
+            return projectDirectory;
+        }
 
     }
 }
