@@ -314,9 +314,11 @@ namespace PE2A_WF_Student
                                 }
                                 else
                                 {
+                                    this.btnSave.Enabled = true;
                                     string startupPath = Util.ExecutablePath();
                                     string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";                            
                                     File.WriteAllBytes(projectDirectory, clientData);
+                                    Thread.Sleep(1500);
                                     this.InvokeEx(f => loadPracticalDoc(projectDirectory));                              
                                 }
                                 Console.WriteLine("Lecturer: " + msg);
@@ -359,8 +361,8 @@ namespace PE2A_WF_Student
                 int count = 0;
                 do
                 {
-                    byte[] buf = new byte[1024 * 5];
-                    count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                    byte[] buf = new byte[1024 * 50]; 
+                    count = getStreamForFile.Read(buf, 0, 1024 * 50); //read 50kb and store it to buf
                     ms.Write(buf, 0, count);
                 } while (getStreamForFile.DataAvailable);
 
@@ -479,7 +481,10 @@ namespace PE2A_WF_Student
                     lbCurrentBranch.Text = branchName;
 
                 }
-                Console.WriteLine("Nothing changes");
+                else
+                {
+                    Console.WriteLine("Nothing changes");
+                }
             }
 
 
