@@ -33,6 +33,7 @@ namespace PE2A_WF_Student
         public string StudentID { get; set; }
         public string SubmitAPIUrl { get; set; }
         public string ScriptCode { get; set; }
+        public Boolean StartPractical { get; set; }
         public string PracticalExamType { get; set; }
         public TcpListener listener;
         TcpClient tcpClient;
@@ -45,6 +46,7 @@ namespace PE2A_WF_Student
         {
             InitializeComponent();
             StartServerTCP();
+            StartPractical = false;
             //string startupPath = System.IO.Directory.GetCurrentDirectory();
             //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\Java_439576447_DE01.docx";
             //this.InvokeEx(f => loadPracticalDoc(projectDirectory));
@@ -67,7 +69,8 @@ namespace PE2A_WF_Student
                 {
                     practicalTimeMinute = 0;
                     practicalTimeSecond = 0;
-                    
+                    time.Stop();
+                    MessageBox.Show("Time is over. System will be automated submit your branch","TIMEOVER");                
                 }
                 else
                 {
@@ -220,6 +223,7 @@ namespace PE2A_WF_Student
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();
+                        time.Stop();
                         return result;
                     }
                 }
@@ -309,7 +313,10 @@ namespace PE2A_WF_Student
                                     string time = msg;
                                     practicalTimeMinute = int.Parse(time);
                                     this.InvokeEx(f => this.lbTime.Visible = true);
-                                    TimeRemaining();
+                                    if(StartPractical == false)
+                                    {
+                                        TimeRemaining();
+                                    }
                                 }
                                 else
                                 {
