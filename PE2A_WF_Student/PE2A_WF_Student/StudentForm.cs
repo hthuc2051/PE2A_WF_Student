@@ -223,7 +223,7 @@ namespace PE2A_WF_Student
                     using (var message = await client.PostAsync(uri, form))
                     {
                         var result = await message.Content.ReadAsStringAsync();
-                        time.Stop();
+                        //time.Stop();
                         return result;
                     }
                 }
