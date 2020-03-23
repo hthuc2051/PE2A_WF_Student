@@ -62,7 +62,7 @@ namespace PE2A_WF_Student
 
         private void OnTimeEvent(object sender, ElapsedEventArgs e)
         {
-            this.InvokeEx(f =>
+             this.InvokeEx(async f =>
             {
                 lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
                 if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
@@ -70,7 +70,24 @@ namespace PE2A_WF_Student
                     practicalTimeMinute = 0;
                     practicalTimeSecond = 0;
                     time.Stop();
-                    MessageBox.Show("Time is over. System will be automated submit your branch","TIMEOVER");                
+                    MessageBox.Show("Time is over. System will be automated submit your branch", "TIMEOVER");
+
+                    //auto submit
+                    string startupPath = Util.ExecutablePath();
+                    string projectDirectory = startupPath + @"\Submission\" + StudentID + ".zip";
+                    FileName = projectDirectory;
+                    String result = "";
+                    if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
+                    {
+                        result = await sendFileJavaWeb(FileName);
+                    }
+                    else
+                    {
+                        result = await sendFile(FileName);
+                    }
+                    ShowWaittingMessage();
+                    MessageBox.Show(result);
+                    //end submit
                 }
                 else
                 {
