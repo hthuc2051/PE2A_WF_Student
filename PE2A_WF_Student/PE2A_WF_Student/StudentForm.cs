@@ -40,6 +40,8 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
+        bool isSubmitted = false;
+        bool isSaved = false;
         // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
@@ -65,8 +67,18 @@ namespace PE2A_WF_Student
                 lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
                 if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
                 {
-                    practicalTimeMinute = 0;
-                    practicalTimeSecond = 0;
+                    // working timeup
+                    time.Stop();
+                    if (!isSubmitted)
+                    {
+                        if (!isSaved)
+                        {
+                            btnSave_Click(sender, e);
+                        }
+                        btnSubmit_Click(sender, e);
+                        btnSubmit.Enabled = false;
+                    }
+                 
                 }
                 else
                 {
@@ -266,7 +278,6 @@ namespace PE2A_WF_Student
                 tcpClient = listener.AcceptTcpClient();
                 while (true)
                 {
-
                     try
                     {
 
@@ -308,7 +319,9 @@ namespace PE2A_WF_Student
                                 {
                                     msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
                                     string time = msg;
-                                    practicalTimeMinute = int.Parse(time);
+                                  //  practicalTimeMinute = int.Parse(time);
+                                    practicalTimeMinute = 0;
+                                    practicalTimeSecond = 5;
                                     this.InvokeEx(f => this.lbTime.Visible = true);
                                     TimeRemaining();
                                 }
@@ -414,8 +427,8 @@ namespace PE2A_WF_Student
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            isSaved = true;
             string startupPath = Util.ExecutablePath();
-
             if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
             {
                 string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
@@ -560,6 +573,7 @@ namespace PE2A_WF_Student
         {
             if (MessageBox.Show("Do you want to submit your work?", "Submission", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                isSubmitted = true;
                 btnSubmit.Enabled = false;
                 btnSave.Enabled = false;
                 dgvStudentBranch.Enabled = false;
