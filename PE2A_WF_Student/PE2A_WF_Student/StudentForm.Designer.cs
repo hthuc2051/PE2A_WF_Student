@@ -40,12 +40,12 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbPoint = new System.Windows.Forms.Label();
             this.dgvStudentBranch = new System.Windows.Forms.DataGridView();
+            this.cHeaderVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cHeaderCommitTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.lbCurrentBranch = new System.Windows.Forms.Label();
             this.labelBranch = new System.Windows.Forms.Label();
-            this.cHeaderVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cHeaderCommitTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnAction.SuspendLayout();
             this.pnScript.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -68,17 +68,20 @@
             // 
             // lbTime
             // 
-            this.lbTime.AutoSize = true;
+            this.lbTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTime.Location = new System.Drawing.Point(614, 9);
+            this.lbTime.Location = new System.Drawing.Point(0, 0);
             this.lbTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbTime.Name = "lbTime";
-            this.lbTime.Size = new System.Drawing.Size(92, 33);
+            this.lbTime.Size = new System.Drawing.Size(1316, 62);
             this.lbTime.TabIndex = 15;
             this.lbTime.Text = "00:00";
+            this.lbTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSave
             // 
+            this.btnSave.Enabled = false;
             this.btnSave.Location = new System.Drawing.Point(1006, 35);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
@@ -142,6 +145,7 @@
             // 
             // rtbDocument
             // 
+            this.rtbDocument.BackColor = System.Drawing.Color.White;
             this.rtbDocument.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDocument.Location = new System.Drawing.Point(2, 2);
             this.rtbDocument.Margin = new System.Windows.Forms.Padding(2);
@@ -151,6 +155,7 @@
             this.rtbDocument.Size = new System.Drawing.Size(1304, 653);
             this.rtbDocument.TabIndex = 9;
             this.rtbDocument.Text = "";
+            this.rtbDocument.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbDocument_KeyDown);
             // 
             // tabPageSubmit
             // 
@@ -190,6 +195,7 @@
             // 
             // dgvStudentBranch
             // 
+            this.dgvStudentBranch.AllowUserToAddRows = false;
             this.dgvStudentBranch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvStudentBranch.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvStudentBranch.BackgroundColor = System.Drawing.Color.White;
@@ -205,6 +211,20 @@
             this.dgvStudentBranch.Size = new System.Drawing.Size(1304, 579);
             this.dgvStudentBranch.TabIndex = 17;
             this.dgvStudentBranch.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStudentBranch_CellDoubleClick);
+            // 
+            // cHeaderVersion
+            // 
+            this.cHeaderVersion.HeaderText = "Version";
+            this.cHeaderVersion.Name = "cHeaderVersion";
+            this.cHeaderVersion.ReadOnly = true;
+            this.cHeaderVersion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            // 
+            // cHeaderCommitTime
+            // 
+            this.cHeaderCommitTime.HeaderText = "Commit Time";
+            this.cHeaderCommitTime.Name = "cHeaderCommitTime";
+            this.cHeaderCommitTime.ReadOnly = true;
+            this.cHeaderCommitTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             // 
             // panel1
             // 
@@ -249,20 +269,6 @@
             this.labelBranch.TabIndex = 21;
             this.labelBranch.Text = "Current version: ";
             // 
-            // cHeaderVersion
-            // 
-            this.cHeaderVersion.HeaderText = "Version";
-            this.cHeaderVersion.Name = "cHeaderVersion";
-            this.cHeaderVersion.ReadOnly = true;
-            this.cHeaderVersion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
-            // cHeaderCommitTime
-            // 
-            this.cHeaderCommitTime.HeaderText = "Commit Time";
-            this.cHeaderCommitTime.Name = "cHeaderCommitTime";
-            this.cHeaderCommitTime.ReadOnly = true;
-            this.cHeaderCommitTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            // 
             // StudentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -271,13 +277,12 @@
             this.ClientSize = new System.Drawing.Size(1316, 752);
             this.Controls.Add(this.pnScript);
             this.Controls.Add(this.pnAction);
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1332, 791);
             this.Name = "StudentForm";
             this.Text = "STUDENT FORM";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StudentForm_FormClosing);
             this.Load += new System.EventHandler(this.StudentForm_Load);
             this.pnAction.ResumeLayout(false);
-            this.pnAction.PerformLayout();
             this.pnScript.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabPageScript.ResumeLayout(false);

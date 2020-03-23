@@ -40,8 +40,6 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
-        bool isSubmitted = false;
-        bool isSaved = false;
         // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
@@ -67,18 +65,9 @@ namespace PE2A_WF_Student
                 lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
                 if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
                 {
-                    // working timeup
-                    time.Stop();
-                    if (!isSubmitted)
-                    {
-                        if (!isSaved)
-                        {
-                            btnSave_Click(sender, e);
-                        }
-                        btnSubmit_Click(sender, e);
-                        btnSubmit.Enabled = false;
-                    }
-                 
+                    practicalTimeMinute = 0;
+                    practicalTimeSecond = 0;
+                    
                 }
                 else
                 {
@@ -112,14 +101,13 @@ namespace PE2A_WF_Student
                 Microsoft.Office.Interop.Word.Document document;
                 Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
                 document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
-                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing);
+                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
                 document.ActiveWindow.Selection.WholeStory();
                 document.ActiveWindow.Selection.Copy();
                 IDataObject dataObject = Clipboard.GetDataObject();
                 rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
                 application.Quit(ref missing, ref missing, ref missing);
             }
-
         }
         private async Task<String> sendFile(String fileName)
         {
@@ -156,7 +144,6 @@ namespace PE2A_WF_Student
                 MessageBox.Show(ex.Message);
             }
             return "Error !";
-
         }
 
         private void zipFile(string path, bool isWebPage)
@@ -178,12 +165,12 @@ namespace PE2A_WF_Student
 
         private async Task<String> sendFileJavaWeb(String fileName)
         {
-            string startupPath = Util.ExecutablePath();     
+            string startupPath = Util.ExecutablePath();
             string destinationPath = startupPath + @"\Submission";
             string webappPath = startupPath + @"\Submission\webapp";
             string workPath = startupPath + @"\Submission\work";
             string workWebPagePath = startupPath + @"\Submission\work\web";
-            string webPageZip = startupPath + @"\Submission\"+StudentID+"_WEB.zip";
+            string webPageZip = startupPath + @"\Submission\" + StudentID + "_WEB.zip";
             //extract
             Util.UnarchiveFile(fileName, workPath);
             //copy
@@ -224,7 +211,7 @@ namespace PE2A_WF_Student
                     webContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                     {
                         Name = "webFile",
-                        FileName = StudentID+ "_WEB" + fileExtension
+                        FileName = StudentID + "_WEB" + fileExtension
                     };
                     form.Add(content, "file");
                     form.Add(webContent, "webFile");
@@ -279,11 +266,9 @@ namespace PE2A_WF_Student
                 while (true)
                 {
                     try
-                    {
-
+                    {                        
                         if (tcpClient != null)
                         {
-
                             var getStream = tcpClient.GetStream();
                             Thread.Sleep(1000);
                             var getStreamForFile = getStream;
@@ -296,7 +281,10 @@ namespace PE2A_WF_Student
                                 string msg = Util.receiveMessage(clientData);
                                 if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                                 {
-                                    MessageBox.Show(msg);
+                                    if (MessageBox.Show(msg, "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                                    {
+                                        Environment.Exit(Environment.ExitCode);
+                                    }
                                 }
                                 else if (msg.Contains(Constant.RETURN_URL_CODE))
                                 {
@@ -319,18 +307,18 @@ namespace PE2A_WF_Student
                                 {
                                     msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
                                     string time = msg;
-                                  //  practicalTimeMinute = int.Parse(time);
-                                    practicalTimeMinute = 0;
-                                    practicalTimeSecond = 5;
+                                    practicalTimeMinute = int.Parse(time);
                                     this.InvokeEx(f => this.lbTime.Visible = true);
                                     TimeRemaining();
                                 }
                                 else
                                 {
+                                    this.InvokeEx(func => btnSave.Enabled = true);
                                     string startupPath = Util.ExecutablePath();
-                                    string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";                            
+                                    string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";
                                     File.WriteAllBytes(projectDirectory, clientData);
-                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));                              
+                                    Thread.Sleep(1500);
+                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
                                 }
                                 Console.WriteLine("Lecturer: " + msg);
                             }
@@ -372,8 +360,8 @@ namespace PE2A_WF_Student
                 int count = 0;
                 do
                 {
-                    byte[] buf = new byte[1024 * 5];
-                    count = getStreamForFile.Read(buf, 0, 1024 * 5);
+                    byte[] buf = new byte[1024 * 100];
+                    count = getStreamForFile.Read(buf, 0, 1024 * 100); //read 50kb and store it to buf
                     ms.Write(buf, 0, count);
                 } while (getStreamForFile.DataAvailable);
 
@@ -415,7 +403,13 @@ namespace PE2A_WF_Student
                 await Task.Delay(10000);
                 if (isLoading)
                 {
-                    this.InvokeEx(f => MessageBox.Show("Remind your lecturer to start server and try to Enroll again"));
+                    this.InvokeEx(f =>
+                    {
+                        if (MessageBox.Show("Remind your lecturer to start server and try to Enroll again", "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                        {
+                            Environment.Exit(Environment.ExitCode);
+                        }
+                    });
                 }
             });
         }
@@ -427,8 +421,8 @@ namespace PE2A_WF_Student
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            isSaved = true;
             string startupPath = Util.ExecutablePath();
+
             if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
             {
                 string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
@@ -453,7 +447,7 @@ namespace PE2A_WF_Student
                 var repoPath = Repository.Init(workingDirectory);
                 using (var repo = new Repository(workingDirectory))
                 {
-                  
+
                     if (repo.Branches.Count() > 0)
                     {
                         Commands.Checkout(repo, repo.Branches["master"]);
@@ -476,7 +470,7 @@ namespace PE2A_WF_Student
                 {
                     var branchName = StudentID + "-version" + this.numberOfVersion;
                     Commands.Stage(repo, "*");
-                    Commit commit = repo.Commit(branchName + " updating files..", new Signature(StudentID, StudentID +"@fpt.edu.vn", DateTimeOffset.Now),
+                    Commit commit = repo.Commit(branchName + " updating files..", new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now),
                     new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now));
                     repo.Branches.Add(branchName, commit);
                     Console.WriteLine("Commited");
@@ -492,12 +486,15 @@ namespace PE2A_WF_Student
                     lbCurrentBranch.Text = branchName;
 
                 }
-                Console.WriteLine("Nothing changes");
+                else
+                {
+                    Console.WriteLine("Nothing changes");
+                }
             }
 
 
             // Checkout branch
-        
+
 
         }
 
@@ -520,14 +517,17 @@ namespace PE2A_WF_Student
 
         private void dgvStudentBranch_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (dgvStudentBranch.Rows.Count > 0)
             {
-                string startupPath = System.IO.Directory.GetCurrentDirectory();
-                string repoDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent";
-                //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
-                var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                ZipYourChosenBranch(repoDirectory, branchName);
-                lbCurrentBranch.Text = branchName;
+                if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    string startupPath = Util.ExecutablePath();
+                    string repoDirectory = startupPath + @"\Student\PracticalExamStudent";
+                    //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
+                    var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    ZipYourChosenBranch(repoDirectory, branchName);
+                    lbCurrentBranch.Text = branchName;
+                }
             }
         }
 
@@ -573,7 +573,6 @@ namespace PE2A_WF_Student
         {
             if (MessageBox.Show("Do you want to submit your work?", "Submission", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                isSubmitted = true;
                 btnSubmit.Enabled = false;
                 btnSave.Enabled = false;
                 dgvStudentBranch.Enabled = false;
@@ -591,7 +590,16 @@ namespace PE2A_WF_Student
                 }
 
                 ShowWaittingMessage();
-                MessageBox.Show(result);    
+                MessageBox.Show(result);
+            }
+        }
+
+
+        private void rtbDocument_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control == true)
+            {
+                MessageBox.Show("Cut/Copy and Paste Options are disabled");
             }
         }
     }
