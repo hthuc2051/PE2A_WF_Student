@@ -1,4 +1,5 @@
-﻿using SharpCompress.Archives;
+﻿using PE2A_WF_Student.Models;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Common;
@@ -219,19 +220,42 @@ namespace PE2A_WF_Student
         }
 
         ////release path
-        //public static String ExecutablePath()
-        //{
-        //    string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-        //    return appPath;
-        //}
-
-        //debug path
         public static String ExecutablePath()
         {
-            string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
-            return projectDirectory;
+            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+            return appPath;
         }
 
+        //debug path
+        //public static String ExecutablePath()
+        //{
+        //    string startupPath = System.IO.Directory.GetCurrentDirectory();
+        //    string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
+        //    return projectDirectory;
+        //}
+
+        public static void CacheHistory(History historyObj)
+        {
+
+            if (!File.Exists(ExecutablePath()+"csvFile.csv"))
+            {
+                File.Create(ExecutablePath() + "csvFile.csv");
+                String headerRow = "No,Student Code,Practical Name,Point,Practical Date";
+                String nextRow = 1 + "," + historyObj.StudentCode + ","+ historyObj.PracticalName + ","+ historyObj.Point + "," + historyObj.PracticalDate;
+                List<String> toArray = new List<String>();
+                toArray.Add(headerRow);
+                toArray.Add(nextRow);
+                File.WriteAllLines(ExecutablePath() +"csvFile.csv", toArray.ToArray());
+            }
+            else
+            {
+                String[] readAllLines = File.ReadAllLines(ExecutablePath() +"csvFile.csv", Encoding.UTF8);
+                List<String> toArray = readAllLines.ToList();
+                String nextRow = toArray.Count + "," + historyObj.StudentCode + "," + historyObj.PracticalName + "," + historyObj.Point + "," + historyObj.PracticalDate;
+                toArray.Add(nextRow);
+                File.WriteAllLines(ExecutablePath() +"csvFile.csv", toArray.ToArray());
+            }
+
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
+       
         // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
@@ -322,6 +323,13 @@ namespace PE2A_WF_Student
                                 else if (msg.Contains(Constant.RETURN_POINT))
                                 {
                                     this.InvokeEx(f => lbPoint.Text = msg);
+                                    var history = new History();
+                                    history.No = 0;
+                                    history.Point = msg.Replace(Constant.RETURN_POINT,"").Trim();
+                                    history.StudentCode = StudentID;
+                                    history.PracticalName = PracticalExamType;
+                                    history.PracticalDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                    Util.CacheHistory(history);
                                     break;
                                 }
                                 else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
