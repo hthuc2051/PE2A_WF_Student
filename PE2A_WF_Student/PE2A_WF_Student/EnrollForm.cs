@@ -92,5 +92,11 @@ namespace PE2A_WF_Student
         {
             Environment.Exit(Environment.ExitCode);
         }
+
+        private void btnHistory_Click(object sender, EventArgs e)
+        {
+            HistoryForm historyForm = new HistoryForm();
+            historyForm.Show();
+        }
     }
 }

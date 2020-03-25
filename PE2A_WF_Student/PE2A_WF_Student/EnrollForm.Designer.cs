@@ -31,14 +31,15 @@
             this.btnEnroll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtStudentID = new System.Windows.Forms.TextBox();
+            this.btnHistory = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnEnroll
             // 
-            this.btnEnroll.Location = new System.Drawing.Point(137, 134);
-            this.btnEnroll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEnroll.Location = new System.Drawing.Point(108, 159);
+            this.btnEnroll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEnroll.Name = "btnEnroll";
-            this.btnEnroll.Size = new System.Drawing.Size(85, 27);
+            this.btnEnroll.Size = new System.Drawing.Size(113, 33);
             this.btnEnroll.TabIndex = 8;
             this.btnEnroll.Text = "Enroll";
             this.btnEnroll.UseVisualStyleBackColor = true;
@@ -47,30 +48,42 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(78, 66);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(104, 81);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(90, 17);
             this.label1.TabIndex = 7;
             this.label1.Text = "Roll Number:";
             // 
             // txtStudentID
             // 
-            this.txtStudentID.Location = new System.Drawing.Point(81, 94);
-            this.txtStudentID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtStudentID.Location = new System.Drawing.Point(108, 116);
+            this.txtStudentID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtStudentID.Name = "txtStudentID";
-            this.txtStudentID.Size = new System.Drawing.Size(214, 20);
+            this.txtStudentID.Size = new System.Drawing.Size(284, 22);
             this.txtStudentID.TabIndex = 6;
+            // 
+            // btnHistory
+            // 
+            this.btnHistory.Location = new System.Drawing.Point(279, 159);
+            this.btnHistory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnHistory.Name = "btnHistory";
+            this.btnHistory.Size = new System.Drawing.Size(113, 33);
+            this.btnHistory.TabIndex = 9;
+            this.btnHistory.Text = "Show History";
+            this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
             // EnrollForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(363, 194);
+            this.ClientSize = new System.Drawing.Size(484, 239);
+            this.Controls.Add(this.btnHistory);
             this.Controls.Add(this.btnEnroll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtStudentID);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "EnrollForm";
             this.Text = "STUDENT ENROLL FORM";
@@ -86,6 +99,7 @@
         private System.Windows.Forms.Button btnEnroll;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtStudentID;
+        private System.Windows.Forms.Button btnHistory;
     }
 }
 
