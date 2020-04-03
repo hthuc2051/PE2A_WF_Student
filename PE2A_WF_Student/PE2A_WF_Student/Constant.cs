@@ -32,5 +32,9 @@ namespace PE2A_WF_Student
 
         public static string ZIP_EXTENSION = ".zip";
         public static string RAR_EXTENSION = ".rar";
+
+        //Log file
+        public static string LOG_FILE = "Log_file.txt";
+
     }
 }
