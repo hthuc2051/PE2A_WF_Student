@@ -43,7 +43,7 @@ namespace PE2A_WF_Student
         {
             try
             {
-                String currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                String currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss ");
                 String logging = currentTime + methodName + " error : " + "\r\n";
                 logging += errorMessage + "\r\n";
                 String filePath = ExecutablePath() + Constant.LOG_FILE;

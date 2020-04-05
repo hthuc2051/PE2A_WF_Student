@@ -377,6 +377,7 @@ namespace PE2A_WF_Student
                                         if (StartPractical == false)
                                         {
                                             TimeRemaining();
+                                            StartPractical = true;
                                         }
                                     }
                                     else
