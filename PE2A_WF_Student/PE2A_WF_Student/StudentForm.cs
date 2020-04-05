@@ -48,9 +48,13 @@ namespace PE2A_WF_Student
             InitializeComponent();
             StartServerTCP();
             StartPractical = false;
-            //string startupPath = System.IO.Directory.GetCurrentDirectory();
-            //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\Java_439576447_DE01.docx";
-            //this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+            this.Disposed += (objects, eventargs) =>
+            {
+                // java_web git path
+                String projectDirectory = Util.ExecutablePath() + @"\Student\PracticalExamStudent";
+                RemoveAllBranch(projectDirectory);
+                Console.WriteLine("Disposed");
+            };
 
         }
         private void TimeRemaining()
@@ -364,7 +368,7 @@ namespace PE2A_WF_Student
                                         history.Point = msg.Replace(Constant.RETURN_POINT, "").Trim();
                                         history.StudentCode = StudentID;
                                         history.PracticalName = PracticalExamType;
-                                        history.PracticalDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                        history.PracticalDate = DateTime.Now.ToString("yyyy-MM-dd");
                                         Util.CacheHistory(history);
                                         break;
                                     }
@@ -544,6 +548,31 @@ namespace PE2A_WF_Student
             
         }
 
+        public void RemoveAllBranch(String repoPath)
+        {
+            try
+            {
+                using (var repo = new Repository(repoPath))
+                {
+                    if (repo.Branches.Count() > 0)
+                    {
+                        Commands.Checkout(repo, repo.Branches["master"]);
+                        foreach (var item in repo.Branches)
+                        {
+                            if (!item.FriendlyName.Contains("master"))
+                            {
+                                repo.Branches.Remove(item);
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("RemoveAllBranch", ex.Message);
+            }
+          
+        }
         private void SaveYourWork(String workingDirectory)
         {
             try
@@ -555,20 +584,7 @@ namespace PE2A_WF_Student
                 if (this.ListBranches.Count == 0)
                 {
                     var repoPath = Repository.Init(workingDirectory);
-                    using (var repo = new Repository(workingDirectory))
-                    {
-                        if (repo.Branches.Count() > 0)
-                        {
-                            Commands.Checkout(repo, repo.Branches["master"]);
-                            foreach (var item in repo.Branches)
-                            {
-                                if (!item.FriendlyName.Contains("master"))
-                                {
-                                    repo.Branches.Remove(item);
-                                }
-                            }
-                        }
-                    }
+                    RemoveAllBranch(repoPath);
                 }
                 using (var repo = new Repository(workingDirectory))
                 {
