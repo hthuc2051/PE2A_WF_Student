@@ -41,79 +41,123 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
+       
         // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
             InitializeComponent();
             StartServerTCP();
             StartPractical = false;
-            //string startupPath = System.IO.Directory.GetCurrentDirectory();
-            //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\TemplateProject\Java_439576447_DE01.docx";
-            //this.InvokeEx(f => loadPracticalDoc(projectDirectory));
+            this.Disposed += (objects, eventargs) =>
+            {
+                // java_web git path
+                String projectDirectory = Util.ExecutablePath() + @"\Student\PracticalExamStudent";
+                RemoveAllBranch(projectDirectory);
+                Console.WriteLine("Disposed");
+            };
 
         }
         private void TimeRemaining()
         {
-            time = new System.Timers.Timer();
-            time.Interval = 1000;
-            time.Elapsed += OnTimeEvent;
-            time.Start();
+            try
+            {
+                time = new System.Timers.Timer();
+                time.Interval = 1000;
+                time.Elapsed += OnTimeEvent;
+                time.Start();
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("TimeRemaining",ex.Message);
+            }
+          
         }
 
         private void OnTimeEvent(object sender, ElapsedEventArgs e)
         {
-            this.InvokeEx(f =>
+            try
             {
-                lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
-                if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
+                this.InvokeEx(async f =>
                 {
-                    practicalTimeMinute = 0;
-                    practicalTimeSecond = 0;
-                    time.Stop();
-                    MessageBox.Show("Time is over. System will be automated submit your branch","TIMEOVER");                
-                }
-                else
-                {
-                    if (practicalTimeSecond == 0)
+                    lbTime.Text = practicalTimeMinute.ToString("00") + ":" + practicalTimeSecond.ToString("00");
+                    if (practicalTimeMinute == 0 && practicalTimeSecond == 0)
                     {
-                        practicalTimeMinute -= 1;
-                        practicalTimeSecond = 59;
+                        practicalTimeMinute = 0;
+                        practicalTimeSecond = 0;
+                        time.Stop();
+                        MessageBox.Show("Time is over. System will be automated submit your branch", "TIMEOVER");
+
+                        //auto submit
+                        string startupPath = Util.ExecutablePath();
+                        string projectDirectory = startupPath + @"\Submission\" + StudentID + ".zip";
+                        FileName = projectDirectory;
+                        String result = "";
+                        if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
+                        {
+                            result = await SendFileJavaWeb(FileName);
+                        }
+                        else
+                        {
+                            result = await SendFile(FileName);
+                        }
+                        ShowWaittingMessage();
+                        MessageBox.Show(result);
+                        //end submit
                     }
                     else
                     {
-                        practicalTimeSecond -= 1;
+                        if (practicalTimeSecond == 0)
+                        {
+                            practicalTimeMinute -= 1;
+                            practicalTimeSecond = 59;
+                        }
+                        else
+                        {
+                            practicalTimeSecond -= 1;
+                        }
                     }
-                }
-            });
-        }
-
-        private void loadPracticalDoc(string filePath)
-        {
-            var fileInfo = new FileInfo(filePath);
-
-            if (!fileInfo.Name.StartsWith("~$"))
-            {
-                rtbDocument.Visible = true;
-                object readOnly = true;
-                object visible = true;
-                object save = false;
-                object fileName = filePath;
-                object newTemplate = false;
-                object docType = 0;
-                object missing = Type.Missing;
-                Microsoft.Office.Interop.Word.Document document;
-                Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
-                document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
-                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
-                document.ActiveWindow.Selection.WholeStory();
-                document.ActiveWindow.Selection.Copy();
-                IDataObject dataObject = Clipboard.GetDataObject();
-                rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
-                application.Quit(ref missing, ref missing, ref missing);
+                });
             }
+            catch(Exception ex)
+            {
+                Util.LogException("OnTimeEvent", ex.Message);
+            }        
         }
-        private async Task<String> sendFile(String fileName)
+
+        private void LoadPracticalDoc(string filePath)
         {
+            try
+            {
+                var fileInfo = new FileInfo(filePath);
+                if (!fileInfo.Name.StartsWith("~$"))
+                {
+                    rtbDocument.Visible = true;
+                    object readOnly = true;
+                    object visible = true;
+                    object save = false;
+                    object fileName = filePath;
+                    object newTemplate = false;
+                    object docType = 0;
+                    object missing = Type.Missing;
+                    Microsoft.Office.Interop.Word.Document document;
+                    Microsoft.Office.Interop.Word.Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+                    document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
+                        ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
+                    document.ActiveWindow.Selection.WholeStory();
+                    document.ActiveWindow.Selection.Copy();
+                    IDataObject dataObject = Clipboard.GetDataObject();
+                    rtbDocument.Rtf = dataObject.GetData(DataFormats.Rtf).ToString();
+                    application.Quit(ref missing, ref missing, ref missing);
+                }
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("LoadPracticalDoc", ex.Message);
+
+            }      
+        }
+        private async Task<String> SendFile(String fileName)
+        {  
             //var client = new WebClient();
             var uri = new Uri(SubmitAPIUrl);
             string fileExtension = fileName.Substring(fileName.IndexOf('.'));
@@ -145,28 +189,38 @@ namespace PE2A_WF_Student
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                Util.LogException("SendFile", ex.Message);
             }
             return "Error !";
         }
 
-        private void zipFile(string path, bool isWebPage)
+        private void ZipFilePath(string path, bool isWebPage)
         {
-            using (var archive = SharpCompress.Archives.Zip.ZipArchive.Create())
+            try
             {
-                archive.AddAllFromDirectory(path, ".", SearchOption.AllDirectories);
-                if (isWebPage)
+                using (var archive = SharpCompress.Archives.Zip.ZipArchive.Create())
                 {
-                    archive.SaveTo(Util.DestinationOutputPath("webapp"), CompressionType.Deflate);
+                    archive.AddAllFromDirectory(path, ".", SearchOption.AllDirectories);
+                    if (isWebPage)
+                    {
+                        archive.SaveTo(Util.DestinationOutputPath("webapp"), CompressionType.Deflate);
+                    }
+                    else
+                    {
+                        archive.SaveTo(Util.DestinationOutputPath(StudentID), CompressionType.Deflate);
+                    }
+
                 }
-                else
-                {
-                    archive.SaveTo(Util.DestinationOutputPath(StudentID), CompressionType.Deflate);
-                }
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("ZipFilePath", ex.Message);
 
             }
+           
         }
 
-        private async Task<String> sendFileJavaWeb(String fileName)
+        private async Task<String> SendFileJavaWeb(String fileName)
         {
             string startupPath = Util.ExecutablePath();
             string destinationPath = startupPath + @"\Submission";
@@ -231,6 +285,8 @@ namespace PE2A_WF_Student
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                Util.LogException("SendFileJavaWeb", ex.Message);
+
             }
             return "Error !";
 
@@ -260,128 +316,160 @@ namespace PE2A_WF_Student
         // TCP LISTENER
         private void StartServerTCP()
         {
-            Task.Run(() =>
+            try
             {
-                IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, Constant.STUDENT_LISTENING_PORT);
-                listener = new TcpListener(ipEnd);
-                listener.Start();
-                Console.WriteLine("Server starting ...");
-                tcpClient = listener.AcceptTcpClient();
-                while (true)
+                Task.Run(() =>
                 {
-                    try
-                    {                        
-                        if (tcpClient != null)
+                    IPEndPoint ipEnd = new IPEndPoint(IPAddress.Any, Constant.STUDENT_LISTENING_PORT);
+                    listener = new TcpListener(ipEnd);
+                    listener.Start();
+                    Console.WriteLine("Server starting ...");
+                    tcpClient = listener.AcceptTcpClient();
+                    while (true)
+                    {
+                        try
                         {
-                            var getStream = tcpClient.GetStream();
-                            Thread.Sleep(1000);
-                            var getStreamForFile = getStream;
-                            byte[] clientData = GetAllByte(getStreamForFile);
-                            //          byte[] clientData = new byte[1024 * 5];
-                            if (getStream != null)
+                            if (tcpClient != null)
                             {
-                                //   byte[] byteToUse = Util.ConvertStreamToByte(getStreamForFile);
-                                //  getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
-                                string msg = Util.receiveMessage(clientData);
-                                if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
+                                var getStream = tcpClient.GetStream();
+                                Thread.Sleep(1000);
+                                var getStreamForFile = getStream;
+                                byte[] clientData = GetAllByte(getStreamForFile);
+                                //          byte[] clientData = new byte[1024 * 5];
+                                if (getStream != null)
                                 {
-                                    if (MessageBox.Show(msg, "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                                    //   byte[] byteToUse = Util.ConvertStreamToByte(getStreamForFile);
+                                    //  getStream.Read(clientData, 0, clientData.Length); // chep byte  vo clientData
+                                    string msg = Util.receiveMessage(clientData);
+                                    if (msg.Equals(Constant.EXISTED_IP_MESSAGE))
                                     {
-                                        Environment.Exit(Environment.ExitCode);
+                                        if (MessageBox.Show(msg, "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                                        {
+                                            Environment.Exit(Environment.ExitCode);
+                                        }
                                     }
-                                }
-                                else if (msg.Contains(Constant.RETURN_URL_CODE))
-                                {
-                                    msg = msg.Replace(Constant.RETURN_URL_CODE, "");
-                                    string decode = Util.Decode(msg, "SE1267");
-                                    string[] msgArr = decode.Split('=');
-                                    SubmitAPIUrl = msgArr[1];
-                                    ScriptCode = msgArr[2];
-                                    GetPracticalExamType(msgArr[3].ToUpper());
-                                    isLoading = false;
-                                    //this.InvokeEx(f => imgSubmit.Visible = true);
-                                    this.InvokeEx(f => loadingBox.Visible = false);
-                                }
-                                else if (msg.Contains(Constant.RETURN_POINT))
-                                {
-                                    this.InvokeEx(f => lbPoint.Text = msg);
-                                    break;
-                                }
-                                else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
-                                {
-                                    msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
-                                    string time = msg;
-                                    practicalTimeMinute = int.Parse(time);
-                                    this.InvokeEx(f => this.lbTime.Visible = true);
-                                    if(StartPractical == false)
+                                    else if (msg.Contains(Constant.RETURN_URL_CODE))
                                     {
-                                        TimeRemaining();
+                                        msg = msg.Replace(Constant.RETURN_URL_CODE, "");
+                                        string decode = Util.Decode(msg, "SE1267");
+                                        string[] msgArr = decode.Split('=');
+                                        SubmitAPIUrl = msgArr[1];
+                                        ScriptCode = msgArr[2];
+                                        GetPracticalExamType(msgArr[3].ToUpper());
+                                        isLoading = false;
+                                        //this.InvokeEx(f => imgSubmit.Visible = true);
+                                        this.InvokeEx(f => loadingBox.Visible = false);
                                     }
+                                    else if (msg.Contains(Constant.RETURN_POINT))
+                                    {
+                                        this.InvokeEx(f => lbPoint.Text = msg);
+                                        var history = new History();
+                                        history.No = 0;
+                                        history.Point = msg.Replace(Constant.RETURN_POINT, "").Trim();
+                                        history.StudentCode = StudentID;
+                                        history.PracticalName = PracticalExamType;
+                                        history.PracticalDate = DateTime.Now.ToString("yyyy-MM-dd");
+                                        Util.CacheHistory(history);
+                                        break;
+                                    }
+                                    else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
+                                    {
+                                        msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
+                                        string time = msg;
+                                        practicalTimeMinute = int.Parse(time);
+                                        this.InvokeEx(f => this.lbTime.Visible = true);
+                                        if (StartPractical == false)
+                                        {
+                                            TimeRemaining();
+                                            StartPractical = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.InvokeEx(func => btnSave.Enabled = true);
+                                        string startupPath = Util.ExecutablePath();
+                                        string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";
+                                        File.WriteAllBytes(projectDirectory, clientData);
+                                        Thread.Sleep(1500);
+                                        this.InvokeEx(f => LoadPracticalDoc(projectDirectory));
+                                    }
+                                    Console.WriteLine("Lecturer: " + msg);
                                 }
-                                else
-                                {
-                                    this.InvokeEx(func => btnSave.Enabled = true);
-                                    string startupPath = Util.ExecutablePath();
-                                    string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";
-                                    File.WriteAllBytes(projectDirectory, clientData);
-                                    Thread.Sleep(1500);
-                                    this.InvokeEx(f => loadPracticalDoc(projectDirectory));
-                                }
-                                Console.WriteLine("Lecturer: " + msg);
                             }
                         }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.StackTrace);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.StackTrace);
-                    }
-                }
-            });
+                });
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("StartServerTCP", ex.Message);
+            }
+            
         }
 
         private void GetPracticalExamType(string practicalExamCode)
         {
-            if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_JAVA_WEB))
+            try
             {
-                PracticalExamType = Constant.PRACTICAL_EXAM_JAVA_WEB;
+                if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_JAVA_WEB))
+                {
+                    PracticalExamType = Constant.PRACTICAL_EXAM_JAVA_WEB;
+                }
+                else if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_JAVA))
+                {
+                    PracticalExamType = Constant.PRACTICAL_EXAM_JAVA;
+                }
+                else if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_C_SHARP))
+                {
+                    PracticalExamType = Constant.PRACTICAL_EXAM_C_SHARP;
+                }
+                else
+                {
+                    PracticalExamType = Constant.PRACTICAL_EXAM_C;
+                }
             }
-            else if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_JAVA))
+            catch(Exception ex)
             {
-                PracticalExamType = Constant.PRACTICAL_EXAM_JAVA;
+                Util.LogException("GetPracticalExamType", ex.Message);
             }
-            else if (practicalExamCode.Contains(Constant.PRACTICAL_EXAM_C_SHARP))
-            {
-                PracticalExamType = Constant.PRACTICAL_EXAM_C_SHARP;
-            }
-            else
-            {
-                PracticalExamType = Constant.PRACTICAL_EXAM_C;
-            }
+          
         }
 
         private byte[] GetAllByte(NetworkStream getStreamForFile)
         {
-            byte[] getByte = null;
-            using (MemoryStream ms = new MemoryStream())
+            try
             {
-                int count = 0;
-                do
+                byte[] getByte = null;
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    byte[] buf = new byte[1024 * 100];
-                    count = getStreamForFile.Read(buf, 0, 1024 * 100); //read 50kb and store it to buf
-                    ms.Write(buf, 0, count);
-                } while (getStreamForFile.DataAvailable);
+                    int count = 0;
+                    do
+                    {
+                        byte[] buf = new byte[1024 * 100];
+                        count = getStreamForFile.Read(buf, 0, 1024 * 100); //read 50kb and store it to buf
+                        ms.Write(buf, 0, count);
+                    } while (getStreamForFile.DataAvailable);
 
-                getByte = ms.ToArray();
+                    getByte = ms.ToArray();
+
+                }
+                //var finalByte = new byte[getByte.Length + clientData.Length];
+                //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
+                //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
+                return getByte;
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("GetAllByte", ex.Message);
 
             }
-            //var finalByte = new byte[getByte.Length + clientData.Length];
-            //Buffer.BlockCopy(clientData, 0, finalByte, 0, clientData.Length);
-            //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
-            return getByte;
+            return null;
+            
         }
-
-
         private void ShowSelectedFile()
         {
             btnSubmit.Visible = true;
@@ -404,21 +492,29 @@ namespace PE2A_WF_Student
 
         private void StudentForm_Load(object sender, EventArgs e)
         {
-
-            Task.Run(async delegate
+            try
             {
-                await Task.Delay(10000);
-                if (isLoading)
+                Task.Run(async delegate
                 {
-                    this.InvokeEx(f =>
+                    await Task.Delay(10000);
+                    if (isLoading)
                     {
-                        if (MessageBox.Show("Remind your lecturer to start server and try to Enroll again", "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                        this.InvokeEx(f =>
                         {
-                            Environment.Exit(Environment.ExitCode);
-                        }
-                    });
-                }
-            });
+                            if (MessageBox.Show("Remind your lecturer to start server and try to Enroll again", "Information", MessageBoxButtons.OK) == DialogResult.OK)
+                            {
+                                Environment.Exit(Environment.ExitCode);
+                            }
+                        });
+                    }
+                });
+            }
+            catch(Exception ex)
+            {
+                Util.LogException("StudentForm_Load", ex.Message);
+
+            }
+            
         }
 
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -428,33 +524,36 @@ namespace PE2A_WF_Student
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string startupPath = Util.ExecutablePath();
+            try
+            {
+                string startupPath = Util.ExecutablePath();
 
-            if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
-            {
-                string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
-                SaveYourWork(webPageDirectory);
+                if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+                {
+                    string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
+                    SaveYourWork(webPageDirectory);
+                }
+                else
+                {
+                    string projectDirectory = startupPath + @"\Student\PracticalExamStudent\src\com\practicalexam"; //java
+                    SaveYourWork(projectDirectory);
+                }
+                UpdateGridViewBranch();
             }
-            else
+            catch(Exception ex)
             {
-                string projectDirectory = startupPath + @"\Student\PracticalExamStudent\src\com\practicalexam"; //java
-                SaveYourWork(projectDirectory);
+                Util.LogException("btnSave_Click", ex.Message);
+
             }
-            UpdateGridViewBranch();
+            
         }
 
-        private void SaveYourWork(String workingDirectory)
+        public void RemoveAllBranch(String repoPath)
         {
-            if (!btnSubmit.Enabled)
+            try
             {
-                btnSubmit.Enabled = true;
-            }
-            if (this.ListBranches.Count == 0)
-            {
-                var repoPath = Repository.Init(workingDirectory);
-                using (var repo = new Repository(workingDirectory))
+                using (var repo = new Repository(repoPath))
                 {
-
                     if (repo.Branches.Count() > 0)
                     {
                         Commands.Checkout(repo, repo.Branches["master"]);
@@ -466,43 +565,59 @@ namespace PE2A_WF_Student
                             }
                         }
                     }
-
                 }
             }
-
-            using (var repo = new Repository(workingDirectory))
+            catch(Exception ex)
             {
-                RepositoryStatus status = repo.RetrieveStatus();
-                if (status.IsDirty)
+                Util.LogException("RemoveAllBranch", ex.Message);
+            }
+          
+        }
+        private void SaveYourWork(String workingDirectory)
+        {
+            try
+            {
+                if (!btnSubmit.Enabled)
                 {
-                    var branchName = StudentID + "-version" + this.numberOfVersion;
-                    Commands.Stage(repo, "*");
-                    Commit commit = repo.Commit(branchName + " updating files..", new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now),
-                    new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now));
-                    repo.Branches.Add(branchName, commit);
-                    Console.WriteLine("Commited");
-                    this.ListBranches.Add(new BranchModel
-                    {
-                        BranchName = branchName,
-                        CommitTime = DateTime.Now.ToString()
-                    });
-                    this.numberOfVersion++;
-
-                    string projectDirectory = workingDirectory;
-                    ZipYourChosenBranch(projectDirectory, branchName);
-                    lbCurrentBranch.Text = branchName;
-
+                    btnSubmit.Enabled = true;
                 }
-                else
+                if (this.ListBranches.Count == 0)
                 {
-                    Console.WriteLine("Nothing changes");
+                    var repoPath = Repository.Init(workingDirectory);
+                    RemoveAllBranch(repoPath);
+                }
+                using (var repo = new Repository(workingDirectory))
+                {
+                    RepositoryStatus status = repo.RetrieveStatus();
+                    if (status.IsDirty)
+                    {
+                        var branchName = StudentID + "-version" + this.numberOfVersion;
+                        Commands.Stage(repo, "*");
+                        Commit commit = repo.Commit(branchName + " updating files..", new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now),
+                        new Signature(StudentID, StudentID + "@fpt.edu.vn", DateTimeOffset.Now));
+                        repo.Branches.Add(branchName, commit);
+                        Console.WriteLine("Commited");
+                        this.ListBranches.Add(new BranchModel
+                        {
+                            BranchName = branchName,
+                            CommitTime = DateTime.Now.ToString()
+                        });
+                        this.numberOfVersion++;
+                        string projectDirectory = workingDirectory;
+                        ZipYourChosenBranch(projectDirectory, branchName);
+                        lbCurrentBranch.Text = branchName;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing changes");
+                    }
                 }
             }
-
-
+            catch (Exception ex)
+            {
+                Util.LogException("SaveYourWork", ex.Message);
+            }       
             // Checkout branch
-
-
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -515,11 +630,19 @@ namespace PE2A_WF_Student
 
         private void UpdateGridViewBranch()
         {
-            dgvStudentBranch.Rows.Clear();
-            foreach (var item in ListBranches)
+            try
             {
-                dgvStudentBranch.Rows.Add(new string[] { item.BranchName, item.CommitTime });
+                dgvStudentBranch.Rows.Clear();
+                foreach (var item in ListBranches)
+                {
+                    dgvStudentBranch.Rows.Add(new string[] { item.BranchName, item.CommitTime });
+                }
             }
+            catch(Exception ex)
+            {
+                Util.LogException("UpdateGridViewBranch", ex.Message);
+            }
+           
         }
 
         private void dgvStudentBranch_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -540,18 +663,27 @@ namespace PE2A_WF_Student
 
         private void ZipYourChosenBranch(String repoDirectory, String branchName)
         {
-            using (var repo = new Repository(repoDirectory))
+            try
             {
-                var branch = repo.Branches[branchName];
-                if (branch != null)
+                using (var repo = new Repository(repoDirectory))
                 {
-                    Commands.Checkout(repo, branch);
-                    Console.WriteLine("Checkout");
+                    var branch = repo.Branches[branchName];
+                    if (branch != null)
+                    {
+                        Commands.Checkout(repo, branch);
+                        Console.WriteLine("Checkout");
+                    }
                 }
+                Thread.Sleep(1500);
+                var zipPath = repoDirectory; // zip all file and folder in here
+                ListAllFiles(zipPath);
             }
-            Thread.Sleep(1500);
-            var zipPath = repoDirectory; // zip all file and folder in here
-            ListAllFiles(zipPath);
+            catch(Exception ex)
+            {
+                Util.LogException("ZipYourChosenBranch", ex.Message);
+
+            }
+          
         }
 
         private void ListAllFiles(String folder)
@@ -567,12 +699,11 @@ namespace PE2A_WF_Student
                 {
                     archive.AddAllFromDirectory(folder, ".", SearchOption.AllDirectories);
                     archive.SaveTo(Util.DestinationOutputPath(StudentID), CompressionType.Deflate);
-
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                Util.LogException("ListAllFiles", ex.Message);
             }
         }
 
@@ -589,11 +720,11 @@ namespace PE2A_WF_Student
                 String result = "";
                 if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
                 {
-                    result = await sendFileJavaWeb(FileName);
+                    result = await SendFileJavaWeb(FileName);
                 }
                 else
                 {
-                    result = await sendFile(FileName);
+                    result = await SendFile(FileName);
                 }
 
                 ShowWaittingMessage();
