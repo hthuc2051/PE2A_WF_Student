@@ -39,6 +39,51 @@ namespace PE2A_WF_Student
             }
 
         }
+        public static String PracticalPath(String practicalType)
+        {
+            string startupPath = Util.ExecutablePath();
+            String realPath = "";
+            if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+            {
+                 realPath = startupPath + Constant.JAVA_WEB_PATH_GIT; // java web path
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+            {
+                 realPath = startupPath + Constant.JAVA_PATH_GIT; //java
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+            {
+                 realPath = startupPath + Constant.CS_PATH_GIT; //c#
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+            {
+                 realPath = startupPath + Constant.C_PATH_GIT; //c
+            }
+            return realPath;
+        }
+
+        public static String PracticalSave(String practicalType)
+        {
+            string startupPath = Util.ExecutablePath();
+            String realPath = "";
+            if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+            {
+                realPath = startupPath + Constant.JAVA_WEB_PATH_GIT+Constant.JAVA_WEB_PATH_SAVE; // java web path
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+            {
+                realPath = startupPath + Constant.JAVA_PATH_GIT + Constant.JAVA_PATH_SAVE; //java
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+            {
+                realPath = startupPath + Constant.CS_PATH_GIT + Constant.CS_PATH_SAVE; //c#
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+            {
+                realPath = startupPath + Constant.C_PATH_GIT + Constant.C_PATH_SAVE; //c
+            }
+            return realPath;
+        }
         public static void LogException(String methodName, String errorMessage)
         {
             try
@@ -355,7 +400,6 @@ namespace PE2A_WF_Student
             catch(Exception ex)
             {
                 LogException("ExecutablePath", ex.Message);
-
             }
             return null;
           
@@ -383,7 +427,6 @@ namespace PE2A_WF_Student
                     toArray.Add(nextRow);
                     File.WriteAllLines(ExecutablePath() + @"\csvFile.csv", toArray.ToArray());
                 }
-
             }
             catch(Exception ex)
             {

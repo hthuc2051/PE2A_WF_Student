@@ -41,7 +41,7 @@ namespace PE2A_WF_Student
         System.Timers.Timer time;
         int practicalTimeMinute = 60;
         int practicalTimeSecond = 00;
-       
+
         // DateTime startTime = new DateTime(2020, 02, 17, 18, 00, 00);
         public StudentForm()
         {
@@ -51,7 +51,7 @@ namespace PE2A_WF_Student
             this.Disposed += (objects, eventargs) =>
             {
                 // java_web git path
-                String projectDirectory = Util.ExecutablePath() + @"\Student\PracticalExamStudent";
+                String projectDirectory = Util.PracticalPath(PracticalExamType);
                 RemoveAllBranch(projectDirectory);
                 Console.WriteLine("Disposed");
             };
@@ -66,11 +66,11 @@ namespace PE2A_WF_Student
                 time.Elapsed += OnTimeEvent;
                 time.Start();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Util.LogException("TimeRemaining",ex.Message);
+                Util.LogException("TimeRemaining", ex.Message);
             }
-          
+
         }
 
         private void OnTimeEvent(object sender, ElapsedEventArgs e)
@@ -92,7 +92,7 @@ namespace PE2A_WF_Student
                         string projectDirectory = startupPath + @"\Submission\" + StudentID + ".zip";
                         FileName = projectDirectory;
                         String result = "";
-                        if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
+                        if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
                         {
                             result = await SendFileJavaWeb(FileName);
                         }
@@ -118,10 +118,10 @@ namespace PE2A_WF_Student
                     }
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("OnTimeEvent", ex.Message);
-            }        
+            }
         }
 
         private void LoadPracticalDoc(string filePath)
@@ -150,14 +150,13 @@ namespace PE2A_WF_Student
                     application.Quit(ref missing, ref missing, ref missing);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("LoadPracticalDoc", ex.Message);
-
-            }      
+            }
         }
         private async Task<String> SendFile(String fileName)
-        {  
+        {
             //var client = new WebClient();
             var uri = new Uri(SubmitAPIUrl);
             string fileExtension = fileName.Substring(fileName.IndexOf('.'));
@@ -212,12 +211,12 @@ namespace PE2A_WF_Student
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("ZipFilePath", ex.Message);
 
             }
-           
+
         }
 
         private async Task<String> SendFileJavaWeb(String fileName)
@@ -388,7 +387,7 @@ namespace PE2A_WF_Student
                                     {
                                         this.InvokeEx(func => btnSave.Enabled = true);
                                         string startupPath = Util.ExecutablePath();
-                                        string projectDirectory = startupPath + @"\TemplateProject\testDoc.docx";
+                                        string projectDirectory = startupPath + @"\TemplateProject\PracticalExamDocument.docx";
                                         File.WriteAllBytes(projectDirectory, clientData);
                                         Thread.Sleep(1500);
                                         this.InvokeEx(f => LoadPracticalDoc(projectDirectory));
@@ -404,11 +403,11 @@ namespace PE2A_WF_Student
                     }
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("StartServerTCP", ex.Message);
             }
-            
+
         }
 
         private void GetPracticalExamType(string practicalExamCode)
@@ -432,11 +431,11 @@ namespace PE2A_WF_Student
                     PracticalExamType = Constant.PRACTICAL_EXAM_C;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("GetPracticalExamType", ex.Message);
             }
-          
+
         }
 
         private byte[] GetAllByte(NetworkStream getStreamForFile)
@@ -462,13 +461,13 @@ namespace PE2A_WF_Student
                 //Buffer.BlockCopy(getByte, 0, finalByte, clientData.Length, getByte.Length);
                 return getByte;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("GetAllByte", ex.Message);
 
             }
             return null;
-            
+
         }
         private void ShowSelectedFile()
         {
@@ -509,12 +508,12 @@ namespace PE2A_WF_Student
                     }
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("StudentForm_Load", ex.Message);
 
             }
-            
+
         }
 
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -530,22 +529,32 @@ namespace PE2A_WF_Student
 
                 if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
                 {
-                    string webPageDirectory = startupPath + @"\Student\PracticalExamStudent";
+                    string webPageDirectory = startupPath + Constant.JAVA_WEB_PATH_GIT; // java web path
                     SaveYourWork(webPageDirectory);
                 }
-                else
+                else if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA))
                 {
-                    string projectDirectory = startupPath + @"\Student\PracticalExamStudent\src\com\practicalexam"; //java
+                    string projectDirectory = startupPath + Constant.JAVA_PATH_GIT; //java
+                    SaveYourWork(projectDirectory);
+                }
+                else if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_C_SHARP)) 
+                {
+                    string projectDirectory = startupPath + Constant.CS_PATH_GIT; //c#
+                    SaveYourWork(projectDirectory);
+                }
+                else if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_C))
+                {
+                    string projectDirectory = startupPath + Constant.C_PATH_GIT; //c#
                     SaveYourWork(projectDirectory);
                 }
                 UpdateGridViewBranch();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("btnSave_Click", ex.Message);
 
             }
-            
+
         }
 
         public void RemoveAllBranch(String repoPath)
@@ -567,11 +576,11 @@ namespace PE2A_WF_Student
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("RemoveAllBranch", ex.Message);
             }
-          
+
         }
         private void SaveYourWork(String workingDirectory)
         {
@@ -603,7 +612,7 @@ namespace PE2A_WF_Student
                             CommitTime = DateTime.Now.ToString()
                         });
                         this.numberOfVersion++;
-                        string projectDirectory = workingDirectory;
+                        string projectDirectory = Util.PracticalSave(PracticalExamType);
                         ZipYourChosenBranch(projectDirectory, branchName);
                         lbCurrentBranch.Text = branchName;
                     }
@@ -616,7 +625,7 @@ namespace PE2A_WF_Student
             catch (Exception ex)
             {
                 Util.LogException("SaveYourWork", ex.Message);
-            }       
+            }
             // Checkout branch
         }
 
@@ -638,11 +647,11 @@ namespace PE2A_WF_Student
                     dgvStudentBranch.Rows.Add(new string[] { item.BranchName, item.CommitTime });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("UpdateGridViewBranch", ex.Message);
             }
-           
+
         }
 
         private void dgvStudentBranch_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -678,12 +687,12 @@ namespace PE2A_WF_Student
                 var zipPath = repoDirectory; // zip all file and folder in here
                 ListAllFiles(zipPath);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("ZipYourChosenBranch", ex.Message);
 
             }
-          
+
         }
 
         private void ListAllFiles(String folder)
@@ -701,7 +710,7 @@ namespace PE2A_WF_Student
                     archive.SaveTo(Util.DestinationOutputPath(StudentID), CompressionType.Deflate);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Util.LogException("ListAllFiles", ex.Message);
             }
@@ -718,7 +727,7 @@ namespace PE2A_WF_Student
                 string projectDirectory = startupPath + @"\Submission\" + StudentID + ".zip";
                 FileName = projectDirectory;
                 String result = "";
-                if (PracticalExamType == Constant.PRACTICAL_EXAM_JAVA_WEB)
+                if (PracticalExamType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
                 {
                     result = await SendFileJavaWeb(FileName);
                 }
