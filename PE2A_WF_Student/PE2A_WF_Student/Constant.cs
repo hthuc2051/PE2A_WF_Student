@@ -43,7 +43,7 @@ namespace PE2A_WF_Student
         //Practical path student 
         public static string JAVA_WEB_PATH_SAVE = "";
         public static string JAVA_PATH_SAVE = @"\practicalexam";
-        public static string CS_PATH_SAVE = @"\Student";
+        public static string CS_PATH_SAVE = @"\Practical";
         public static string C_PATH_SAVE = @"Unknown";
 
 
