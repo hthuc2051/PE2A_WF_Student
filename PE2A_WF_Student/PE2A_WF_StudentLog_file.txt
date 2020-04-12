@@ -1,0 +1,27 @@
+2020-04-12 11:09:27 SaveYourWork error : 
+The type initializer for 'LibGit2Sharp.Core.NativeMethods' threw an exception.
+2020-04-12 11:09:41 SaveYourWork error : 
+The type initializer for 'LibGit2Sharp.Core.NativeMethods' threw an exception.
+2020-04-12 11:11:48 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-12 11:18:21 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-12 11:30:36 SaveYourWork error : 
+The type initializer for 'LibGit2Sharp.Core.NativeMethods' threw an exception.
+2020-04-12 11:34:14 ListAllFiles error : 
+Could not find a part of the path 'D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\Submission\JAVA\SE63146.zip'.
+2020-04-12 11:39:49 RemoveAllBranch error : 
+1 conflict prevents checkout
+2020-04-12 11:43:04 RemoveAllBranch error : 
+1 conflict prevents checkout
+2020-04-12 11:43:04 SaveYourWork error : 
+failed to write reference 'refs/heads/SE62882-version1': a reference with that name already exists.
+2020-04-12 14:11:51 GetAllByte error : 
+Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+2020-04-12 14:11:51 receiveMessage error : 
+Array cannot be null.
+Parameter name: bytes
+2020-04-12 15:02:34 SaveYourWork error : 
+Path 'D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\Student\PracticalExamStudent' doesn't point at a valid Git repository or workdir.
+2020-04-12 15:02:50 SaveYourWork error : 
+Path 'D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\Student\PracticalExamStudent' doesn't point at a valid Git repository or workdir.

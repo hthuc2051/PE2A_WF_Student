@@ -22,25 +22,33 @@ namespace PE2A_WF_Student
         }
         public void ShowHistory()
         {
-            String[] readAllLines = File.ReadAllLines(Util.ExecutablePath()+@"\csvFile.csv", Encoding.UTF8);
-            if(readAllLines[1] != null)
+            try
             {
-                for (int i = 1; i < readAllLines.Length; i++)
+                String[] readAllLines = File.ReadAllLines(Util.ExecutablePath() + @"\csvFile.csv", Encoding.UTF8);
+                if (readAllLines[1] != null)
                 {
-                    String[] split = readAllLines[i].Split(',');
-                    var historyObj = new History()
+                    for (int i = 1; i < readAllLines.Length; i++)
                     {
-                        No = int.Parse(split[0]),
-                        StudentCode = split[1],
-                        PracticalName = split[2],
-                        Point = split[3],
-                        PracticalDate = split[4]
-                    };
-                    histories.Add(historyObj);
+                        String[] split = readAllLines[i].Split(',');
+                        var historyObj = new History()
+                        {
+                            No = int.Parse(split[0]),
+                            StudentCode = split[1],
+                            PracticalName = split[2],
+                            Point = split[3],
+                            PracticalDate = split[4]
+                        };
+                        histories.Add(historyObj);
+                    }
+                    this.dgvHistory.DataSource = histories;
                 }
-                this.dgvHistory.DataSource = histories;
             }
-            
+            catch (Exception ex)
+            {
+                Util.LogException("ShowHistory", ex.Message);
+            }
+
+
 
         }
 

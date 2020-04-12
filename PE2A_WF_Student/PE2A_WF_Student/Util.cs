@@ -39,6 +39,65 @@ namespace PE2A_WF_Student
             }
 
         }
+        public static String PracticalPath(String practicalType)
+        {
+            string startupPath = Util.ExecutablePath();
+            String realPath = "";
+            if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+            {
+                realPath = Path.Combine(startupPath + @"\"+ Constant.JAVA_WEB_PATH_GIT); // java web path
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_PATH_GIT); //java
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.CS_PATH_GIT); //c#
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.C_PATH_GIT); //c
+            }
+            return realPath;
+        }
+        public static void DeleteFile(String url)
+        {
+            try
+            {
+                if (File.Exists(url))
+                {
+                    File.Delete(url);
+                }
+            }
+            catch(Exception ex)
+            {
+                LogException("DeleteFile", ex.Message);
+            }
+           
+        }
+        public static String PracticalSave(String practicalType)
+        {
+            string startupPath = Util.ExecutablePath();
+            String realPath = "";
+            if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_WEB_PATH_GIT + @"\" + Constant.JAVA_WEB_PATH_SAVE); // java web path
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_PATH_GIT + @"\" + Constant.JAVA_PATH_SAVE); //java
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.CS_PATH_GIT + @"\" + Constant.CS_PATH_SAVE); //c#
+            }
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+            {
+                realPath = Path.Combine(startupPath + @"\" + Constant.C_PATH_GIT + @"\" + Constant.C_PATH_SAVE); //c
+            }
+            return realPath;
+        }
         public static void LogException(String methodName, String errorMessage)
         {
             try
@@ -214,14 +273,38 @@ namespace PE2A_WF_Student
             return null;
 
         }
-        public static String DestinationOutputPath(string studentCode)
+        public static String DestinationOutputPath(string studentCode, String practicalType)
         {
             try
             {
-                string studentFile = studentCode + ".zip";
-                string startupPath = ExecutablePath();
-                string destination = Path.Combine(startupPath + @"\Submission\" + studentFile);
-                return destination;
+                if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+                {
+                    string studentFile = studentCode + ".zip";
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\" + studentFile; // ...Submission/[Practical_Type]/StudentId.zip
+                    return destination;
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+                {
+                    string studentFile = studentCode + ".zip";
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA + @"\" + studentFile; // ...Submission/[Practical_Type]/StudentId.zip
+                    return destination;
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+                {
+                    string studentFile = studentCode + ".zip";
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C_SHARP + @"\" + studentFile; // ...Submission/[Practical_Type]/StudentId.zip
+                    return destination;
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+                {
+                    string studentFile = studentCode + ".zip";
+                    string startupPath = ExecutablePath() +@"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C + @"\" + studentFile; // ...Submission/[Practical_Type]/[StudentId].zip
+                    return destination;
+                }
             }
             catch (Exception ex)
             {
@@ -286,10 +369,10 @@ namespace PE2A_WF_Student
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException("UnarchiveFile", ex.Message);
-            }      
+            }
         }
 
         public static void Copy(string sourceDirectory, string targetDirectory)
@@ -300,11 +383,11 @@ namespace PE2A_WF_Student
                 DirectoryInfo diTarget = new DirectoryInfo(targetDirectory);
                 CopyAll(diSource, diTarget);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException("Copy", ex.Message);
             }
-           
+
         }
 
         public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
@@ -328,12 +411,12 @@ namespace PE2A_WF_Student
                     CopyAll(diSourceSubDir, nextTargetSubDir);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException("CopyAll", ex.Message);
 
             }
-           
+
         }
 
         ////release path
@@ -352,13 +435,12 @@ namespace PE2A_WF_Student
                 string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
                 return projectDirectory;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException("ExecutablePath", ex.Message);
-
             }
             return null;
-          
+
         }
 
         public static void CacheHistory(History historyObj)
@@ -383,12 +465,11 @@ namespace PE2A_WF_Student
                     toArray.Add(nextRow);
                     File.WriteAllLines(ExecutablePath() + @"\csvFile.csv", toArray.ToArray());
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogException("CacheHistory", ex.Message);
-            }         
+            }
         }
     }
 }

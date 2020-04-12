@@ -35,6 +35,17 @@ namespace PE2A_WF_Student
 
         //Log file
         public static string LOG_FILE = "Log_file.txt";
+        //Practical path git
+        public static string JAVA_WEB_PATH_GIT = @"\Student\PracticalExamStudent";
+        public static string JAVA_PATH_GIT = @"\Student\PRO192PETemplate\src\com";
+        public static string CS_PATH_GIT = @"\Student\Practical_CSharp\Practical_CSharp";
+        public static string C_PATH_GIT = @"Unknown";
+        //Practical path student 
+        public static string JAVA_WEB_PATH_SAVE = "";
+        public static string JAVA_PATH_SAVE = @"\practicalexam";
+        public static string CS_PATH_SAVE = @"\Practical";
+        public static string C_PATH_SAVE = @"Unknown";
+
 
     }
 }
