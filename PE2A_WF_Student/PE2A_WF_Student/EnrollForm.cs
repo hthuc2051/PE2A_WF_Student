@@ -36,13 +36,18 @@ namespace PE2A_WF_Student
             }
             else
             {
-                if (Directory.Exists(Util.ExecutablePath() + @"\Submission\work") || Directory.Exists(Util.ExecutablePath() + @"\Submission\webapp"))
+                String workFolder = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\work";
+                String webappFolder = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\webapp";
+                if (Directory.Exists(workFolder))
                 {
-                    Directory.Delete(Util.ExecutablePath() + @"\Submission\work", true);
-                    Directory.Delete(Util.ExecutablePath() + @"\Submission\webapp", true);
+                    Directory.Delete(workFolder, true);
                 }
-                Directory.CreateDirectory(Util.ExecutablePath() + @"\Submission\work");
-                Directory.CreateDirectory(Util.ExecutablePath() + @"\Submission\webapp");
+                if (Directory.Exists(webappFolder))
+                {
+                    Directory.Delete(webappFolder, true);
+                }
+                Directory.CreateDirectory(workFolder);
+                Directory.CreateDirectory(webappFolder);
                 Random rd = new Random();
                 int randomSleep = rd.Next(500, 5000);
                 Thread.Sleep(randomSleep);
