@@ -48,17 +48,6 @@ namespace PE2A_WF_Student
             InitializeComponent();
             StartServerTCP();
             StartPractical = false;
-<<<<<<< HEAD
-            this.Disposed += (objects, eventargs) =>
-            {
-                // remove git path
-                String projectDirectory = Util.PracticalPath(PracticalExamType);
-                RemoveAllBranch(projectDirectory);
-                Console.WriteLine("Disposed");
-            };
-=======
-        
->>>>>>> 6bc5a760b4604b5fd3c0ef0ad86fd776e8025c13
 
         }
         private void TimeRemaining()
