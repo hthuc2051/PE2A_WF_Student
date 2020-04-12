@@ -50,7 +50,7 @@ namespace PE2A_WF_Student
             StartPractical = false;
             this.Disposed += (objects, eventargs) =>
             {
-                // java_web git path
+                // remove git path
                 String projectDirectory = Util.PracticalPath(PracticalExamType);
                 RemoveAllBranch(projectDirectory);
                 Console.WriteLine("Disposed");
@@ -194,7 +194,7 @@ namespace PE2A_WF_Student
                     archive.SaveTo(destinationFile, CompressionType.Deflate);
                 }
 
-                //submit
+                //submit xong r  a oi //alo e sua xong r a tést tiep di
                 var uri = new Uri(SubmitAPIUrl);
                 string fileExtension = fileName.Substring(fileName.IndexOf('.'));
 
@@ -448,12 +448,12 @@ namespace PE2A_WF_Student
                                     }
                                     else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
                                     {
-                                        msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
-                                        string time = msg;
-                                        practicalTimeMinute = int.Parse(time);
-                                        this.InvokeEx(f => this.lbTime.Visible = true);
                                         if (StartPractical == false)
                                         {
+                                            msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
+                                            string time = msg;
+                                            practicalTimeMinute = int.Parse(time);
+                                            this.InvokeEx(f => this.lbTime.Visible = true);
                                             TimeRemaining();
                                             StartPractical = true;
                                         }
@@ -687,7 +687,7 @@ namespace PE2A_WF_Student
                             CommitTime = DateTime.Now.ToString()
                         });
                         this.numberOfVersion++;
-                        string projectDirectory = Util.PracticalSave(PracticalExamType);
+                        string projectDirectory = Util.PracticalPath(PracticalExamType);
                         ZipYourChosenBranch(projectDirectory, branchName);
                         lbCurrentBranch.Text = branchName;
                     }
@@ -759,7 +759,7 @@ namespace PE2A_WF_Student
                     }
                 }
                 Thread.Sleep(1500);
-                var zipPath = repoDirectory; // zip all file and folder in here
+                var zipPath = Util.PracticalSave(PracticalExamType); // zip all file and folder in here
                 ListAllFiles(zipPath);
             }
             catch (Exception ex)
@@ -775,6 +775,11 @@ namespace PE2A_WF_Student
             try
             {
                 String practicalType = PracticalExamType;
+                String destinationPath = Path.Combine(Util.ExecutablePath() + @"\Submission\" + practicalType);
+                if (!Directory.Exists(destinationPath))
+                {
+                    Directory.CreateDirectory(destinationPath);
+                }
                 if (File.Exists(Util.DestinationOutputPath(StudentID, practicalType)))
                 {
                     File.Delete(Util.DestinationOutputPath(StudentID, practicalType));

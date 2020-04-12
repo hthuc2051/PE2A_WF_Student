@@ -45,19 +45,19 @@ namespace PE2A_WF_Student
             String realPath = "";
             if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
             {
-                realPath = Path.Combine(startupPath + Constant.JAVA_WEB_PATH_GIT); // java web path
+                realPath = Path.Combine(startupPath + @"\"+ Constant.JAVA_WEB_PATH_GIT); // java web path
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
             {
-                realPath = Path.Combine(startupPath + Constant.JAVA_PATH_GIT); //java
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_PATH_GIT); //java
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
             {
-                realPath = Path.Combine(startupPath + Constant.CS_PATH_GIT); //c#
+                realPath = Path.Combine(startupPath + @"\" + Constant.CS_PATH_GIT); //c#
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
             {
-                realPath = Path.Combine(startupPath + Constant.C_PATH_GIT); //c
+                realPath = Path.Combine(startupPath + @"\" + Constant.C_PATH_GIT); //c
             }
             return realPath;
         }
@@ -82,19 +82,19 @@ namespace PE2A_WF_Student
             String realPath = "";
             if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
             {
-                realPath = Path.Combine(startupPath + Constant.JAVA_WEB_PATH_GIT + Constant.JAVA_WEB_PATH_SAVE); // java web path
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_WEB_PATH_GIT + @"\" + Constant.JAVA_WEB_PATH_SAVE); // java web path
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
             {
-                realPath = Path.Combine(startupPath + Constant.JAVA_PATH_GIT + Constant.JAVA_PATH_SAVE); //java
+                realPath = Path.Combine(startupPath + @"\" + Constant.JAVA_PATH_GIT + @"\" + Constant.JAVA_PATH_SAVE); //java
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
             {
-                realPath = Path.Combine(startupPath + Constant.CS_PATH_GIT + Constant.CS_PATH_SAVE); //c#
+                realPath = Path.Combine(startupPath + @"\" + Constant.CS_PATH_GIT + @"\" + Constant.CS_PATH_SAVE); //c#
             }
             else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
             {
-                realPath = Path.Combine(startupPath + Constant.C_PATH_GIT + Constant.C_PATH_SAVE); //c
+                realPath = Path.Combine(startupPath + @"\" + Constant.C_PATH_GIT + @"\" + Constant.C_PATH_SAVE); //c
             }
             return realPath;
         }
