@@ -48,6 +48,7 @@ namespace PE2A_WF_Student
             InitializeComponent();
             StartServerTCP();
             StartPractical = false;
+<<<<<<< HEAD
             this.Disposed += (objects, eventargs) =>
             {
                 // remove git path
@@ -55,6 +56,9 @@ namespace PE2A_WF_Student
                 RemoveAllBranch(projectDirectory);
                 Console.WriteLine("Disposed");
             };
+=======
+        
+>>>>>>> 6bc5a760b4604b5fd3c0ef0ad86fd776e8025c13
 
         }
         private void TimeRemaining()
@@ -593,7 +597,22 @@ namespace PE2A_WF_Student
 
         private void StudentForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Environment.Exit(Environment.ExitCode);
+            var option = MessageBox.Show("Are you sure you want to really exit ? ",
+                            "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (option == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                //remove git branch
+                String projectDirectory = Util.PracticalPath(PracticalExamType);
+                RemoveAllBranch(projectDirectory);
+                Console.WriteLine("Disposed");
+                e.Cancel = false;
+                Environment.Exit(Environment.ExitCode);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
