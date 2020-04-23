@@ -1,0 +1,32 @@
+2020-04-23 19:27:25 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 20:03:06 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 20:05:36 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 20:07:40 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 20:19:33 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 20:34:24 ListAllFiles error : 
+Could not find a part of the path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Submission\JAVA\SE63146.zip'.
+2020-04-23 20:38:03 ListAllFiles error : 
+Could not find a part of the path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Submission\JAVA\SE63146.zip'.
+2020-04-23 20:46:49 ZipYourChosenBranch error : 
+Path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Student\PRO192PETemplate\src\com\practicalexam' doesn't point at a valid Git repository or workdir.
+2020-04-23 21:02:43 GetAllByte error : 
+Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+2020-04-23 21:02:43 receiveMessage error : 
+Array cannot be null.
+Parameter name: bytes
+2020-04-23 21:08:34 SendFileJavaWeb error : 
+An error occurred while sending the request.
+2020-04-23 21:11:14 SendFile error : 
+An error occurred while sending the request.
+2020-04-23 21:11:39 GetAllByte error : 
+Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+2020-04-23 21:11:39 receiveMessage error : 
+Array cannot be null.
+Parameter name: bytes
+2020-04-23 21:47:55 ListAllFiles error : 
+Could not find a part of the path 'D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\Student\Submission\CSHARP\SE63146.zip'.

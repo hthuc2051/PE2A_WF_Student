@@ -39,7 +39,7 @@ namespace PE2A_WF_Student
             }
 
         }
-        public static String PracticalPath(String practicalType)
+        public static string PracticalPath(String practicalType)
         {
             string startupPath = Util.ExecutablePath();
             String realPath = "";
@@ -420,28 +420,28 @@ namespace PE2A_WF_Student
         }
 
         ////release path
-        public static String ExecutablePath()
-        {
-            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-            return appPath + @"\Student";
-        }
-
-        //debug path
         //public static String ExecutablePath()
         //{
-        //    try
-        //    {
-        //        string startupPath = System.IO.Directory.GetCurrentDirectory();
-        //        string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
-        //        return projectDirectory +@"\Student";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogException("ExecutablePath", ex.Message);
-        //    }
-        //    return null;
-
+        //    string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+        //    return appPath + @"\Student";
         //}
+
+        //debug path
+        public static String ExecutablePath()
+        {
+            try
+            {
+                string startupPath = System.IO.Directory.GetCurrentDirectory();
+                string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
+                return projectDirectory + @"\Student";
+            }
+            catch (Exception ex)
+            {
+                LogException("ExecutablePath", ex.Message);
+            }
+            return null;
+
+        }
 
         public static void CacheHistory(History historyObj)
         {

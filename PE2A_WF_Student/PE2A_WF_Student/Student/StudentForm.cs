@@ -48,7 +48,7 @@ namespace PE2A_WF_Student
             InitializeComponent();
             StartServerTCP();
             StartPractical = false;
-       
+
         }
         private void TimeRemaining()
         {
@@ -294,7 +294,7 @@ namespace PE2A_WF_Student
             string webappPath = startupPath + @"\webapp";
             string workPath = startupPath + @"\work";
             string workWebPagePath = startupPath + @"\work\web";
-            string webPageZip = startupPath + StudentID + "_WEB.zip";
+            string webPageZip = startupPath + @"\"+ StudentID + "_WEB.zip";
             //extract
             Util.UnarchiveFile(fileName, workPath);
             //copy
@@ -695,7 +695,7 @@ namespace PE2A_WF_Student
                             CommitTime = DateTime.Now.ToString()
                         });
                         this.numberOfVersion++;
-                        string projectDirectory = Util.PracticalSave(PracticalExamType);
+                        string projectDirectory = Util.PracticalPath(PracticalExamType);
                         ZipYourChosenBranch(projectDirectory, branchName);
                         lbCurrentBranch.Text = branchName;
                     }
@@ -742,9 +742,8 @@ namespace PE2A_WF_Student
             if (dgvStudentBranch.Rows.Count > 0)
             {
                 if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    string startupPath = Util.ExecutablePath();
-                    string repoDirectory = startupPath + @"\Student\PracticalExamStudent";
+                { 
+                    string repoDirectory = Util.PracticalPath(PracticalExamType);
                     //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
                     var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                     ZipYourChosenBranch(repoDirectory, branchName);
@@ -767,7 +766,8 @@ namespace PE2A_WF_Student
                     }
                 }
                 Thread.Sleep(1500);
-                var zipPath = repoDirectory; // zip all file and folder in here
+                // var zipPath = repoDirectory; // zip all file and folder in here
+                var zipPath = Util.PracticalSave(PracticalExamType); // zip all file and folder in here
                 ListAllFiles(zipPath);
             }
             catch (Exception ex)
