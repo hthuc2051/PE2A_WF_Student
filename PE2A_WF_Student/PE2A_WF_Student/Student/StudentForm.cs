@@ -260,6 +260,58 @@ namespace PE2A_WF_Student
             }
             return "Error !";
         }
+        private async Task<String> SendFileC(string fileName)
+        {
+            //pre-submit
+            string fileExtension = fileName.Substring(fileName.IndexOf('.'));
+            String saveProject = Util.PracticalSave(PracticalExamType);
+                String destinationFile = fileName;
+                String extractPath = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_C;
+            string filePath = extractPath +@"\"+ StudentID + fileExtension;
+            //using (var archive = SharpCompress.Archives.Zip.ZipArchive.Create())
+                //{
+                //    archive.AddAllFromDirectory(saveProject, ".", SearchOption.AllDirectories);
+                //    archive.SaveTo(destinationFile, CompressionType.Deflate);
+                //}
+                //extract file and delete separated file
+                //Util.DeleteFile(destinationFile);
+                Util.UnarchiveFile(destinationFile, extractPath); //student and program file
+                Util.DeleteFile(destinationFile);//not needed
+            //var client = new WebClient();
+            ZipFile.CreateFromDirectory(extractPath+@"\student", filePath, CompressionLevel.NoCompression, true);
+            var uri = new Uri(SubmitAPIUrl);
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var stream = File.ReadAllBytes(filePath);
+                    MultipartFormDataContent form = new MultipartFormDataContent();
+                    //form.Add(new ByteArrayContent(stream,0,stream.Length), "file");
+                    //file => byte[]
+                    //multipartFile => stream
+                    HttpContent content = new StreamContent(new FileStream(filePath, FileMode.Open));
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "file",
+                        FileName = StudentID + fileExtension
+                    };
+                    form.Add(content, "file");
+                    form.Add(new StringContent(StudentID), "studentCode");
+                    form.Add(new StringContent(ScriptCode), "scriptCode");
+                    using (var message = await client.PostAsync(uri, form))
+                    {
+                        var result = await message.Content.ReadAsStringAsync();
+                        return result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Util.LogException("SendFile", ex.Message);
+            }
+            return "Error !";
+        }
 
         private void ZipFilePath(string path, bool isWebPage)
         {
@@ -831,7 +883,7 @@ namespace PE2A_WF_Student
                 {
                     string projectDirectory = startupPath + @"\" + Constant.PRACTICAL_EXAM_C + @"\" + StudentID + ".zip"; // ...Submission/[Practical_Type]/StudentId.zip
                     FileName = projectDirectory;
-                    result = await SendFile(FileName);
+                    result = await SendFileC(FileName);
                 }
                 ShowWaittingMessage();
                 MessageBox.Show(result);
