@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PE2A_WF_Student.Student;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace PE2A_WF_Student
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new EnrollForm());
+            Application.Run(new PracticalExamTemplateForm());
         }
     }
 }
