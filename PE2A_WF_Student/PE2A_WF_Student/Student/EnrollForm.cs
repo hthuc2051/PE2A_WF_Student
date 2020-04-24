@@ -22,8 +22,6 @@ namespace PE2A_WF_Student
             InitializeComponent();
         }
         string studentID;
-        Thread sendingThread;
-        Thread listeningThread;
         StudentForm studentSubmit = new StudentForm();
 
         private void btnEnroll_Click(object sender, EventArgs e)

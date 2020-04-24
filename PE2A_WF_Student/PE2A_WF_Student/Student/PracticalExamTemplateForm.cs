@@ -43,7 +43,7 @@ namespace PE2A_WF_Student.Student
                         // Compare zip file name with practical exam code from api
                         if (Directory.Exists(scriptFolder))
                         {
-                            Directory.Delete(scriptFolder,true);
+                          Util.DeleteDirectory(scriptFolder);
                         }
                         if (Directory.Exists(destinationPath))
                         {

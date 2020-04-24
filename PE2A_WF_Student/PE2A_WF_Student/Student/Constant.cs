@@ -38,7 +38,7 @@ namespace PE2A_WF_Student
         //Practical path git
         public static string JAVA_WEB_PATH_GIT = @"\Student\JavaWebTemplate";
         public static string JAVA_PATH_GIT = @"\Student\JavaTemplate\src\com";
-        public static string CS_PATH_GIT = @"\Student\PRP192PracticalExam\PRP192PracticalExam";
+        public static string CS_PATH_GIT = @"\Student\CSharpTemplate\CSharpTemplate";
         public static string C_PATH_GIT = @"\Student\CTemplate";
         //Practical path student 
         public static string JAVA_WEB_PATH_SAVE = "";
