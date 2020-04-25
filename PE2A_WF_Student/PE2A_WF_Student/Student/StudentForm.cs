@@ -265,20 +265,20 @@ namespace PE2A_WF_Student
             //pre-submit
             string fileExtension = fileName.Substring(fileName.IndexOf('.'));
             String saveProject = Util.PracticalSave(PracticalExamType);
-                String destinationFile = fileName;
-                String extractPath = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_C;
-            string filePath = extractPath +@"\"+ StudentID + fileExtension;
+            String destinationFile = fileName;
+            String extractPath = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_C;
+            string filePath = extractPath + @"\" + StudentID + fileExtension;
             //using (var archive = SharpCompress.Archives.Zip.ZipArchive.Create())
-                //{
-                //    archive.AddAllFromDirectory(saveProject, ".", SearchOption.AllDirectories);
-                //    archive.SaveTo(destinationFile, CompressionType.Deflate);
-                //}
-                //extract file and delete separated file
-                //Util.DeleteFile(destinationFile);
-                Util.UnarchiveFile(destinationFile, extractPath); //student and program file
-                Util.DeleteFile(destinationFile);//not needed
+            //{
+            //    archive.AddAllFromDirectory(saveProject, ".", SearchOption.AllDirectories);
+            //    archive.SaveTo(destinationFile, CompressionType.Deflate);
+            //}
+            //extract file and delete separated file
+            //Util.DeleteFile(destinationFile);
+            Util.UnarchiveFile(destinationFile, extractPath); //student and program file
+            Util.DeleteFile(destinationFile);//not needed
             //var client = new WebClient();
-            ZipFile.CreateFromDirectory(extractPath+@"\student", filePath, CompressionLevel.NoCompression, true);
+            ZipFile.CreateFromDirectory(extractPath + @"\student", filePath, CompressionLevel.NoCompression, true);
             var uri = new Uri(SubmitAPIUrl);
             try
             {
@@ -346,7 +346,7 @@ namespace PE2A_WF_Student
             string webappPath = startupPath + @"\webapp";
             string workPath = startupPath + @"\work";
             string workWebPagePath = startupPath + @"\work\web";
-            string webPageZip = startupPath + @"\"+ StudentID + "_WEB.zip";
+            string webPageZip = startupPath + @"\" + StudentID + "_WEB.zip";
             //extract
             Util.UnarchiveFile(fileName, workPath);
             //copy
@@ -493,12 +493,12 @@ namespace PE2A_WF_Student
                                     }
                                     else if (msg.Contains(Constant.RETURN_EXAM_SCIPT))
                                     {
-                                        msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
-                                        string time = msg;
-                                        practicalTimeMinute = int.Parse(time);
-                                        this.InvokeEx(f => this.lbTime.Visible = true);
                                         if (StartPractical == false)
                                         {
+                                            msg = msg.Replace(Constant.RETURN_EXAM_SCIPT, "");
+                                            string time = msg;
+                                            practicalTimeMinute = int.Parse(time);
+                                            this.InvokeEx(f => this.lbTime.Visible = true);
                                             TimeRemaining();
                                             StartPractical = true;
                                         }
@@ -794,7 +794,7 @@ namespace PE2A_WF_Student
             if (dgvStudentBranch.Rows.Count > 0)
             {
                 if (MessageBox.Show("Do you want to choose this version?", "Checkout version", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                { 
+                {
                     string repoDirectory = Util.PracticalPath(PracticalExamType);
                     //string projectDirectory = Directory.GetParent(startupPath).Parent.FullName + @"\Student\PracticalExamStudent\src\java\com\practicalexam"; //folder mà Student sẽ làm
                     var branchName = dgvStudentBranch.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
@@ -839,6 +839,7 @@ namespace PE2A_WF_Student
                 {
                     File.Delete(Util.DestinationOutputPath(StudentID, practicalType));
                 }
+                Util.RemoveOldFile(practicalType); // Remove all old file or unused file.
                 //ZipFile.CreateFromDirectory(folder, Util.DestinationOutputPath(StudentID));
                 using (var archive = SharpCompress.Archives.Zip.ZipArchive.Create())
                 {

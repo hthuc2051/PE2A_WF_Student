@@ -442,6 +442,53 @@ namespace PE2A_WF_Student
             return null;
 
         }
+        public static void RemoveOldFile(String practicalType)
+        {
+            try
+            {
+                if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+                {
+                    
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA_WEB; // ...Submission/[Practical_Type]/StudentId.zip  
+                    String[] getAllFiles = Directory.GetFiles(destination);
+                    if(getAllFiles != null)
+                    {
+                        foreach (var item in getAllFiles)
+                        {
+                            if(!item.Contains("work") && !item.Contains("webapp"))
+                            {
+                                File.Delete(item);
+                            }
+                        }
+                    }
+                   
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA; // ...Submission/[Practical_Type]/StudentId.zip
+                    Directory.Delete(destination, true);
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C_SHARP; // ...Submission/[Practical_Type]/StudentId.zip
+                    Directory.Delete(destination, true);
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C; // ...Submission/[Practical_Type]/StudentId.zip
+                    Directory.Delete(destination, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException("RemoveOldFile", ex.Message);
+
+            }
+        }
 
         public static void CacheHistory(History historyObj)
         {

@@ -29,10 +29,15 @@ namespace PE2A_WF_Student.Student
                     openFileDialog.RestoreDirectory = true;
                     if (openFileDialog.ShowDialog().Equals(DialogResult.OK))
                     {
+                        //Delete forder here
+                        var destinationPath = Util.ExecutablePath() + @"\Student";
+
                         // Get full zip file path
                         var filePath = openFileDialog.FileName;
-
-                        var destinationPath = Util.ExecutablePath() + @"\Student";
+                        if (Directory.Exists(destinationPath))
+                        {
+                            Directory.Delete(destinationPath, true);
+                        }
 
                         // Get zip file name without extension
                         var filename = Path.GetFileNameWithoutExtension(filePath);
@@ -48,7 +53,8 @@ namespace PE2A_WF_Student.Student
                         if (Directory.Exists(destinationPath))
                         {
                             Util.UnarchiveFile(filePath, destinationPath);
-                            txtPath.Text = scriptFolder;
+                            String[] getFolderName = Directory.GetDirectories(destinationPath); //get folder name of a template project
+                            txtPath.Text = getFolderName[0];
                         }
                     }
                 }
