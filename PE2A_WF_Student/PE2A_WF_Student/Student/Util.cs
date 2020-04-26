@@ -468,19 +468,19 @@ namespace PE2A_WF_Student
                 {
                     string startupPath = ExecutablePath() + @"\Submission";
                     string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA; // ...Submission/[Practical_Type]/StudentId.zip
-                    Directory.Delete(destination, true);
+                    Util.DeleteDirectoryWithoutRoot(destination);
                 }
                 else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
                 {
                     string startupPath = ExecutablePath() + @"\Submission";
                     string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C_SHARP; // ...Submission/[Practical_Type]/StudentId.zip
-                    Directory.Delete(destination, true);
+                    Util.DeleteDirectoryWithoutRoot(destination);
                 }
                 else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
                 {
                     string startupPath = ExecutablePath() + @"\Submission";
                     string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C; // ...Submission/[Practical_Type]/StudentId.zip
-                    Directory.Delete(destination, true);
+                    Util.DeleteDirectoryWithoutRoot(destination);
                 }
             }
             catch (Exception ex)
@@ -538,6 +538,25 @@ namespace PE2A_WF_Student
             }
 
             Directory.Delete(targetDir, false);
+        }
+
+        public static void DeleteDirectoryWithoutRoot(string targetDir)
+        {
+            File.SetAttributes(targetDir, FileAttributes.Normal);
+
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
         }
     }
 }

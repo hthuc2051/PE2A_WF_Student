@@ -36,7 +36,7 @@ namespace PE2A_WF_Student.Student
                         var filePath = openFileDialog.FileName;
                         if (Directory.Exists(destinationPath))
                         {
-                            Directory.Delete(destinationPath, true);
+                            Util.DeleteDirectoryWithoutRoot(destinationPath);
                         }
 
                         // Get zip file name without extension
@@ -46,10 +46,6 @@ namespace PE2A_WF_Student.Student
                         var scriptFolder = Path.Combine(destinationPath, filename);
 
                         // Compare zip file name with practical exam code from api
-                        if (Directory.Exists(scriptFolder))
-                        {
-                          Util.DeleteDirectory(scriptFolder);
-                        }
                         if (Directory.Exists(destinationPath))
                         {
                             Util.UnarchiveFile(filePath, destinationPath);
