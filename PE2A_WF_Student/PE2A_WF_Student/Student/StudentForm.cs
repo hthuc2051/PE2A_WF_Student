@@ -481,10 +481,13 @@ namespace PE2A_WF_Student
                                     }
                                     else if (msg.Contains(Constant.RETURN_POINT))
                                     {
-                                        this.InvokeEx(f => lbPoint.Text = msg);
+                                        msg= msg.Replace(Constant.RETURN_POINT, "").Trim();
+                                        var getResult = Util.ParseJsonToResult(msg);
+                                        this.InvokeEx(f => lbPoint.Text = getResult.TotalPoint);
+                                        //handle getResult.ListQuestions here
                                         var history = new History();
                                         history.No = 0;
-                                        history.Point = msg.Replace(Constant.RETURN_POINT, "").Trim();
+                                        history.Point = getResult.TotalPoint;
                                         history.StudentCode = StudentID;
                                         history.PracticalName = PracticalExamType;
                                         history.PracticalDate = DateTime.Now.ToString("yyyy-MM-dd");

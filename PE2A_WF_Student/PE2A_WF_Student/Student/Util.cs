@@ -1,4 +1,5 @@
-﻿using PE2A_WF_Student.Models;
+﻿using Newtonsoft.Json;
+using PE2A_WF_Student.Models;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
@@ -538,6 +539,20 @@ namespace PE2A_WF_Student
             }
 
             Directory.Delete(targetDir, false);
+        }
+        public static StudentResult ParseJsonToResult(String data)
+        {
+            try
+            {
+                var studentResult = JsonConvert.DeserializeObject<StudentResult>(data);
+                return studentResult;
+            }
+            catch (Exception ex)
+            {
+                LogException("ParseJsonToResult : ", ex.Message);
+            }
+            return null;
+          
         }
 
         public static void DeleteDirectoryWithoutRoot(string targetDir)
