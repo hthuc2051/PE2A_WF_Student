@@ -39,7 +39,7 @@ namespace PE2A_WF_Student
             }
 
         }
-        public static String PracticalPath(String practicalType)
+        public static string PracticalPath(String practicalType)
         {
             string startupPath = Util.ExecutablePath();
             String realPath = "";
@@ -105,7 +105,7 @@ namespace PE2A_WF_Student
                 String currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss ");
                 String logging = currentTime + methodName + " error : " + "\r\n";
                 logging += errorMessage + "\r\n";
-                String filePath = ExecutablePath() + Constant.LOG_FILE;
+                String filePath = ExecutablePath() + @"\"+ Constant.LOG_FILE;
                 File.AppendAllText(filePath, logging);
             }
             catch (Exception ex)
@@ -423,7 +423,7 @@ namespace PE2A_WF_Student
         //public static String ExecutablePath()
         //{
         //    string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-        //    return appPath;
+        //    return appPath + @"\Student";
         //}
 
         //debug path
@@ -433,7 +433,7 @@ namespace PE2A_WF_Student
             {
                 string startupPath = System.IO.Directory.GetCurrentDirectory();
                 string projectDirectory = Directory.GetParent(startupPath).Parent.FullName;
-                return projectDirectory;
+                return projectDirectory + @"\Student";
             }
             catch (Exception ex)
             {
@@ -441,6 +441,53 @@ namespace PE2A_WF_Student
             }
             return null;
 
+        }
+        public static void RemoveOldFile(String practicalType)
+        {
+            try
+            {
+                if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA_WEB))
+                {
+                    
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA_WEB; // ...Submission/[Practical_Type]/StudentId.zip  
+                    String[] getAllFiles = Directory.GetFiles(destination);
+                    if(getAllFiles != null)
+                    {
+                        foreach (var item in getAllFiles)
+                        {
+                            if(!item.Contains("work") && !item.Contains("webapp"))
+                            {
+                                File.Delete(item);
+                            }
+                        }
+                    }
+                   
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_JAVA))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_JAVA; // ...Submission/[Practical_Type]/StudentId.zip
+                    Util.DeleteDirectoryWithoutRoot(destination);
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C_SHARP))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C_SHARP; // ...Submission/[Practical_Type]/StudentId.zip
+                    Util.DeleteDirectoryWithoutRoot(destination);
+                }
+                else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+                {
+                    string startupPath = ExecutablePath() + @"\Submission";
+                    string destination = startupPath + @"\" + Constant.PRACTICAL_EXAM_C; // ...Submission/[Practical_Type]/StudentId.zip
+                    Util.DeleteDirectoryWithoutRoot(destination);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException("RemoveOldFile", ex.Message);
+
+            }
         }
 
         public static void CacheHistory(History historyObj)
@@ -469,6 +516,46 @@ namespace PE2A_WF_Student
             catch (Exception ex)
             {
                 LogException("CacheHistory", ex.Message);
+            }
+        }
+
+        public static void DeleteDirectory(string targetDir)
+        {
+            File.SetAttributes(targetDir, FileAttributes.Normal);
+
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(targetDir, false);
+        }
+
+        public static void DeleteDirectoryWithoutRoot(string targetDir)
+        {
+            File.SetAttributes(targetDir, FileAttributes.Normal);
+
+            string[] files = Directory.GetFiles(targetDir);
+            string[] dirs = Directory.GetDirectories(targetDir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
             }
         }
     }

@@ -22,10 +22,9 @@ namespace PE2A_WF_Student
             InitializeComponent();
         }
         string studentID;
+        StudentForm studentSubmit = new StudentForm();
         Thread sendingThread;
         Thread listeningThread;
-        StudentForm studentSubmit = new StudentForm();
-
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             studentID = txtStudentID.Text.ToUpper().Trim();

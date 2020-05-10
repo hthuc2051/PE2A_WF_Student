@@ -60,37 +60,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constant.cs" />
-    <Compile Include="EnrollForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EnrollForm.Designer.cs">
-      <DependentUpon>EnrollForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HistoryForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HistoryForm.Designer.cs">
-      <DependentUpon>HistoryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ISynchronizeInvokeExtensions.cs" />
     <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StudentForm.cs">
+    <Compile Include="Student\ClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StudentForm.Designer.cs">
+    <Compile Include="Student\ClientForm.Designer.cs">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Student\Constant.cs" />
+    <Compile Include="Student\EnrollForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Student\EnrollForm.Designer.cs">
+      <DependentUpon>EnrollForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Student\HistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Student\HistoryForm.Designer.cs">
+      <DependentUpon>HistoryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Student\ISynchronizeInvokeExtensions.cs" />
+    <Compile Include="Student\PracticalExamTemplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Student\PracticalExamTemplateForm.Designer.cs">
+      <DependentUpon>PracticalExamTemplateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Student\StudentForm.Designer.cs">
       <DependentUpon>StudentForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Util.cs" />
-    <EmbeddedResource Include="EnrollForm.resx">
-      <DependentUpon>EnrollForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HistoryForm.resx">
-      <DependentUpon>HistoryForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Student\Util.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -101,7 +107,19 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="StudentForm.resx">
+    <EmbeddedResource Include="Student\ClientForm.resx">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Student\EnrollForm.resx">
+      <DependentUpon>EnrollForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Student\HistoryForm.resx">
+      <DependentUpon>HistoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Student\PracticalExamTemplateForm.resx">
+      <DependentUpon>PracticalExamTemplateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Student\StudentForm.resx">
       <DependentUpon>StudentForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -127,11 +145,7 @@
   <ItemGroup>
     <None Include="Resources\loading %282%29.gif" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Student\" />
-    <Folder Include="Submission\" />
-    <Folder Include="TemplateProject\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
