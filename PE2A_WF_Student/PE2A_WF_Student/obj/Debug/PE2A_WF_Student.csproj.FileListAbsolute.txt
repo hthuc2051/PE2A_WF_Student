@@ -33,7 +33,6 @@ D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csproj.
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csproj.CopyComplete
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.exe
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.pdb
-<<<<<<< HEAD
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csprojAssemblyReference.cache
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\win32\x64\git2-15e1193.dll
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\win32\x64\git2-15e1193.pdb
@@ -42,7 +41,6 @@ D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\win32\x86\git2-15e1
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\osx\libgit2-15e1193.dylib
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\linux\x86_64\libgit2-15e1193.so
 D:\Capstone_WF\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\LibGit2Sharp.dll.config
-=======
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\PE2A_WF_Student.exe.config
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\PE2A_WF_Student.exe
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\PE2A_WF_Student.pdb
@@ -68,4 +66,3 @@ D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\lib\linux\x86_6
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\bin\Debug\LibGit2Sharp.dll.config
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.csprojAssemblyReference.cache
 D:\Capstone_WF_Student\PE2A_WF_Student\PE2A_WF_Student\obj\Debug\PE2A_WF_Student.Student.PracticalExamTemplateForm.resources
->>>>>>> origin/features/PHAT_DEV_TESTAPP3
