@@ -481,6 +481,7 @@ namespace PE2A_WF_Student
                                     }
                                     else if (msg.Contains(Constant.RETURN_POINT))
                                     {
+                                        msg = msg.Replace(Constant.RETURN_POINT, Constant.PUBLISH_POINT_MSG);
                                         this.InvokeEx(f => lbPoint.Text = msg);
                                         var history = new History();
                                         history.No = 0;

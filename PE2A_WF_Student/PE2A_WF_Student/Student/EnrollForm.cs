@@ -55,6 +55,7 @@ namespace PE2A_WF_Student
                 string message = Util.GetLocalIPAddress() + "-" + Constant.STUDENT_LISTENING_PORT + "-" + studentID;
                 SendBroadCastToRouter(message);
                 studentSubmit.Show();
+                this.Visible = false;
             }
         }
 
