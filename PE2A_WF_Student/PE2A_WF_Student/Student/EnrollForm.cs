@@ -23,7 +23,8 @@ namespace PE2A_WF_Student
         }
         string studentID;
         StudentForm studentSubmit = new StudentForm();
-
+        Thread sendingThread;
+        Thread listeningThread;
         private void btnEnroll_Click(object sender, EventArgs e)
         {
             studentID = txtStudentID.Text.ToUpper().Trim();
