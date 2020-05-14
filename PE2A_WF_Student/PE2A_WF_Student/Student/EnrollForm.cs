@@ -36,7 +36,7 @@ namespace PE2A_WF_Student
             else
             {
                 String workFolder = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\work";
-                String webappFolder = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\webapp";
+                String webappFolder = Util.ExecutablePath() + @"\Submission\" + Constant.PRACTICAL_EXAM_JAVA_WEB + @"\webapp"; 
                 if (Directory.Exists(workFolder))
                 {
                     Directory.Delete(workFolder, true);
