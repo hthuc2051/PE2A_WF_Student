@@ -785,6 +785,7 @@ namespace PE2A_WF_Student
             }
             catch (Exception ex)
             {
+
                 Util.LogException("UpdateGridViewBranch", ex.Message);
             }
 
