@@ -55,7 +55,7 @@ namespace PE2A_WF_Student
             {
                 realPath = Path.Combine(startupPath + Constant.CS_PATH_GIT); //c#
             }
-            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C))
+            else if (practicalType.Equals(Constant.PRACTICAL_EXAM_C)) //c
             {
                 realPath = Path.Combine(startupPath + Constant.C_PATH_GIT); //c
             }
@@ -419,7 +419,7 @@ namespace PE2A_WF_Student
 
         }
 
-        ////release path
+        //release path
         //public static String ExecutablePath()
         //{
         //    string appPath = Path.GetDirectoryName(Application.ExecutablePath);

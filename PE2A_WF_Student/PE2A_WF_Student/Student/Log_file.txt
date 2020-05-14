@@ -100,3 +100,8 @@ The directory is not empty.
 An error occurred while sending the request.
 2020-04-26 09:16:20 SendFile error : 
 An error occurred while sending the request.
+2020-05-11 19:33:47 GetAllByte error : 
+Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
+2020-05-11 19:33:47 receiveMessage error : 
+Array cannot be null.
+Parameter name: bytes
